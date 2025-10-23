@@ -19,6 +19,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const { plan } = (await req.json()) as { plan?: "monthly" | "yearly" };
     if (!plan || (plan !== "monthly" && plan !== "yearly")) return new NextResponse("Plan inválido", { status: 400 });
 
+    // DEBUG: Log environment variables
+    console.log("=== STRIPE DEBUG ===");
+    console.log("STRIPE_SECRET_KEY exists:", !!process.env.STRIPE_SECRET_KEY);
+    console.log("STRIPE_SECRET_KEY length:", process.env.STRIPE_SECRET_KEY?.length || 0);
+    console.log("NEXT_PUBLIC_BASE_URL:", process.env.NEXT_PUBLIC_BASE_URL);
+    console.log("All STRIPE env vars:", Object.keys(process.env).filter(k => k.startsWith('STRIPE')));
+    console.log("===================");
+
     const secretKey = process.env.STRIPE_SECRET_KEY;
     if (!secretKey) return new NextResponse("Stripe no configurado", { status: 500 });
 
