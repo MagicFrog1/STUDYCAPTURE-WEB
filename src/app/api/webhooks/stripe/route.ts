@@ -1,16 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-// import Stripe from "stripe";
-// import { supabase } from "@/lib/supabaseClient";
+import Stripe from "stripe";
+import { supabase } from "@/lib/supabaseClient";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Temporalmente deshabilitado para compilación
-export async function POST(req: NextRequest): Promise<NextResponse> {
-  return NextResponse.json({ received: true });
-}
-
-/*
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -82,22 +76,22 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
     return;
   }
 
-    // Insertar o actualizar la suscripción
-    const subscriptionData = subscription as Stripe.Subscription & {
-      current_period_start: number;
-      current_period_end: number;
-    };
-    
-    const { error } = await supabase
-      .from("subscriptions")
-      .upsert({
-        user_id: user.id,
-        stripe_customer_id: customerId,
-        stripe_subscription_id: subscription.id,
-        status: subscription.status,
-        current_period_start: new Date(subscriptionData.current_period_start * 1000).toISOString(),
-        current_period_end: new Date(subscriptionData.current_period_end * 1000).toISOString(),
-      });
+  // Determinar el tipo de plan basado en el precio
+  const priceId = subscription.items.data[0]?.price.id;
+  const planType = priceId?.includes('monthly') ? 'monthly' : 'yearly';
+
+  // Insertar o actualizar la suscripción
+  const { error } = await supabase
+    .from("subscriptions")
+    .upsert({
+      user_id: user.id,
+      stripe_customer_id: customerId,
+      stripe_subscription_id: subscription.id,
+      status: subscription.status,
+      plan_type: planType,
+      current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
+      current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+    });
 
   if (error) {
     console.error("Error updating subscription:", error);
@@ -130,4 +124,3 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
   const subscription = await stripe.subscriptions.retrieve(invoiceData.subscription);
   await handleSubscriptionChange(subscription);
 }
-*/
