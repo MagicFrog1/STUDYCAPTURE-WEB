@@ -70,6 +70,7 @@ npm run dev
 - **Cuota Gratuita**: 2 usos gratis por dispositivo
 - **Pagos Seguros**: Integración completa con Stripe
 - **Actualizado**: Última versión con gestión completa de suscripciones
+- **Corrección**: Mejorado el tipado de TypeScript para Stripe webhooks
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
