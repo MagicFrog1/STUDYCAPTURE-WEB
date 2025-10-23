@@ -80,6 +80,12 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
   const priceId = subscription.items.data[0]?.price.id;
   const planType = priceId?.includes('monthly') ? 'monthly' : 'yearly';
 
+  // Añade esta línea para forzar que TypeScript reconozca la estructura de suscripción
+  const subscriptionData = subscription as Stripe.Subscription & {
+    current_period_start: number;
+    current_period_end: number;
+  };
+
   // Insertar o actualizar la suscripción
   const { error } = await supabase
     .from("subscriptions")
@@ -89,8 +95,8 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
       stripe_subscription_id: subscription.id,
       status: subscription.status,
       plan_type: planType,
-      current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-      current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+      current_period_start: new Date(subscriptionData.current_period_start * 1000).toISOString(),
+      current_period_end: new Date(subscriptionData.current_period_end * 1000).toISOString(),
     });
 
   if (error) {
