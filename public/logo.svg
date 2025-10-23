@@ -1,0 +1,19 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo del documento -->
+  <rect x="4" y="6" width="20" height="22" rx="2" fill="white" stroke="#7c3aed" stroke-width="1.5"/>
+  
+  <!-- Líneas de texto -->
+  <rect x="7" y="10" width="14" height="1.5" rx="0.75" fill="#7c3aed"/>
+  <rect x="7" y="13" width="10" height="1.5" rx="0.75" fill="#7c3aed"/>
+  <rect x="7" y="16" width="12" height="1.5" rx="0.75" fill="#7c3aed"/>
+  
+  <!-- Icono de cámara/foto -->
+  <circle cx="20" cy="20" r="3" fill="#ec4899" stroke="white" stroke-width="1"/>
+  <circle cx="20" cy="20" r="1.5" fill="white"/>
+  
+  <!-- Flecha de transformación -->
+  <path d="M22 8 L26 8 L26 6 L28 8 L26 10 L26 8 L22 8" fill="#7c3aed"/>
+  
+  <!-- Puntos de conexión -->
+  <circle cx="24" cy="8" r="1" fill="#ec4899"/>
+</svg>
