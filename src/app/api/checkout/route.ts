@@ -24,6 +24,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     console.log("STRIPE_SECRET_KEY exists:", !!process.env.STRIPE_SECRET_KEY);
     console.log("STRIPE_SECRET_KEY length:", process.env.STRIPE_SECRET_KEY?.length || 0);
     console.log("NEXT_PUBLIC_BASE_URL:", process.env.NEXT_PUBLIC_BASE_URL);
+    console.log("NEXT_PUBLIC_SUPABASE_URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
+    console.log("NEXT_PUBLIC_SUPABASE_ANON_KEY exists:", !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
     console.log("All STRIPE env vars:", Object.keys(process.env).filter(k => k.startsWith('STRIPE')));
     console.log("=============================");
 
