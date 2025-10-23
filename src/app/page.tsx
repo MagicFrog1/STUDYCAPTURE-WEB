@@ -21,19 +21,22 @@ export default function Home() {
 
   async function handleSubscribe(plan: "monthly" | "yearly") {
     if (!isLoggedIn) {
+      alert("Primero debes iniciar sesión para suscribirte");
       router.push("/login");
       return;
     }
     try {
       setLoadingPlan(plan);
+      const sessionRes = await supabase.auth.getSession();
+      const access = sessionRes.data.session?.access_token;
       const res = await fetch("/api/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(access ? { Authorization: `Bearer ${access}` } : {}) },
         body: JSON.stringify({ plan }),
       });
       if (!res.ok) throw new Error(await res.text());
-      const data = (await res.json()) as { url?: string };
-      if (data.url) window.location.href = data.url;
+      const json = (await res.json()) as { url?: string };
+      if (json.url) window.location.href = json.url;
     } catch (e) {
       console.error(e);
     } finally {

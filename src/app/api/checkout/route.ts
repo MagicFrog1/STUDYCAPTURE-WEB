@@ -35,17 +35,23 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const stripe = new Stripe(secretKey);
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
 
-    // Obtener el usuario actual
-    const { data: { session: authSession } } = await supabase.auth.getSession();
-    if (!authSession?.user) {
+    // Autenticar al usuario mediante token enviado por el cliente
+    const authHeader = req.headers.get("authorization") || "";
+    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : undefined;
+    if (!token) {
       return new NextResponse("Usuario no autenticado", { status: 401 });
     }
+    const { data: userRes, error: userErr } = await supabase.auth.getUser(token);
+    if (userErr || !userRes?.user) {
+      return new NextResponse("Usuario no autenticado", { status: 401 });
+    }
+    const authUser = userRes.user;
 
     // Crear customer en Stripe directamente (más simple)
     const customer = await stripe.customers.create({
-      email: authSession.user.email!,
+      email: authUser.email!,
       metadata: {
-        supabase_user_id: authSession.user.id,
+        supabase_user_id: authUser.id,
       },
     });
     const customerId = customer.id;

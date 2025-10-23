@@ -103,9 +103,16 @@ export default function GenerarPage() {
   async function handleSubscribe(plan: "monthly" | "yearly") {
     try {
       setLoadingPlan(plan);
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        alert("Primero debes iniciar sesión para suscribirte");
+        router.push("/login");
+        setLoadingPlan("");
+        return;
+      }
       const res = await fetch("/api/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${data.session.access_token}` },
         body: JSON.stringify({ plan }),
       });
       if (!res.ok) throw new Error(await res.text());
