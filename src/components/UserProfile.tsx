@@ -9,16 +9,15 @@ interface User {
   email?: string;
 }
 
-interface Subscription {
+interface Profile {
   id: string;
-  status: string;
-  current_period_end: string;
-  plan_type: string;
+  is_premium: boolean;
+  updated_at: string;
 }
 
 export default function UserProfile() {
   const [user, setUser] = useState<User | null>(null);
-  const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -32,7 +31,7 @@ export default function UserProfile() {
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) {
         setUser(session.user);
-        await fetchSubscription(session.user.id);
+        await fetchProfile(session.user.id);
       }
     } catch (error) {
       console.error("Error checking user:", error);
@@ -41,20 +40,19 @@ export default function UserProfile() {
     }
   };
 
-  const fetchSubscription = async (userId: string) => {
+  const fetchProfile = async (userId: string) => {
     try {
       const { data, error } = await supabase
-        .from('subscriptions')
-        .select('*')
+        .from('profiles')
+        .select('is_premium, updated_at')
         .eq('user_id', userId)
-        .eq('status', 'active')
         .single();
 
       if (data && !error) {
-        setSubscription(data);
+        setProfile(data);
       }
     } catch (error) {
-      console.error("Error fetching subscription:", error);
+      console.error("Error fetching profile:", error);
     }
   };
 
@@ -62,7 +60,7 @@ export default function UserProfile() {
     try {
       await supabase.auth.signOut();
       setUser(null);
-      setSubscription(null);
+      setProfile(null);
       router.push('/');
     } catch (error) {
       console.error("Error logging out:", error);
@@ -120,15 +118,15 @@ export default function UserProfile() {
         <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
           <div className="px-4 py-3 border-b border-gray-100">
             <p className="text-sm font-medium text-gray-900">{user.email}</p>
-            {subscription && (
-              <p className="text-xs text-gray-500 mt-1">
-                Plan: {subscription.plan_type === 'monthly' ? 'Mensual' : 'Anual'}
+            {profile?.is_premium && (
+              <p className="text-xs text-green-600 mt-1">
+                Plan: Premium
               </p>
             )}
           </div>
           
           <div className="py-2">
-            {subscription && (
+            {profile?.is_premium && (
               <button
                 onClick={handleManageSubscription}
                 className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors"

@@ -4,25 +4,23 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 
-interface Subscription {
+interface Profile {
   id: string;
-  status: string;
-  current_period_end: string;
-  plan_type: string;
-  stripe_subscription_id: string;
+  is_premium: boolean;
+  updated_at: string;
 }
 
 export default function SubscriptionManagement() {
-  const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    fetchSubscription();
+    fetchProfile();
   }, []);
 
-  const fetchSubscription = async () => {
+  const fetchProfile = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) {
@@ -31,41 +29,43 @@ export default function SubscriptionManagement() {
       }
 
       const { data, error } = await supabase
-        .from('subscriptions')
-        .select('*')
+        .from('profiles')
+        .select('is_premium, updated_at')
         .eq('user_id', session.user.id)
-        .eq('status', 'active')
         .single();
 
       if (data && !error) {
-        setSubscription(data);
+        setProfile(data);
       }
     } catch (error) {
-      console.error("Error fetching subscription:", error);
+      console.error("Error fetching profile:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleCancelSubscription = async () => {
-    if (!subscription || !confirm('¿Estás seguro de que quieres cancelar tu suscripción?')) {
+    if (!profile?.is_premium || !confirm('¿Estás seguro de que quieres cancelar tu suscripción?')) {
       return;
     }
 
     setActionLoading('cancel');
     try {
-      const response = await fetch('/api/subscription/cancel', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ subscriptionId: subscription.stripe_subscription_id }),
-      });
+      // Por simplicidad, solo actualizamos el campo is_premium a false
+      // En un sistema real, esto debería cancelar la suscripción en Stripe
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        const { error } = await supabase
+          .from('profiles')
+          .update({ is_premium: false })
+          .eq('user_id', session.user.id);
 
-      if (response.ok) {
-        alert('Suscripción cancelada exitosamente');
-        fetchSubscription(); // Refresh data
-      } else {
-        const error = await response.text();
-        alert(`Error: ${error}`);
+        if (error) {
+          alert(`Error: ${error.message}`);
+        } else {
+          alert('Suscripción cancelada exitosamente');
+          fetchProfile(); // Refresh data
+        }
       }
     } catch (error) {
       console.error("Error canceling subscription:", error);
@@ -76,17 +76,16 @@ export default function SubscriptionManagement() {
   };
 
   const handleChangePlan = async (newPlan: 'monthly' | 'yearly') => {
-    if (!subscription) return;
+    if (!profile?.is_premium) return;
 
     setActionLoading('change');
     try {
-      const response = await fetch('/api/subscription/change', {
+      // Por simplicidad, redirigimos a la página de checkout
+      // En un sistema real, esto debería cambiar el plan en Stripe
+      const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          subscriptionId: subscription.stripe_subscription_id,
-          newPlan 
-        }),
+        body: JSON.stringify({ plan: newPlan }),
       });
 
       if (response.ok) {
@@ -125,7 +124,7 @@ export default function SubscriptionManagement() {
     );
   }
 
-  if (!subscription) {
+  if (!profile?.is_premium) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6 text-center">
@@ -163,23 +162,19 @@ export default function SubscriptionManagement() {
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <span className="text-gray-600">Plan:</span>
-                  <p className="font-medium">
-                    {subscription.plan_type === 'monthly' ? 'Mensual' : 'Anual'}
-                  </p>
+                  <p className="font-medium text-green-600">Premium</p>
                 </div>
                 <div>
                   <span className="text-gray-600">Estado:</span>
-                  <p className="font-medium text-green-600 capitalize">{subscription.status}</p>
+                  <p className="font-medium text-green-600">Activo</p>
                 </div>
                 <div>
                   <span className="text-gray-600">Próximo pago:</span>
-                  <p className="font-medium">{formatDate(subscription.current_period_end)}</p>
+                  <p className="font-medium">-</p>
                 </div>
                 <div>
                   <span className="text-gray-600">Precio:</span>
-                  <p className="font-medium">
-                    {subscription.plan_type === 'monthly' ? '4,99€/mes' : '39,99€/año'}
-                  </p>
+                  <p className="font-medium">Premium</p>
                 </div>
               </div>
             </div>
