@@ -30,7 +30,7 @@ export default function SubscriptionManagement() {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('is_premium, updated_at')
+        .select('id, is_premium, updated_at')
         .eq('user_id', session.user.id)
         .single();
 
@@ -183,7 +183,7 @@ export default function SubscriptionManagement() {
             <div className="border border-gray-200 rounded-lg p-4">
               <h3 className="font-semibold text-gray-900 mb-3">Cambiar Plan</h3>
               <div className="space-y-3">
-                {subscription.plan_type !== 'monthly' && (
+                {true && (
                   <button
                     onClick={() => handleChangePlan('monthly')}
                     disabled={actionLoading === 'change'}
@@ -192,7 +192,7 @@ export default function SubscriptionManagement() {
                     {actionLoading === 'change' ? 'Procesando...' : 'Cambiar a Plan Mensual (4,99€/mes)'}
                   </button>
                 )}
-                {subscription.plan_type !== 'yearly' && (
+                {true && (
                   <button
                     onClick={() => handleChangePlan('yearly')}
                     disabled={actionLoading === 'change'}

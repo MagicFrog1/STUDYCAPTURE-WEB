@@ -44,7 +44,7 @@ export default function UserProfile() {
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('is_premium, updated_at')
+        .select('id, is_premium, updated_at')
         .eq('user_id', userId)
         .single();
 
