@@ -79,54 +79,88 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   const stripe = getStripe();
   const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
   await handleSubscriptionChange(subscription);
+
+  // Guardar el customer_id en profiles si viene en metadata del checkout
+  try {
+    const { supabase } = await import("@/lib/supabaseClient");
+    const customerId = subscription.customer as string;
+    const userId = (session.metadata as any)?.supabase_user_id;
+    if (userId && customerId) {
+      await supabase
+        .from("profiles")
+        .update({ stripe_customer_id: customerId, updated_at: new Date().toISOString() })
+        .eq("user_id", userId);
+    }
+  } catch {}
 }
 
 async function handleSubscriptionChange(subscription: Stripe.Subscription) {
   const customerId = subscription.customer as string;
-  const stripe = getStripe();
-
-  // Obtener el supabase_user_id desde los metadatos del customer en Stripe
-  const customer = (await stripe.customers.retrieve(customerId)) as Stripe.Customer;
-  const supabaseUserId = (customer.metadata && (customer.metadata as any).supabase_user_id) || undefined;
-  if (!supabaseUserId) {
-    console.error("Missing supabase_user_id metadata for customer:", customerId);
+  
+  // Import Supabase only when needed
+  const { supabase } = await import("@/lib/supabaseClient");
+  
+  // Buscar el usuario por customer_id en Supabase
+  const { data: user } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("stripe_customer_id", customerId)
+    .single();
+  
+  if (!user) {
+    console.error("User not found for customer:", customerId);
     return;
   }
 
-  // Import Supabase solo cuando sea necesario
-  const { supabase } = await import("@/lib/supabaseClient");
-
-  const isActive = subscription.status === "active";
+  // Actualizar el campo is_premium en la tabla profiles
+  const isActive = subscription.status === 'active';
+  
   const { error } = await supabase
     .from("profiles")
-    .update({ is_premium: isActive, updated_at: new Date().toISOString() })
-    .eq("user_id", supabaseUserId);
+    .update({ 
+      is_premium: isActive,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", user.id);
 
   if (error) {
     console.error("Error updating premium status:", error);
   } else {
-    console.log(`Premium status updated to ${isActive} for user ${supabaseUserId}`);
+    console.log(`Premium status updated to ${isActive} for user ${user.id}`);
   }
 }
 
 async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
+  // Import Supabase only when needed
+  const { supabase } = await import("@/lib/supabaseClient");
+  
   const customerId = subscription.customer as string;
-  const stripe = getStripe();
-  const customer = (await stripe.customers.retrieve(customerId)) as Stripe.Customer;
-  const supabaseUserId = (customer.metadata && (customer.metadata as any).supabase_user_id) || undefined;
-  if (!supabaseUserId) {
-    console.error("Missing supabase_user_id metadata for customer:", customerId);
+  
+  // Buscar el usuario por customer_id en Supabase
+  const { data: user } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("stripe_customer_id", customerId)
+    .single();
+  
+  if (!user) {
+    console.error("User not found for customer:", customerId);
     return;
   }
-  const { supabase } = await import("@/lib/supabaseClient");
+
+  // Actualizar el campo is_premium a false
   const { error } = await supabase
     .from("profiles")
-    .update({ is_premium: false, updated_at: new Date().toISOString() })
-    .eq("user_id", supabaseUserId);
+    .update({ 
+      is_premium: false,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", user.id);
+
   if (error) {
     console.error("Error canceling premium status:", error);
   } else {
-    console.log(`Premium status canceled for user ${supabaseUserId}`);
+    console.log(`Premium status canceled for user ${user.id}`);
   }
 }
 

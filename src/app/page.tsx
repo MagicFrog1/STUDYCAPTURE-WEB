@@ -191,8 +191,7 @@ export default function Home() {
               <div className="relative bg-white p-8 rounded-2xl border border-purple-200 shadow-lg text-left transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-1 group-hover:border-purple-400">
               <h3 className="text-2xl font-bold text-gray-800 mb-2">Mensual</h3>
               <p className="text-gray-600 mb-6">Ideal para trabajos y épocas de exámenes</p>
-                <div className="text-4xl font-bold text-purple-600 mb-1 transition-transform duration-300 group-hover:scale-105">4,99€ <span className="text-base font-normal text-gray-500">/ mes</span></div>
-                <p className="text-xs text-gray-500 mb-6">Facturación mensual. Puedes cancelar cuando quieras desde tu perfil.</p>
+                <div className="text-4xl font-bold text-purple-600 mb-6 transition-transform duration-300 group-hover:scale-105">4,99€ <span className="text-base font-normal text-gray-500">/ mes</span></div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start gap-3"><Check /> Procesamiento alto sin esperas</li>
                 <li className="flex items-start gap-3"><Check /> Plantillas y estilos personalizables</li>
@@ -216,8 +215,7 @@ export default function Home() {
                   <span className="hidden sm:inline-block bg-white/20 backdrop-blur px-3 py-1 rounded-full text-sm font-semibold">Mejor relación calidad/precio</span>
                 </div>
                 <p className="text-purple-100 mb-6">Para todo el curso con máximo ahorro</p>
-                <div className="text-4xl font-bold mb-1 transition-transform duration-300 group-hover:scale-110">39,99€ <span className="text-base font-normal text-purple-100">/ año</span></div>
-                <p className="text-xs text-purple-100/90 mb-6">Cobro anual único. Ahorra respecto al mensual. Cancelable desde tu perfil.</p>
+                <div className="text-4xl font-bold mb-6 transition-transform duration-300 group-hover:scale-110">39,99€ <span className="text-base font-normal text-purple-100">/ año</span></div>
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-start gap-3"><Check contrast /> Todo del plan mensual</li>
                   <li className="flex items-start gap-3"><Check contrast /> Historial y organización de proyectos</li>

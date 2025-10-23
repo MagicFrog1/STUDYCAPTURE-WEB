@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS profiles (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   is_premium BOOLEAN DEFAULT FALSE,
+  stripe_customer_id TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

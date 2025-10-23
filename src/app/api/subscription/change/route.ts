@@ -14,14 +14,16 @@ const CURRENCY = (process.env.STRIPE_CURRENCY ?? "eur").toLowerCase();
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
-    if (!process.env.STRIPE_SECRET_KEY) {
-      return new NextResponse("Stripe no configurado", { status: 500 });
-    }
+    if (!process.env.STRIPE_SECRET_KEY) return new NextResponse("Stripe no configurado", { status: 500 });
 
-    const { subscriptionId, newPlan } = await req.json();
-    if (!subscriptionId || !newPlan) {
-      return new NextResponse("ID de suscripción y nuevo plan requeridos", { status: 400 });
-    }
+    const { newPlan } = await req.json();
+    if (!newPlan) return new NextResponse("Nuevo plan requerido", { status: 400 });
+
+    // Autenticación por token (requerido)
+    const authHeader = req.headers.get("authorization") || "";
+    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : undefined;
+    const { data: userRes } = token ? await supabase.auth.getUser(token) : { data: null } as any;
+    if (!userRes?.user) return new NextResponse("Usuario no autenticado", { status: 401 });
 
     if (newPlan !== 'monthly' && newPlan !== 'yearly') {
       return new NextResponse("Plan inválido", { status: 400 });
@@ -34,9 +36,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-    // Obtener la suscripción actual
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("stripe_customer_id")
+      .eq("user_id", userRes.user.id)
+      .single();
+    if (!profile?.stripe_customer_id) return new NextResponse("Cliente no encontrado", { status: 400 });
+    const subs = await stripe.subscriptions.list({ customer: profile.stripe_customer_id, status: "active", limit: 1 });
+    const subscription = subs.data[0];
+    if (!subscription) return new NextResponse("Suscripción activa no encontrada", { status: 400 });
     
     // Crear nueva sesión de checkout para cambiar el plan
     const session = await stripe.checkout.sessions.create({
@@ -58,7 +66,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"}/profile/subscription`,
       subscription_data: {
         metadata: {
-          change_from: subscriptionId,
+          change_from: subscription.id,
         },
       },
     });
