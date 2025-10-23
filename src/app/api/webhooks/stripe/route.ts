@@ -1,12 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { supabase } from "@/lib/supabaseClient";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+// Initialize Stripe only when needed
+let stripe: Stripe;
+let webhookSecret: string;
+
+function getStripe() {
+  if (!stripe) {
+    const secretKey = process.env.STRIPE_SECRET_KEY;
+    if (!secretKey) throw new Error("STRIPE_SECRET_KEY not configured");
+    stripe = new Stripe(secretKey);
+  }
+  return stripe;
+}
+
+function getWebhookSecret() {
+  if (!webhookSecret) {
+    webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || "";
+    if (!webhookSecret) throw new Error("STRIPE_WEBHOOK_SECRET not configured");
+  }
+  return webhookSecret;
+}
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
@@ -15,6 +32,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     let event: Stripe.Event;
     try {
+      const stripe = getStripe();
+      const webhookSecret = getWebhookSecret();
       event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
     } catch (err) {
       console.error("Webhook signature verification failed:", err);
@@ -57,12 +76,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
   if (session.mode !== "subscription") return;
   
+  const stripe = getStripe();
   const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
   await handleSubscriptionChange(subscription);
 }
 
 async function handleSubscriptionChange(subscription: Stripe.Subscription) {
   const customerId = subscription.customer as string;
+  
+  // Import Supabase only when needed
+  const { supabase } = await import("@/lib/supabaseClient");
   
   // Buscar el usuario por customer_id en Supabase
   const { data: user } = await supabase
@@ -105,6 +128,9 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
 }
 
 async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
+  // Import Supabase only when needed
+  const { supabase } = await import("@/lib/supabaseClient");
+  
   const { error } = await supabase
     .from("subscriptions")
     .update({ status: "canceled" })
@@ -119,6 +145,7 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
   const invoiceData = invoice as Stripe.Invoice & { subscription?: string };
   if (!invoiceData.subscription) return;
   
+  const stripe = getStripe();
   const subscription = await stripe.subscriptions.retrieve(invoiceData.subscription);
   await handleSubscriptionChange(subscription);
 }
@@ -127,6 +154,7 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
   const invoiceData = invoice as Stripe.Invoice & { subscription?: string };
   if (!invoiceData.subscription) return;
   
+  const stripe = getStripe();
   const subscription = await stripe.subscriptions.retrieve(invoiceData.subscription);
   await handleSubscriptionChange(subscription);
 }
