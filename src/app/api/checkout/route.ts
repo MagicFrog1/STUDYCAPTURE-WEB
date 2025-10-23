@@ -18,16 +18,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const { plan } = (await req.json()) as { plan?: "monthly" | "yearly" };
     if (!plan || (plan !== "monthly" && plan !== "yearly")) return new NextResponse("Plan inválido", { status: 400 });
-    
-    // CÓDIGO TEMPORAL DE DEPURACIÓN
-    console.log("INTENTANDO LEER CLAVE SECRETA:");
-    console.log("Valor leído:", process.env.STRIPE_SECRET_KEY ? "Clave Encontrada y Longitud: " + process.env.STRIPE_SECRET_KEY.length : "NO DEFINIDA");
-    console.log("Todas las variables STRIPE disponibles:", Object.keys(process.env).filter(key => key.startsWith('STRIPE')));
-    // FIN CÓDIGO TEMPORAL DE DEPURACIÓN
-    
-    if (!process.env.STRIPE_SECRET_KEY) return new NextResponse("Stripe no configurado", { status: 500 });
-    
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+    const secretKey = process.env.STRIPE_SECRET_KEY;
+    if (!secretKey) return new NextResponse("Stripe no configurado", { status: 500 });
+
+    const stripe = new Stripe(secretKey);
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
 
     // Obtener el usuario actual
