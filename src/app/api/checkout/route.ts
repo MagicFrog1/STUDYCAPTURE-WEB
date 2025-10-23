@@ -41,32 +41,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return new NextResponse("Usuario no autenticado", { status: 401 });
     }
 
-    // Buscar o crear el customer en Stripe
-    let customerId: string;
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("stripe_customer_id")
-      .eq("id", authSession.user.id)
-      .single();
-
-    if (profile?.stripe_customer_id) {
-      customerId = profile.stripe_customer_id;
-    } else {
-      // Crear nuevo customer en Stripe
-      const customer = await stripe.customers.create({
-        email: authSession.user.email!,
-        metadata: {
-          supabase_user_id: authSession.user.id,
-        },
-      });
-      customerId = customer.id;
-
-      // Guardar el customer_id en Supabase
-      await supabase
-        .from("profiles")
-        .update({ stripe_customer_id: customerId })
-        .eq("id", authSession.user.id);
-    }
+    // Crear customer en Stripe directamente (más simple)
+    const customer = await stripe.customers.create({
+      email: authSession.user.email!,
+      metadata: {
+        supabase_user_id: authSession.user.id,
+      },
+    });
+    const customerId = customer.id;
 
     let session: Stripe.Checkout.Session;
     if (plan === "monthly") {

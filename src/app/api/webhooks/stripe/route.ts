@@ -99,31 +99,21 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
     return;
   }
 
-  // Determinar el tipo de plan basado en el precio
-  const priceId = subscription.items.data[0]?.price.id;
-  const planType = priceId?.includes('monthly') ? 'monthly' : 'yearly';
-
-  // Añade esta línea para forzar que TypeScript reconozca la estructura de suscripción
-  const subscriptionData = subscription as Stripe.Subscription & {
-    current_period_start: number;
-    current_period_end: number;
-  };
-
-  // Insertar o actualizar la suscripción
+  // Actualizar el campo is_premium en la tabla profiles
+  const isActive = subscription.status === 'active';
+  
   const { error } = await supabase
-    .from("subscriptions")
-    .upsert({
-      user_id: user.id,
-      stripe_customer_id: customerId,
-      stripe_subscription_id: subscription.id,
-      status: subscription.status,
-      plan_type: planType,
-      current_period_start: new Date(subscriptionData.current_period_start * 1000).toISOString(),
-      current_period_end: new Date(subscriptionData.current_period_end * 1000).toISOString(),
-    });
+    .from("profiles")
+    .update({ 
+      is_premium: isActive,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", user.id);
 
   if (error) {
-    console.error("Error updating subscription:", error);
+    console.error("Error updating premium status:", error);
+  } else {
+    console.log(`Premium status updated to ${isActive} for user ${user.id}`);
   }
 }
 
@@ -131,13 +121,33 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   // Import Supabase only when needed
   const { supabase } = await import("@/lib/supabaseClient");
   
+  const customerId = subscription.customer as string;
+  
+  // Buscar el usuario por customer_id en Supabase
+  const { data: user } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("stripe_customer_id", customerId)
+    .single();
+  
+  if (!user) {
+    console.error("User not found for customer:", customerId);
+    return;
+  }
+
+  // Actualizar el campo is_premium a false
   const { error } = await supabase
-    .from("subscriptions")
-    .update({ status: "canceled" })
-    .eq("stripe_subscription_id", subscription.id);
+    .from("profiles")
+    .update({ 
+      is_premium: false,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", user.id);
 
   if (error) {
-    console.error("Error canceling subscription:", error);
+    console.error("Error canceling premium status:", error);
+  } else {
+    console.log(`Premium status canceled for user ${user.id}`);
   }
 }
 
