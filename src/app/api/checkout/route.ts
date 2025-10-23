@@ -6,12 +6,12 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // Usar Product ID para el plan mensual
-const MONTHLY_PRODUCT_ID = process.env.STRIPE_PRODUCT_MONTHLY ?? "prod_THHLRgNHYocGew";
+const MONTHLY_PRODUCT_ID = process.env.STRIPE_PRODUCT_MONTHLY ?? "prod_TI4RSiWSI0DT4R";
 const MONTHLY_CURRENCY = (process.env.STRIPE_CURRENCY ?? "eur").toLowerCase();
 const MONTHLY_UNIT_AMOUNT = Number(process.env.STRIPE_MONTHLY_UNIT_AMOUNT_CENTS ?? "499"); // 4,99€
 
 // Usar Product ID para el plan anual
-const YEARLY_PRODUCT_ID = process.env.STRIPE_PRODUCT_YEARLY ?? "prod_THHMBLQqN4zG5s";
+const YEARLY_PRODUCT_ID = process.env.STRIPE_PRODUCT_YEARLY ?? "prod_TI4RRTZhyhpklk";
 const YEARLY_UNIT_AMOUNT = Number(process.env.STRIPE_YEARLY_UNIT_AMOUNT_CENTS ?? "3999"); // 39,99€
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
