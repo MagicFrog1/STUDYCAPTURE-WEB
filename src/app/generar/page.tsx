@@ -116,8 +116,8 @@ export default function GenerarPage() {
         body: JSON.stringify({ plan }),
       });
       if (!res.ok) throw new Error(await res.text());
-      const data = (await res.json()) as { url?: string };
-      if (data.url) window.location.href = data.url;
+      const json = (await res.json()) as { url?: string };
+      if (json.url) window.location.href = json.url;
     } catch (e) {
       console.error(e);
     } finally {
