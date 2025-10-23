@@ -1,9 +1,6 @@
 {
   "functions": {
     "api/checkout/route.ts": {
-      "includeFiles": [
-        "node_modules/stripe/**/*"
-      ],
       "runtime": "nodejs20.x"
     },
     "api/webhooks/stripe/route.ts": {
