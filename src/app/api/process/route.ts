@@ -60,11 +60,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const isDev = process.env.NODE_ENV !== "production";
     
-    // Temporalmente deshabilitado para evitar error 400 en producción
-    // const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    // console.log("DEBUG SESSION:", session ? "OK" : "MISSING", sessionError ? `Error: ${sessionError.message}` : "");
-    // const userId = session?.user?.id ?? null;
-    const userId = null;
+    // Leer token del header Authorization
+    const authHeader = req.headers.get("authorization");
+    const accessToken = authHeader?.replace("Bearer ", "") ?? null;
+    
+    let userId = null;
+    if (accessToken) {
+      // Validar token y obtener usuario
+      const { data, error } = await supabase.auth.getUser(accessToken);
+      if (!error && data?.user) {
+        userId = data.user.id;
+      }
+    }
+    
+    console.log("DEBUG USER:", userId ? "Authenticated" : "Not authenticated");
     
     // TEMPORALMENTE DESHABILITADO PARA PROBAR LA IA
     // TODO: Re-habilitar después de probar

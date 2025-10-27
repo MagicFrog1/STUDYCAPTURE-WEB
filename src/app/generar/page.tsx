@@ -149,7 +149,14 @@ export default function GenerarPage() {
         form.append("context", context.trim());
       }
 
-      const res = await fetch("/api/process", { method: "POST", body: form });
+      // Obtener token de sesión para enviarlo al backend
+      const { data: { session } } = await supabase.auth.getSession();
+      const headers: HeadersInit = {};
+      if (session?.access_token) {
+        headers["Authorization"] = `Bearer ${session.access_token}`;
+      }
+
+      const res = await fetch("/api/process", { method: "POST", body: form, headers });
       if (!res.ok) {
         if (res.status === 402) {
           throw new Error("Necesitas una suscripción activa para generar apuntes.");
