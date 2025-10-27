@@ -60,31 +60,56 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const isDev = process.env.NODE_ENV !== "production";
     
-    // Leer token del header Authorization
-    const authHeader = req.headers.get("authorization");
-    const accessToken = authHeader?.replace("Bearer ", "") ?? null;
-    
-    let userId = null;
-    if (accessToken) {
-      // Validar token y obtener usuario
-      const { data, error } = await supabase.auth.getUser(accessToken);
-      if (!error && data?.user) {
-        userId = data.user.id;
-      }
-    }
-    
-    console.log("DEBUG USER:", userId ? "Authenticated" : "Not authenticated");
+     // Leer token del header Authorization
+     const authHeader = req.headers.get("authorization");
+     const accessToken = authHeader?.replace("Bearer ", "") ?? null;
+     
+     let userId = null;
+     if (accessToken) {
+       // Crear cliente de Supabase autenticado con el token
+       const { createClient } = await import("@supabase/supabase-js");
+       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://swljiqodhagjtfgzcwyc.supabase.co";
+       const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bGppcW9kaGFnanRmZ3pjd3ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjU2MjAsImV4cCI6MjA3NjY0MTYyMH0.qRY7TmxISkm4n8DmP-yfXVe5DmC9lsqQevxTSBexzGI";
+       
+       const authenticatedSupabase = createClient(supabaseUrl, supabaseAnonKey, {
+         global: {
+           headers: {
+             Authorization: `Bearer ${accessToken}`
+           }
+         }
+       });
+       
+       const { data, error } = await authenticatedSupabase.auth.getUser();
+       if (!error && data?.user) {
+         userId = data.user.id;
+       }
+     }
+     
+     console.log("DEBUG USER:", userId ? "Authenticated" : "Not authenticated");
     
      // TEMPORALMENTE DESHABILITADO PARA PROBAR LA IA
      // TODO: Re-habilitar después de probar
      // Verificar que el usuario esté suscrito (premium)
      if (false && !isDev) {
-       if (!userId) {
+       if (!userId || !accessToken) {
          return NextResponse.json({ error: "login_required" }, { status: 401 });
        }
        
+       // Usar el cliente autenticado para consultar profiles
+       const { createClient } = await import("@supabase/supabase-js");
+       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://swljiqodhagjtfgzcwyc.supabase.co";
+       const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bGppcW9kaGFnanRmZ3pjd3ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjU2MjAsImV4cCI6MjA3NjY0MTYyMH0.qRY7TmxISkm4n8DmP-yfXVe5DmC9lsqQevxTSBexzGI";
+       
+       const authenticatedSupabase = createClient(supabaseUrl, supabaseAnonKey, {
+         global: {
+           headers: {
+             Authorization: `Bearer ${accessToken}`
+           }
+         }
+       });
+       
        // Verificar si tiene premium
-       const { data: profile } = await supabase
+       const { data: profile } = await authenticatedSupabase
          .from('profiles')
          .select('is_premium')
          .eq('user_id', userId)
