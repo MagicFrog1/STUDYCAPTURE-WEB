@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { z } from "zod";
-import { createClient } from "@supabase/supabase-js";
-import { cookies } from "next/headers";
+import { supabase } from "@/lib/supabaseClient";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
