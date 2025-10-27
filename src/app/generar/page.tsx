@@ -99,8 +99,9 @@ export default function GenerarPage() {
 
   const isPremium = remaining === -1;
   const canSubmit = useMemo(() => {
-    return files.length > 0 && !loading && isPremium;
-  }, [files.length, loading, isPremium]);
+    // TEMPORALMENTE PERMITE GENERAR SIN SUSCRIPCIÓN
+    return files.length > 0 && !loading; // && isPremium;
+  }, [files.length, loading]); // , isPremium]);
 
   async function handleSubscribe(plan: "monthly" | "yearly") {
     try {
@@ -132,10 +133,11 @@ export default function GenerarPage() {
       router.push("/login");
       return;
     }
-    if (!isPremium) {
-      setShowPaywall(true);
-      return;
-    }
+    // TEMPORALMENTE DESHABILITADO PARA PROBAR LA IA
+    // if (!isPremium) {
+    //   setShowPaywall(true);
+    //   return;
+    // }
     setError(null);
     setLoading(true);
     setResults(null);
@@ -347,29 +349,7 @@ export default function GenerarPage() {
                   </svg>
                   Personaliza tus apuntes
                 </h2>
-                {isPremium ? (
-                  <div className="mb-4 flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Plan Premium activo</span>
-                    <span className="px-2 py-1 rounded-md font-medium bg-green-50 text-green-700 ring-1 ring-green-200">
-                      ✓ Suscrito
-                    </span>
-                  </div>
-                ) : (
-                  <div className="mb-4 p-4 bg-purple-50 border border-purple-200 rounded-xl">
-                    <p className="text-purple-800 font-medium mb-2 text-center">
-                      🔒 Acceso Premium Requerido
-                    </p>
-                    <p className="text-purple-700 text-sm text-center mb-3">
-                      Suscríbete para generar apuntes sin límites
-                    </p>
-                    <button 
-                      onClick={() => setShowPaywall(true)}
-                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-md"
-                    >
-                      Ver planes
-                    </button>
-                  </div>
-                )}
+{/* Temporalmente deshabilitado para probar la IA */}
                 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
@@ -427,8 +407,8 @@ export default function GenerarPage() {
 
                 <button
                   onClick={handleSubmit}
-                  disabled={!canSubmit || !isPremium}
-                  aria-disabled={!canSubmit || !isPremium}
+                  disabled={!canSubmit}
+                  aria-disabled={!canSubmit}
                   className={`mt-6 w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl transition-all transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center gap-3`}
                 >
                   {loading ? (
@@ -436,8 +416,6 @@ export default function GenerarPage() {
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                       Procesando...
                     </>
-                  ) : !isPremium ? (
-                    <>Suscripción Requerida</>
                   ) : (
                     <>Generar Apuntes</>
                   )}

@@ -63,8 +63,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const { data: { session } } = await supabase.auth.getSession();
     const userId = session?.user?.id ?? null;
     
+    // TEMPORALMENTE DESHABILITADO PARA PROBAR LA IA
+    // TODO: Re-habilitar después de probar
     // Verificar que el usuario esté suscrito (premium)
-    if (!isDev) {
+    if (false && !isDev) {
       if (!userId) {
         return NextResponse.json({ error: "login_required" }, { status: 401 });
       }
