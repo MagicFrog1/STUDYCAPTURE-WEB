@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { z } from "zod";
 import { hasFreeQuota, incrementUsesCookie, remainingFreeQuota } from "@/lib/quota";
+import { supabase } from "@/lib/supabaseClient";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -59,7 +60,9 @@ function normalizeMathInCode(html: string): string {
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const isDev = process.env.NODE_ENV !== "production";
-    if (!isDev && !(await hasFreeQuota())) {
+    const { data: { session } } = await supabase.auth.getSession();
+    const userId = session?.user?.id ?? null;
+    if (!isDev && !(await hasFreeQuota(userId))) {
       return NextResponse.json({ error: "quota_exceeded" }, { status: 402 });
     }
 
@@ -248,10 +251,10 @@ INSTRUCCIONES PARA USAR EL CONTEXTO:
     ];
 
     if (!isDev) {
-      await incrementUsesCookie();
+      await incrementUsesCookie(userId);
     }
 
-    const remaining = isDev ? 2 : await remainingFreeQuota();
+    const remaining = isDev ? 2 : await remainingFreeQuota(userId);
     return NextResponse.json({ chunks, remaining });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Error interno";

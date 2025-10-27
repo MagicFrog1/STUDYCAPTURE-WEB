@@ -35,18 +35,22 @@ async function hasActiveSubscription(userId: string): Promise<boolean> {
   }
 }
 
-export async function getUsesFromCookie(): Promise<number> {
+function buildKey(userId?: string | null): string {
+  return userId ? `${COOKIE_KEY}-${userId}` : COOKIE_KEY;
+}
+
+export async function getUsesFromCookie(userId?: string | null): Promise<number> {
   const store = await cookies();
-  const c = store.get(COOKIE_KEY)?.value;
+  const c = store.get(buildKey(userId))?.value;
   const n = c ? Number(c) : 0;
   return Number.isFinite(n) ? n : 0;
 }
 
-export async function incrementUsesCookie(): Promise<void> {
+export async function incrementUsesCookie(userId?: string | null): Promise<void> {
   const store = await cookies();
-  const current = await getUsesFromCookie();
+  const current = await getUsesFromCookie(userId);
   const next = current + 1;
-  store.set(COOKIE_KEY, String(next), {
+  store.set(buildKey(userId), String(next), {
     httpOnly: false,
     sameSite: "lax",
     path: "/",
@@ -55,12 +59,12 @@ export async function incrementUsesCookie(): Promise<void> {
   });
 }
 
-export async function hasFreeQuota(): Promise<boolean> {
+export async function hasFreeQuota(userId?: string | null): Promise<boolean> {
   const isDev = process.env.NODE_ENV !== "production";
   if (isDev) return true; // En desarrollo, siempre permitir
   
   // Verificar si el usuario está logueado
-  const user = await getCurrentUser();
+  const user = userId ? { id: userId } : await getCurrentUser();
   if (user) {
     // Si está logueado, verificar suscripción activa
     const hasSubscription = await hasActiveSubscription(user.id);
@@ -68,15 +72,15 @@ export async function hasFreeQuota(): Promise<boolean> {
   }
   
   // Si no está logueado o no tiene suscripción, verificar límite gratuito
-  return (await getUsesFromCookie()) < MAX_FREE;
+  return (await getUsesFromCookie(user?.id ?? userId)) < MAX_FREE;
 }
 
-export async function remainingFreeQuota(): Promise<number> {
+export async function remainingFreeQuota(userId?: string | null): Promise<number> {
   const isDev = process.env.NODE_ENV !== "production";
   if (isDev) return 2; // En desarrollo, siempre mostrar 2
   
   // Verificar si el usuario está logueado
-  const user = await getCurrentUser();
+  const user = userId ? { id: userId } : await getCurrentUser();
   if (user) {
     // Si está logueado, verificar suscripción activa
     const hasSubscription = await hasActiveSubscription(user.id);
@@ -84,7 +88,7 @@ export async function remainingFreeQuota(): Promise<number> {
   }
   
   // Si no está logueado o no tiene suscripción, calcular usos restantes
-  return Math.max(0, MAX_FREE - (await getUsesFromCookie()));
+  return Math.max(0, MAX_FREE - (await getUsesFromCookie(user?.id ?? userId)));
 }
 
 export async function getUserSubscriptionStatus(): Promise<{

@@ -98,7 +98,10 @@ export default function GenerarPage() {
   }, []);
 
   const isPremium = remaining === -1;
-  const canSubmit = useMemo(() => files.length > 0 && !loading, [files.length, loading]);
+  const canSubmit = useMemo(() => {
+    const hasQuota = isPremium || ((remaining ?? 0) > 0);
+    return files.length > 0 && !loading && hasQuota;
+  }, [files.length, loading, isPremium, remaining]);
 
   async function handleSubscribe(plan: "monthly" | "yearly") {
     try {
@@ -415,6 +418,7 @@ export default function GenerarPage() {
                 <button
                   onClick={handleSubmit}
                   disabled={!canSubmit}
+                  aria-disabled={!canSubmit}
                   className={`mt-6 w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl transition-all transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center gap-3 ${!isPremium && remaining === 0 ? "opacity-60" : ""}`}
                 >
                   {loading ? (
@@ -422,9 +426,11 @@ export default function GenerarPage() {
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                       Procesando...
                     </>
+                  ) : (!isPremium && remaining === 0 ? (
+                    <>Límite alcanzado</>
                   ) : (
                     <>Generar Apuntes</>
-                  )}
+                  ))}
                 </button>
                 
                 {error && (
