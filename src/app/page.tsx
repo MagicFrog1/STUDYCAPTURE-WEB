@@ -231,14 +231,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-12 bg-white p-6 rounded-2xl border border-purple-200 text-left">
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Prueba gratuita</h3>
-            <p className="text-gray-600">Disfruta de 2 usos sin coste para comprobar cómo mejora tu estudio antes de elegir un plan.</p>
-                </div>
-              </div>
-        </section>
+          <div className="mt-12 bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-200 text-left">
+            <h3 className="text-xl font-bold text-gray-800 mb-2">🔒 Acceso de Pago</h3>
+            <p className="text-gray-700">Para usar StudyCaptures necesitas una suscripción activa. Elige el plan que mejor se adapte a tu ritmo de estudio.</p>
+          </div>
+        </div>
+      </section>
 
-      {/* Study Tips Section (reposicionada después de precios) */}
+      {/* Study Tips Section */}
       <section className="px-6 py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
         <div className="max-w-6xl mx-auto">
           <StudyTips />

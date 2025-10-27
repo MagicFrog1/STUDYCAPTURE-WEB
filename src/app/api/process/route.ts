@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { z } from "zod";
-import { hasFreeQuota, incrementUsesCookie, remainingFreeQuota } from "@/lib/quota";
+// Lógica de cuota eliminada - ahora solo suscripción premium
 import { supabase } from "@/lib/supabaseClient";
 
 export const runtime = "nodejs";
@@ -62,8 +62,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const isDev = process.env.NODE_ENV !== "production";
     const { data: { session } } = await supabase.auth.getSession();
     const userId = session?.user?.id ?? null;
-    if (!isDev && !(await hasFreeQuota(userId))) {
-      return NextResponse.json({ error: "quota_exceeded" }, { status: 402 });
+    
+    // Verificar que el usuario esté suscrito (premium)
+    if (!isDev) {
+      if (!userId) {
+        return NextResponse.json({ error: "login_required" }, { status: 401 });
+      }
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('is_premium')
+        .eq('user_id', userId)
+        .single();
+      if (!profile?.is_premium) {
+        return NextResponse.json({ error: "subscription_required" }, { status: 402 });
+      }
     }
 
     const formData = await req.formData();
@@ -250,12 +262,7 @@ INSTRUCCIONES PARA USAR EL CONTEXTO:
       { id: "c1", title: "Apuntes", content: html },
     ];
 
-    if (!isDev) {
-      await incrementUsesCookie(userId);
-    }
-
-    const remaining = isDev ? 2 : await remainingFreeQuota(userId);
-    return NextResponse.json({ chunks, remaining });
+    return NextResponse.json({ chunks });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Error interno";
     return new NextResponse(message, { status: 500 });

@@ -52,26 +52,26 @@ export default function GenerarPage() {
     }
   }, []);
 
-  // Load free quota and session on mount
+  // Check session and premium status on mount
   useEffect(() => {
-    // check session
     (async () => {
       const { data } = await supabase.auth.getSession();
       const logged = Boolean(data.session);
       setIsLoggedIn(logged);
       if (!logged) {
         router.replace("/login");
+        return;
       }
-    })();
-    (async () => {
-      try {
-        const res = await fetch("/api/quota", { cache: "no-store" });
-        if (!res.ok) return;
-        const data = (await res.json()) as { remaining: number; max: number };
-        setRemaining(data.remaining);
-        setMax(data.max);
-      } catch {
-        // ignore
+      // Check premium status
+      if (data.session?.user) {
+        const { data: prof } = await supabase
+          .from('profiles')
+          .select('is_premium')
+          .eq('user_id', data.session.user.id)
+          .single();
+        if (prof?.is_premium) {
+          setRemaining(-1); // Premium active
+        }
       }
     })();
   }, []);
@@ -99,9 +99,8 @@ export default function GenerarPage() {
 
   const isPremium = remaining === -1;
   const canSubmit = useMemo(() => {
-    const hasQuota = isPremium || ((remaining ?? 0) > 0);
-    return files.length > 0 && !loading && hasQuota;
-  }, [files.length, loading, isPremium, remaining]);
+    return files.length > 0 && !loading && isPremium;
+  }, [files.length, loading, isPremium]);
 
   async function handleSubscribe(plan: "monthly" | "yearly") {
     try {
@@ -133,7 +132,7 @@ export default function GenerarPage() {
       router.push("/login");
       return;
     }
-    if (!isPremium && remaining === 0) {
+    if (!isPremium) {
       setShowPaywall(true);
       return;
     }
@@ -151,27 +150,23 @@ export default function GenerarPage() {
       const res = await fetch("/api/process", { method: "POST", body: form });
       if (!res.ok) {
         if (res.status === 402) {
-          throw new Error("Has agotado tus 2 usos gratis. Suscríbete para continuar.");
+          throw new Error("Necesitas una suscripción activa para generar apuntes.");
         }
         const msg = await res.text();
         throw new Error(msg || "Error procesando imágenes");
       }
-      const data = (await res.json()) as { chunks: ResultChunk[]; remaining?: number };
+      const data = (await res.json()) as { chunks: ResultChunk[] };
       setResults(data.chunks);
-      if (typeof data.remaining === "number") {
-        setRemaining(data.remaining);
-      }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Error desconocido";
       setError(message);
-      if (message.includes("agotado")) {
-        setRemaining(0);
+      if (message.includes("Necesitas") || message.includes("suscripción") || message.includes("suscrip")) {
         setShowPaywall(true);
       }
     } finally {
       setLoading(false);
     }
-  }, [files, values, context, isLoggedIn, router, isPremium, remaining]);
+  }, [files, values, context, isLoggedIn, router, isPremium]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
@@ -352,12 +347,27 @@ export default function GenerarPage() {
                   </svg>
                   Personaliza tus apuntes
                 </h2>
-                {remaining !== null && (
+                {isPremium ? (
                   <div className="mb-4 flex items-center justify-between text-sm">
-                    <span className="text-gray-600">{isPremium ? "Sin límite (Premium)" : "Usos gratis restantes"}</span>
-                    <span className={`px-2 py-1 rounded-md font-medium ${isPremium || (remaining ?? 0) > 0 ? "bg-green-50 text-green-700 ring-1 ring-green-200" : "bg-red-50 text-red-700 ring-1 ring-red-200"}`}>
-                      {isPremium ? "∞" : `${remaining}/${max}`}
+                    <span className="text-gray-600">Plan Premium activo</span>
+                    <span className="px-2 py-1 rounded-md font-medium bg-green-50 text-green-700 ring-1 ring-green-200">
+                      ✓ Suscrito
                     </span>
+                  </div>
+                ) : (
+                  <div className="mb-4 p-4 bg-purple-50 border border-purple-200 rounded-xl">
+                    <p className="text-purple-800 font-medium mb-2 text-center">
+                      🔒 Acceso Premium Requerido
+                    </p>
+                    <p className="text-purple-700 text-sm text-center mb-3">
+                      Suscríbete para generar apuntes sin límites
+                    </p>
+                    <button 
+                      onClick={() => setShowPaywall(true)}
+                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-md"
+                    >
+                      Ver planes
+                    </button>
                   </div>
                 )}
                 
@@ -417,20 +427,20 @@ export default function GenerarPage() {
 
                 <button
                   onClick={handleSubmit}
-                  disabled={!canSubmit}
-                  aria-disabled={!canSubmit}
-                  className={`mt-6 w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl transition-all transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center gap-3 ${!isPremium && remaining === 0 ? "opacity-60" : ""}`}
+                  disabled={!canSubmit || !isPremium}
+                  aria-disabled={!canSubmit || !isPremium}
+                  className={`mt-6 w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl transition-all transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center gap-3`}
                 >
                   {loading ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                       Procesando...
                     </>
-                  ) : (!isPremium && remaining === 0 ? (
-                    <>Límite alcanzado</>
+                  ) : !isPremium ? (
+                    <>Suscripción Requerida</>
                   ) : (
                     <>Generar Apuntes</>
-                  ))}
+                  )}
                 </button>
                 
                 {error && (
@@ -439,16 +449,6 @@ export default function GenerarPage() {
                   </div>
                 )}
 
-                {remaining === 0 && (
-                  <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-xl">
-                    <p className="text-purple-800 font-medium mb-2">Has alcanzado el límite de 2 usos gratuitos.</p>
-                    <p className="text-purple-700 text-sm mb-3">Suscríbete para generar apuntes sin límites y desbloquear funciones avanzadas.</p>
-                    <div className="flex gap-2">
-                      <button onClick={() => setShowPaywall(true)} className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:shadow-md">Ver opciones</button>
-                      <Link href="/#precios" className="inline-block px-4 py-2 rounded-lg text-sm font-semibold text-purple-700 hover:underline">Ver planes</Link>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
 
