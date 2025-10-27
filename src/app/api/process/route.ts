@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { z } from "zod";
-// Lógica de cuota eliminada - ahora solo suscripción premium
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -60,8 +60,12 @@ function normalizeMathInCode(html: string): string {
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const isDev = process.env.NODE_ENV !== "production";
-    const { data: { session } } = await supabase.auth.getSession();
-    const userId = session?.user?.id ?? null;
+    
+    // Temporalmente deshabilitado para evitar error 400 en producción
+    // const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    // console.log("DEBUG SESSION:", session ? "OK" : "MISSING", sessionError ? `Error: ${sessionError.message}` : "");
+    // const userId = session?.user?.id ?? null;
+    const userId = null;
     
     // TEMPORALMENTE DESHABILITADO PARA PROBAR LA IA
     // TODO: Re-habilitar después de probar
