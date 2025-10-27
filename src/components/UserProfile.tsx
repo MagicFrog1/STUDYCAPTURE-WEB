@@ -44,10 +44,12 @@ export default function UserProfile() {
   const fetchProfile = async (userId: string) => {
     try {
       const { data, error } = await supabase
-        .from('profiles')
-        .select('id, is_premium, updated_at')
-        .or(`user_id.eq.${userId},id.eq.${userId}`)
-        .single();
+        .from('subscriptions')
+        .select('id,status,current_period_end,updated_at')
+        .eq('user_id', userId)
+        .eq('status', 'active')
+        .gt('current_period_end', new Date().toISOString())
+        .maybeSingle();
 
       if (data && !error) {
         setProfile(data);

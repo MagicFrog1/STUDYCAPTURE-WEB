@@ -109,17 +109,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
        });
        
        // Verificar si tiene premium
-      const { data: profile } = await authenticatedSupabase
-        .from('profiles')
-        .select('is_premium')
-        .or(`user_id.eq.${userId},id.eq.${userId}`)
-        .single();
-         
-       console.log("DEBUG SUBSCRIPTION:", profile?.is_premium ? "PREMIUM" : "NO PREMIUM");
-       
-       if (!profile?.is_premium) {
-         return NextResponse.json({ error: "subscription_required" }, { status: 402 });
-       }
+      // Prefer subscriptions table for robust premium check
+      const { data: sub } = await authenticatedSupabase
+        .from('subscriptions')
+        .select('id,status,current_period_end')
+        .eq('user_id', userId)
+        .eq('status', 'active')
+        .gt('current_period_end', new Date().toISOString())
+        .maybeSingle();
+      
+      console.log("DEBUG SUBSCRIPTION (subs table):", sub ? "ACTIVE" : "NONE");
+      
+      if (!sub) {
+        return NextResponse.json({ error: "subscription_required" }, { status: 402 });
+      }
      }
 
     const formData = await req.formData();

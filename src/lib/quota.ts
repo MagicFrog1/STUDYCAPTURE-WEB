@@ -22,14 +22,16 @@ async function hasActiveSubscription(userId: string): Promise<boolean> {
     // Verificar si el usuario tiene una suscripción activa
     // Por simplicidad, vamos a usar un campo en la tabla profiles
     const { data, error } = await supabase
-      .from('profiles')
-      .select('is_premium')
-      .or(`user_id.eq.${userId},id.eq.${userId}`)
-      .single();
+      .from('subscriptions')
+      .select('id,status,current_period_end')
+      .eq('user_id', userId)
+      .eq('status', 'active')
+      .gt('current_period_end', new Date().toISOString())
+      .maybeSingle();
     
     if (error || !data) return false;
     
-    return data.is_premium || false;
+    return Boolean(data);
   } catch {
     return false;
   }
