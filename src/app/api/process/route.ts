@@ -109,11 +109,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
        });
        
        // Verificar si tiene premium
-       const { data: profile } = await authenticatedSupabase
-         .from('profiles')
-         .select('is_premium')
-         .eq('user_id', userId)
-         .single();
+      const { data: profile } = await authenticatedSupabase
+        .from('profiles')
+        .select('is_premium')
+        .or(`user_id.eq.${userId},id.eq.${userId}`)
+        .single();
          
        console.log("DEBUG SUBSCRIPTION:", profile?.is_premium ? "PREMIUM" : "NO PREMIUM");
        

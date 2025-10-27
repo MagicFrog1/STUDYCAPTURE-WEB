@@ -31,7 +31,7 @@ export default function SubscriptionManagement() {
       const { data, error } = await supabase
         .from('profiles')
         .select('id, is_premium, updated_at')
-        .eq('user_id', session.user.id)
+        .or(`user_id.eq.${session.user.id},id.eq.${session.user.id}`)
         .single();
 
       if (data && !error) {

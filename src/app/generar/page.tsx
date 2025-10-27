@@ -67,7 +67,7 @@ export default function GenerarPage() {
         const { data: prof } = await supabase
           .from('profiles')
           .select('is_premium')
-          .eq('user_id', data.session.user.id)
+          .or(`user_id.eq.${data.session.user.id},id.eq.${data.session.user.id}`)
           .single();
         if (prof?.is_premium) {
           setRemaining(-1); // Premium active

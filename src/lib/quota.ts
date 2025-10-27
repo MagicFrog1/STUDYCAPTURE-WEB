@@ -24,7 +24,7 @@ async function hasActiveSubscription(userId: string): Promise<boolean> {
     const { data, error } = await supabase
       .from('profiles')
       .select('is_premium')
-      .eq('user_id', userId)
+      .or(`user_id.eq.${userId},id.eq.${userId}`)
       .single();
     
     if (error || !data) return false;
