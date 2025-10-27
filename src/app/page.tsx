@@ -61,6 +61,11 @@ export default function Home() {
           <Link href="#porque" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
             Características
           </Link>
+          {isLoggedIn && (
+            <Link href="/profile" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
+              Mi cuenta
+            </Link>
+          )}
           <Link href="#precios" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
             Precios
           </Link>
@@ -170,12 +175,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Study Tips Section */}
-      <section className="px-6 py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="max-w-6xl mx-auto">
-          <StudyTips />
-        </div>
-      </section>
+      {/* (Se elimina la sección Mi cuenta para que abra página aparte) */}
+
+      
 
       {/* Pricing Section */}
       <section id="precios" className="px-6 py-20 bg-gradient-to-br from-purple-50 to-pink-50">
@@ -236,7 +238,12 @@ export default function Home() {
               </div>
         </section>
 
-      
+      {/* Study Tips Section (reposicionada después de precios) */}
+      <section className="px-6 py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div className="max-w-6xl mx-auto">
+          <StudyTips />
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className="px-6 py-12 bg-gray-800 text-white">
@@ -301,6 +308,33 @@ function IconBolt() {
   return (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
       <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function IconShield() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z" stroke="#7c3aed" strokeWidth="1.8" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function IconCard() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <rect x="3" y="5" width="18" height="14" rx="2" stroke="#2563eb" strokeWidth="1.8"/>
+      <path d="M3 10h18" stroke="#2563eb" strokeWidth="1.8"/>
+    </svg>
+  );
+}
+
+function IconUserCard() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <rect x="3" y="5" width="18" height="14" rx="2" stroke="#111827" strokeWidth="1.8"/>
+      <circle cx="9" cy="12" r="2" stroke="#111827" strokeWidth="1.6"/>
+      <path d="M6.5 16c1-1.3 2.3-2 3.5-2s2.5.7 3.5 2" stroke="#111827" strokeWidth="1.6" strokeLinecap="round"/>
     </svg>
   );
 }
