@@ -12,14 +12,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // Autenticación por token (requerido)
     const authHeader = req.headers.get("authorization") || "";
     const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : undefined;
-    const { data: userRes } = token ? await supabase.auth.getUser(token) : { data: null } as any;
-    if (!userRes?.user) return new NextResponse("Usuario no autenticado", { status: 401 });
+    let userId: string | null = null;
+    if (token) {
+      const { data } = await supabase.auth.getUser(token);
+      userId = data?.user?.id ?? null;
+    }
+    if (!userId) return new NextResponse("Usuario no autenticado", { status: 401 });
 
     // Recuperar el subscriptionId desde Stripe a partir del stripe_customer_id del perfil
     const { data: profile } = await supabase
       .from("profiles")
       .select("stripe_customer_id")
-      .eq("user_id", userRes.user.id)
+      .eq("user_id", userId)
       .single();
     if (!profile?.stripe_customer_id) return new NextResponse("Cliente no encontrado", { status: 400 });
 

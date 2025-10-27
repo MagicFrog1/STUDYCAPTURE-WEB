@@ -35,7 +35,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       const stripe = getStripe();
       const webhookSecret = getWebhookSecret();
       event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Webhook signature verification failed:", err);
       return new NextResponse("Invalid signature", { status: 400 });
     }
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     return NextResponse.json({ received: true });
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("Webhook error:", err);
     return new NextResponse("Webhook error", { status: 500 });
   }
@@ -84,7 +84,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   try {
     const { supabase } = await import("@/lib/supabaseClient");
     const customerId = subscription.customer as string;
-    const userId = (session.metadata as any)?.supabase_user_id;
+    const userId = typeof session.metadata === 'object' && session.metadata ? (session.metadata as Record<string, string>).supabase_user_id : undefined;
     if (userId && customerId) {
       await supabase
         .from("profiles")
