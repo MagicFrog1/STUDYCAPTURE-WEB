@@ -75,22 +75,25 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     
     console.log("DEBUG USER:", userId ? "Authenticated" : "Not authenticated");
     
-    // TEMPORALMENTE DESHABILITADO PARA PROBAR LA IA
-    // TODO: Re-habilitar después de probar
-    // Verificar que el usuario esté suscrito (premium)
-    if (false && !isDev) {
-      if (!userId) {
-        return NextResponse.json({ error: "login_required" }, { status: 401 });
-      }
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('is_premium')
-        .eq('user_id', userId)
-        .single();
-      if (!profile?.is_premium) {
-        return NextResponse.json({ error: "subscription_required" }, { status: 402 });
-      }
-    }
+     // Verificar que el usuario esté suscrito (premium)
+     if (!isDev) {
+       if (!userId) {
+         return NextResponse.json({ error: "login_required" }, { status: 401 });
+       }
+       
+       // Verificar si tiene premium
+       const { data: profile } = await supabase
+         .from('profiles')
+         .select('is_premium')
+         .eq('user_id', userId)
+         .single();
+         
+       console.log("DEBUG SUBSCRIPTION:", profile?.is_premium ? "PREMIUM" : "NO PREMIUM");
+       
+       if (!profile?.is_premium) {
+         return NextResponse.json({ error: "subscription_required" }, { status: 402 });
+       }
+     }
 
     const formData = await req.formData();
     const rawOptions = formData.get("options");

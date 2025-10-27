@@ -99,9 +99,10 @@ export default function GenerarPage() {
 
   const isPremium = remaining === -1;
   const canSubmit = useMemo(() => {
-    // TEMPORALMENTE PERMITE GENERAR SIN SUSCRIPCIÓN
-    return files.length > 0 && !loading; // && isPremium;
-  }, [files.length, loading]); // , isPremium]);
+    const isProd = process.env.NODE_ENV === "production";
+    const hasAccess = !isProd || isPremium; // En dev permite, en prod requiere premium
+    return files.length > 0 && !loading && hasAccess;
+  }, [files.length, loading, isPremium]);
 
   async function handleSubscribe(plan: "monthly" | "yearly") {
     try {
@@ -133,11 +134,10 @@ export default function GenerarPage() {
       router.push("/login");
       return;
     }
-    // TEMPORALMENTE DESHABILITADO PARA PROBAR LA IA
-    // if (!isPremium) {
-    //   setShowPaywall(true);
-    //   return;
-    // }
+    if (!isPremium && process.env.NODE_ENV === "production") {
+      setShowPaywall(true);
+      return;
+    }
     setError(null);
     setLoading(true);
     setResults(null);
@@ -356,7 +356,22 @@ export default function GenerarPage() {
                   </svg>
                   Personaliza tus apuntes
                 </h2>
-{/* Temporalmente deshabilitado para probar la IA */}
+                {!isPremium && process.env.NODE_ENV === "production" && (
+                  <div className="mb-4 p-4 bg-purple-50 border border-purple-200 rounded-xl">
+                    <p className="text-purple-800 font-medium mb-2 text-center">
+                      🔒 Acceso Premium Requerido
+                    </p>
+                    <p className="text-purple-700 text-sm text-center mb-3">
+                      Suscríbete para generar apuntes sin límites
+                    </p>
+                    <button 
+                      onClick={() => setShowPaywall(true)}
+                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-md"
+                    >
+                      Ver planes
+                    </button>
+                  </div>
+                )}
                 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
@@ -423,6 +438,8 @@ export default function GenerarPage() {
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                       Procesando...
                     </>
+                  ) : !isPremium && process.env.NODE_ENV === "production" ? (
+                    <>Suscripción Requerida</>
                   ) : (
                     <>Generar Apuntes</>
                   )}
