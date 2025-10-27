@@ -75,8 +75,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     
     console.log("DEBUG USER:", userId ? "Authenticated" : "Not authenticated");
     
+     // TEMPORALMENTE DESHABILITADO PARA PROBAR LA IA
+     // TODO: Re-habilitar después de probar
      // Verificar que el usuario esté suscrito (premium)
-     if (!isDev) {
+     if (false && !isDev) {
        if (!userId) {
          return NextResponse.json({ error: "login_required" }, { status: 401 });
        }
