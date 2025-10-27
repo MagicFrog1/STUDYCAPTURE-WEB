@@ -51,8 +51,13 @@ export default function UserProfile() {
         .gt('current_period_end', new Date().toISOString())
         .maybeSingle();
 
-      if (data && !error) {
-        setProfile(data);
+      if (!error) {
+        const mapped: Profile = {
+          id: (data?.id ?? userId) as string,
+          is_premium: Boolean(data),
+          updated_at: (data?.updated_at ?? new Date().toISOString()) as string,
+        };
+        setProfile(mapped);
       }
     } catch (error) {
       console.error("Error fetching profile:", error);

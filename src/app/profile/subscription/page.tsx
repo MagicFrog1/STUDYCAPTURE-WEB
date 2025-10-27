@@ -36,8 +36,11 @@ export default function SubscriptionManagement() {
         .gt('current_period_end', new Date().toISOString())
         .maybeSingle();
 
-      if (data && !error) {
-        setProfile(data);
+      if (!error) {
+        const mapped = data
+          ? { id: data.id, is_premium: true, updated_at: data.updated_at }
+          : { id: session.user.id, is_premium: false, updated_at: new Date().toISOString() };
+        setProfile(mapped);
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
