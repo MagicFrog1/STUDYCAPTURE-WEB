@@ -95,7 +95,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       larga: 2800,
     };
 
-    const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
+    const openaiApiKey = process.env.OPENAI_API_KEY;
+    console.log("DEBUG API KEY:", openaiApiKey ? `Present (length: ${openaiApiKey.length})` : "MISSING");
+    const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
 
     // Build prompt (enhanced with AI knowledge integration)
     let prompt = `Eres StudyCaptures, un asistente educativo avanzado que transforma fotos de apuntes en apuntes completos y pedagógicos usando tu conocimiento académico.
