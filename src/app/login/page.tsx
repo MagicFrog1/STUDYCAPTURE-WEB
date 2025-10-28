@@ -62,6 +62,8 @@ export default function LoginPage() {
             <button
               onClick={async () => {
                 await supabase.auth.signOut();
+                localStorage.clear();
+                sessionStorage.clear();
                 setProfileEmail(null);
               }}
               className="px-3 py-1 rounded-md bg-purple-600 text-white"

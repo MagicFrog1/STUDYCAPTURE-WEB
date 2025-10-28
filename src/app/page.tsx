@@ -91,8 +91,8 @@ export default function Home() {
       </header>
 
       {/* Hero + Why Section side by side */}
-      <section className="px-6 py-20">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-start">
+      <section className="px-4 sm:px-6 py-12 sm:py-20">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 sm:gap-10 items-start">
           {/* Left: Hero */}
           <div className="text-left">
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 rounded-full text-purple-700 font-medium mb-6">
@@ -100,7 +100,7 @@ export default function Home() {
               Optimizado para universidad, bachillerato y oposiciones
             </div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6">
               <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
                 Convierte fotos de apuntes y pizarras
               </span>
@@ -108,7 +108,7 @@ export default function Home() {
               <span className="text-gray-800">en resúmenes listos para examen</span>
             </h1>
 
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl leading-relaxed">
               Extraemos conceptos clave, fórmulas, definiciones y esquemas para crear resúmenes por temas,
               priorizando lo que más cae en examen. Ideal para repasar rápido, preparar fichas y memorizar con color.
             </p>
@@ -180,12 +180,12 @@ export default function Home() {
       
 
       {/* Pricing Section */}
-      <section id="precios" className="px-6 py-20 bg-gradient-to-br from-purple-50 to-pink-50">
+      <section id="precios" className="px-4 sm:px-6 py-12 sm:py-20 bg-gradient-to-br from-purple-50 to-pink-50">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3 sm:mb-4">
             Planes <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">claros</span>
           </h2>
-          <p className="text-xl text-gray-600 mb-12">Elige el plan que mejor encaja con tu ritmo de estudio</p>
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-12">Elige el plan que mejor encaja con tu ritmo de estudio</p>
           
           <div className="grid md:grid-cols-2 gap-8">
             <div className="relative group">
@@ -246,7 +246,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="px-6 py-12 bg-gray-800 text-white">
+      <footer className="px-4 sm:px-6 py-8 sm:py-12 bg-gray-800 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">

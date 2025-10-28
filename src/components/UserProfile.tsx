@@ -143,12 +143,12 @@ export default function UserProfile() {
     <div className="relative">
       <button
         onClick={() => setIsAccountOpen(true)}
-        className="flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+        className="flex items-center gap-2 px-2 sm:px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
       >
         <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
           {user.email?.charAt(0).toUpperCase()}
         </div>
-        <span className="text-sm text-gray-700 hidden sm:block">
+        <span className="text-sm text-gray-700 hidden md:block">
           Mi cuenta
         </span>
       </button>
@@ -159,14 +159,14 @@ export default function UserProfile() {
             className="fixed inset-0 bg-black/30 z-50"
             onClick={() => setIsAccountOpen(false)}
           />
-          <aside className="fixed right-0 top-0 h-full w-80 bg-white shadow-xl z-50 border-l border-gray-200 flex flex-col">
+          <aside className="fixed right-0 top-0 h-full w-full sm:w-96 md:w-80 bg-white shadow-xl z-50 border-l border-gray-200 flex flex-col animate-in slide-in-from-right duration-300">
             <div className="px-4 py-4 border-b border-gray-100 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="w-9 h-9 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0">
                   {user.email?.charAt(0).toUpperCase()}
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">{user.email}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-gray-900 truncate">{user.email}</p>
                   {profile?.is_premium ? (
                     <p className="text-xs text-green-600">Premium activo</p>
                   ) : (
@@ -175,7 +175,7 @@ export default function UserProfile() {
                 </div>
               </div>
               <button
-                className="p-2 rounded-md hover:bg-gray-100"
+                className="p-2 rounded-md hover:bg-gray-100 flex-shrink-0"
                 onClick={() => setIsAccountOpen(false)}
                 aria-label="Cerrar"
               >

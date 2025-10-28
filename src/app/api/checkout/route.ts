@@ -41,8 +41,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     if (!token) {
       return new NextResponse("Usuario no autenticado", { status: 401 });
     }
-    const { data: userRes, error: userErr } = await supabase.auth.getUser(token);
+    // Create authenticated Supabase client
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) {
+      return new NextResponse("Supabase no configurado", { status: 500 });
+    }
+    
+    const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey);
+    const { data: userRes, error: userErr } = await supabaseAuth.auth.getUser(token);
+    
     if (userErr || !userRes?.user) {
+      console.log("Auth error:", userErr);
       return new NextResponse("Usuario no autenticado", { status: 401 });
     }
     const authUser = userRes.user;

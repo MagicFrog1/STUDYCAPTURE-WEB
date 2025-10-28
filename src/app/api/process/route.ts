@@ -129,8 +129,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const rawOptions = formData.get("options");
     const files = formData.getAll("files");
     const userContext = String(formData.get("context") ?? "").trim();
+    
+    // Debug logging
+    console.log("=== PROCESS API DEBUG ===");
+    console.log("Files count:", files.length);
+    console.log("Has options:", !!rawOptions);
+    console.log("Options value:", rawOptions ? String(rawOptions).substring(0, 100) : "null");
+    console.log("User context length:", userContext.length);
+    console.log("========================");
+    
     if (!rawOptions || files.length === 0) {
-      return new NextResponse("Parámetros inválidos", { status: 400 });
+      return NextResponse.json(
+        { error: "Parámetros inválidos", details: { hasOptions: !!rawOptions, filesCount: files.length } },
+        { status: 400 }
+      );
     }
 
     const options = bodySchema.shape.options.parse(JSON.parse(String(rawOptions)));
