@@ -65,13 +65,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
      const accessToken = authHeader?.replace("Bearer ", "") ?? null;
      
      let userId = null;
-     if (accessToken) {
-       // Crear cliente de Supabase autenticado con el token
-       const { createClient } = await import("@supabase/supabase-js");
-       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://swljiqodhagjtfgzcwyc.supabase.co";
-       const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bGppcW9kaGFnanRmZ3pjd3ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjU2MjAsImV4cCI6MjA3NjY0MTYyMH0.qRY7TmxISkm4n8DmP-yfXVe5DmC9lsqQevxTSBexzGI";
-       
-       const authenticatedSupabase = createClient(supabaseUrl, supabaseAnonKey, {
+    if (accessToken) {
+      // Crear cliente de Supabase autenticado con el token
+      const { createClient } = await import("@supabase/supabase-js");
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string | undefined;
+      const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string | undefined;
+      if (!supabaseUrl || !supabaseAnonKey) {
+        throw new Error("Supabase env vars missing (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY)");
+      }
+
+      const authenticatedSupabase = createClient(supabaseUrl as string, supabaseAnonKey as string, {
          global: {
            headers: {
              Authorization: `Bearer ${accessToken}`
@@ -95,12 +98,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
          return NextResponse.json({ error: "login_required" }, { status: 401 });
        }
        
-       // Usar el cliente autenticado para consultar profiles
-       const { createClient } = await import("@supabase/supabase-js");
-       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://swljiqodhagjtfgzcwyc.supabase.co";
-       const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bGppcW9kaGFnanRmZ3pjd3ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjU2MjAsImV4cCI6MjA3NjY0MTYyMH0.qRY7TmxISkm4n8DmP-yfXVe5DmC9lsqQevxTSBexzGI";
-       
-       const authenticatedSupabase = createClient(supabaseUrl, supabaseAnonKey, {
+      // Usar el cliente autenticado para consultar perfiles/suscripciones
+      const { createClient } = await import("@supabase/supabase-js");
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string | undefined;
+      const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string | undefined;
+      if (!supabaseUrl || !supabaseAnonKey) {
+        throw new Error("Supabase env vars missing (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY)");
+      }
+
+      const authenticatedSupabase = createClient(supabaseUrl as string, supabaseAnonKey as string, {
          global: {
            headers: {
              Authorization: `Bearer ${accessToken}`
