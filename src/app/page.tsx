@@ -11,6 +11,7 @@ export default function Home() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<"" | "monthly" | "yearly">("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -47,7 +48,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
       {/* Header */}
-      <header className="px-6 py-4 flex items-center justify-between bg-white/80 backdrop-blur-sm border-b border-purple-200">
+      <header className="px-4 sm:px-6 py-4 flex items-center justify-between bg-white/80 backdrop-blur-sm border-b border-purple-200 sticky top-0 z-30">
         <div className="flex items-center gap-3">
             <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
               <img src="/logo.svg" alt="StudyCaptures" className="w-6 h-6" />
@@ -56,7 +57,8 @@ export default function Home() {
             StudyCaptures
           </span>
         </div>
-        <nav className="flex items-center gap-6">
+        {/* Desktop nav */}
+        <nav className="hidden sm:flex items-center gap-6">
           <AppInfoDropdown />
           <Link href="#porque" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
             Características
@@ -88,10 +90,49 @@ export default function Home() {
             Generar Apuntes
           </Link>
         </nav>
+        {/* Mobile menu button */}
+        <button
+          className="sm:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-purple-200 text-gray-700"
+          aria-label="Abrir menú"
+          onClick={() => setIsMenuOpen((v) => !v)}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </button>
+        {/* Mobile dropdown */}
+        {isMenuOpen && (
+          <div className="sm:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur border-b border-purple-200 shadow-sm">
+            <div className="px-4 py-4 flex flex-col gap-3">
+              <Link href="#porque" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Características</Link>
+              {isLoggedIn && (
+                <Link href="/profile" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>
+              )}
+              <Link href="#precios" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Precios</Link>
+              {isLoggedIn ? (
+                <button
+                  onClick={async () => {
+                    await supabase.auth.signOut();
+                    setIsLoggedIn(false);
+                    setIsMenuOpen(false);
+                  }}
+                  className="text-left text-gray-700"
+                >
+                  Cerrar sesión
+                </button>
+              ) : (
+                <Link href="/login" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Entrar</Link>
+              )}
+              <Link href={isLoggedIn ? "/generar" : "/login"} onClick={() => setIsMenuOpen(false)} className="mt-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full font-medium text-center">
+                Generar Apuntes
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero + Why Section side by side */}
-      <section className="px-4 sm:px-6 py-12 sm:py-20">
+      <section className="px-4 sm:px-6 py-10 sm:py-16">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 sm:gap-10 items-start">
           {/* Left: Hero */}
           <div className="text-left">
@@ -100,7 +141,7 @@ export default function Home() {
               Optimizado para universidad, bachillerato y oposiciones
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6">
               <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
                 Convierte fotos de apuntes y pizarras
               </span>
@@ -114,7 +155,7 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/generar" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all transform hover:scale-105 flex items-center gap-3 w-fit">
+              <Link href="/generar" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:shadow-xl transition-all transform hover:scale-105 flex items-center gap-3 w-fit">
                 Empezar Gratis
                 <IconArrowRight />
               </Link>

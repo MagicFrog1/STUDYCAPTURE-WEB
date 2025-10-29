@@ -44,8 +44,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 px-6 py-10">
-      <header className="max-w-6xl mx-auto flex items-center justify-between mb-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 px-4 sm:px-6 py-8 sm:py-10">
+      <header className="max-w-6xl mx-auto flex items-center justify-between mb-6 sm:mb-8">
         <Link href="/" className="flex items-center gap-3 text-gray-700 hover:text-purple-700 transition-colors">
           <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
             <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
@@ -61,17 +61,17 @@ export default function LoginPage() {
         </button>
       </header>
 
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 items-start">
+      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-6 sm:gap-8 items-start">
         {/* Lado izquierdo: storytelling y beneficios */}
         <section className="order-2 lg:order-1">
-          <div className="bg-white/80 backdrop-blur rounded-3xl border border-purple-200 shadow-lg p-8">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 ring-1 ring-purple-200 mb-4">
+          <div className="bg-white/80 backdrop-blur rounded-3xl border border-purple-200 shadow-lg p-6 sm:p-8">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 ring-1 ring-purple-200 mb-3 sm:mb-4">
               <span className="w-2 h-2 rounded-full bg-purple-500" /> Hecho para estudiantes exigentes
             </span>
-            <h1 className="text-3xl md:text-4xl font-extrabold leading-tight mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight mb-3 sm:mb-4">
               ¿Cansado de perder horas haciendo apuntes? <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Llega tu solución</span>
             </h1>
-            <p className="text-gray-700 text-lg leading-relaxed mb-6">
+            <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-5 sm:mb-6">
               Transforma fotos de tus apuntes en resúmenes pedagógicos y listos para examen. En minutos, no en horas. Más claridad, más foco, mejores resultados.
             </p>
 
@@ -99,7 +99,7 @@ export default function LoginPage() {
               </li>
             </ul>
 
-            <div className="mt-6 grid sm:grid-cols-2 gap-4">
+            <div className="mt-5 sm:mt-6 grid sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 p-4 border border-purple-200">
                 <p className="text-sm text-gray-700"><span className="font-semibold text-purple-700">Regístrate</span> y desbloquea la generación de apuntes con prioridad y sin límites.</p>
               </div>
@@ -128,8 +128,8 @@ export default function LoginPage() {
               </div>
             )}
 
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">{mode === "login" ? "Inicia sesión" : "Crea tu cuenta"}</h2>
-            <p className="text-gray-600 mb-6">Accede para generar apuntes con IA de manera ilimitada.</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">{mode === "login" ? "Inicia sesión" : "Crea tu cuenta"}</h2>
+            <p className="text-gray-600 mb-5 sm:mb-6">Accede para generar apuntes con IA de manera ilimitada.</p>
 
             <div className="space-y-3">
               <div>

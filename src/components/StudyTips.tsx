@@ -69,7 +69,7 @@ export default function StudyTips() {
         </div>
 
         {/* Tarjetas estilo ejemplo */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {tips.map((tip, i) => {
             const c = accentToClasses[tip.accent];
             return (
@@ -96,13 +96,13 @@ export default function StudyTips() {
         </div>
 
         {/* CTA en violeta de marca */}
-        <div className="mt-16 text-center">
-          <div className="bg-gradient-to-r from-purple-600 to-violet-600 rounded-2xl p-8 text-white">
-            <h4 className="text-2xl font-bold mb-4">¿Listo para mejorar tus apuntes?</h4>
-            <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
+        <div className="mt-12 sm:mt-16 text-center">
+          <div className="bg-gradient-to-r from-purple-600 to-violet-600 rounded-2xl p-6 sm:p-8 text-white">
+            <h4 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">¿Listo para mejorar tus apuntes?</h4>
+            <p className="text-purple-100 mb-4 sm:mb-6 max-w-2xl mx-auto text-sm sm:text-base">
               Aplica estos consejos y descubre cómo la IA puede transformar tu forma de estudiar
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <div className="flex items-center gap-2 text-purple-100">
                 <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
                 <span className="text-sm">Resultados instantáneos</span>
