@@ -46,8 +46,12 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 px-6 py-10">
       <header className="max-w-6xl mx-auto flex items-center justify-between mb-8">
-        <Link href="/" className="flex items-center gap-2 text-gray-700 hover:text-purple-700 transition-colors">
-          ← Volver a inicio
+        <Link href="/" className="flex items-center gap-3 text-gray-700 hover:text-purple-700 transition-colors">
+          <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+            <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
+          </div>
+          <span className="hidden sm:inline font-semibold">StudyCaptures</span>
+          <span className="opacity-70">← Volver a inicio</span>
         </Link>
         <button
           onClick={() => setMode((m) => (m === "login" ? "register" : "login"))}
