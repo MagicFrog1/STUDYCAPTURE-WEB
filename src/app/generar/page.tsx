@@ -101,7 +101,6 @@ export default function GenerarPage() {
 
   const isPremium = remaining === -1;
   const canSubmit = useMemo(() => {
-    // TEMPORALMENTE PERMITE GENERAR PARA PROBAR LA IA
     return files.length > 0 && !loading;
   }, [files.length, loading]);
 
@@ -135,11 +134,10 @@ export default function GenerarPage() {
       router.push("/login");
       return;
     }
-    // TEMPORALMENTE DESHABILITADO PARA PROBAR LA IA
-    // if (!isPremium && process.env.NODE_ENV === "production") {
-    //   setShowPaywall(true);
-    //   return;
-    // }
+    if (!isPremium && process.env.NODE_ENV === "production") {
+      setShowPaywall(true);
+      return;
+    }
     setError(null);
     setLoading(true);
     setResults(null);

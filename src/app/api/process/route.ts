@@ -90,15 +90,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
      
      console.log("DEBUG USER:", userId ? "Authenticated" : "Not authenticated");
     
-     // TEMPORALMENTE DESHABILITADO PARA PROBAR LA IA
-     // TODO: Re-habilitar después de probar
-     // Verificar que el usuario esté suscrito (premium)
-     if (false && !isDev) {
-       if (!userId || !accessToken) {
-         return NextResponse.json({ error: "login_required" }, { status: 401 });
-       }
-       
-      // Usar el cliente autenticado para consultar perfiles/suscripciones
+    // Verificar que el usuario esté suscrito (premium) en producción
+    if (!isDev) {
+      if (!userId || !accessToken) {
+        return NextResponse.json({ error: "login_required" }, { status: 401 });
+      }
+      
+      // Usar el cliente autenticado para consultar suscripción activa
       const { createClient } = await import("@supabase/supabase-js");
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string | undefined;
       const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string | undefined;
@@ -107,15 +105,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }
 
       const authenticatedSupabase = createClient(supabaseUrl as string, supabaseAnonKey as string, {
-         global: {
-           headers: {
-             Authorization: `Bearer ${accessToken}`
-           }
-         }
-       });
-       
-       // Verificar si tiene premium
-      // Prefer subscriptions table for robust premium check
+        global: {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        }
+      });
+
       const { data: sub } = await authenticatedSupabase
         .from('subscriptions')
         .select('id,status,current_period_end')
@@ -123,13 +119,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         .eq('status', 'active')
         .gt('current_period_end', new Date().toISOString())
         .maybeSingle();
-      
-      console.log("DEBUG SUBSCRIPTION (subs table):", sub ? "ACTIVE" : "NONE");
-      
+
       if (!sub) {
         return NextResponse.json({ error: "subscription_required" }, { status: 402 });
       }
-     }
+    }
 
     const formData = await req.formData();
     const rawOptions = formData.get("options");
