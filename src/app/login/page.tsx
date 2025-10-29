@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [profileEmail, setProfileEmail] = useState<string | null>(null);
 
@@ -25,12 +26,16 @@ export default function LoginPage() {
 
   const onSubmit = async () => {
     setError(null);
+    setSuccess(null);
     setLoading(true);
     try {
       if (!email || !password) throw new Error("Email y contraseña son obligatorios");
       if (mode === "register") {
         const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: (typeof window !== 'undefined' ? window.location.origin : '') + '/generar' } });
         if (error) throw error;
+        setSuccess("¡Cuenta creada! Revisa tu correo y confirma tu email para comenzar.");
+        setMode("login");
+        return;
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -161,6 +166,9 @@ export default function LoginPage() {
               </button>
             </div>
 
+            {success && (
+              <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">{success}</div>
+            )}
             {error && (
               <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">{error}</div>
             )}

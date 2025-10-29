@@ -156,7 +156,7 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/generar" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:shadow-xl transition-all transform hover:scale-105 flex items-center gap-3 w-fit">
-                Empezar Gratis
+                Comenzar ahora
                 <IconArrowRight />
               </Link>
             </div>
