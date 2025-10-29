@@ -46,9 +46,9 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 overflow-x-hidden">
       {/* Header */}
-      <header className="px-4 sm:px-6 py-4 flex items-center justify-between bg-white/80 backdrop-blur-sm border-b border-purple-200 sticky top-0 z-30">
+      <header className="px-4 sm:px-6 py-4 flex items-center justify-between bg-white/80 backdrop-blur-sm border-b border-purple-200 sticky top-0 z-30 pt-[env(safe-area-inset-top)]">
         <div className="flex items-center gap-3">
             <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
               <img src="/logo.svg" alt="StudyCaptures" className="w-6 h-6" />
@@ -163,7 +163,7 @@ export default function Home() {
           </div>
 
           {/* Right: Why Apuntes IA */}
-          <div id="porque" className="text-left lg:border-l lg:border-black/10 lg:pl-10">
+          <div id="porque" className="text-left lg:border-l lg:border-black/10 lg:pl-10 scroll-mt-24">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
               ¿Por qué elegir <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">StudyCaptures</span>?
             </h2>
@@ -221,7 +221,7 @@ export default function Home() {
       
 
       {/* Pricing Section */}
-      <section id="precios" className="px-4 sm:px-6 py-12 sm:py-20 bg-gradient-to-br from-purple-50 to-pink-50">
+      <section id="precios" className="px-4 sm:px-6 py-12 sm:py-20 bg-gradient-to-br from-purple-50 to-pink-50 scroll-mt-24">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3 sm:mb-4">
             Planes <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">claros</span>
@@ -231,7 +231,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-8">
             <div className="relative group">
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-400/30 via-pink-400/30 to-blue-400/30 opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500"></div>
-              <div className="relative bg-white p-8 rounded-2xl border border-purple-200 shadow-lg text-left transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-1 group-hover:border-purple-400">
+              <div className="relative bg-white p-8 rounded-2xl border border-purple-200 shadow-lg text-left transition-all duration-300 md:group-hover:shadow-2xl md:group-hover:-translate-y-1 group-hover:border-purple-400">
               <h3 className="text-2xl font-bold text-gray-800 mb-2">Mensual</h3>
               <p className="text-gray-600 mb-6">Ideal para trabajos y épocas de exámenes</p>
                 <div className="text-4xl font-bold text-purple-600 mb-6 transition-transform duration-300 group-hover:scale-105">4,99€ <span className="text-base font-normal text-gray-500">/ mes</span></div>
@@ -249,7 +249,7 @@ export default function Home() {
 
             <div className="relative group">
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-600/40 via-pink-600/40 to-purple-800/40 opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500"></div>
-              <div className="relative bg-gradient-to-br from-purple-500 to-pink-500 p-8 rounded-2xl text-white shadow-xl transform scale-105 text-left transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-2xl group-hover:scale-110">
+              <div className="relative bg-gradient-to-br from-purple-500 to-pink-500 p-8 rounded-2xl text-white shadow-xl md:transform md:scale-105 text-left transition-all duration-300 md:group-hover:-translate-y-1 md:group-hover:shadow-2xl md:group-hover:scale-110">
                 <div className="absolute -top-3 right-4">
                   <span className="px-3 py-1 rounded-full bg-white text-purple-600 text-xs font-bold shadow-sm ring-1 ring-white/60">Popular</span>
                 </div>
