@@ -19,8 +19,8 @@ Estas variables **DEBEN** estar configuradas en Vercel:
 #### Variables OBLIGATORIAS:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://swljiqodhagjtfgzcwyc.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bGppcW9kaGFnanRmZ3pjd3ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjU2MjAsImV4cCI6MjA3NjY0MTYyMH0.qRY7TmxISkm4n8DmP-yfXVe5DmC9lsqQevxTSBexzGI
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_clave_anonima
 ```
 
 #### Variables Requeridas para Features Específicas:
@@ -115,8 +115,8 @@ location.reload();
 
 3. **Crea un `.env.local` local (para desarrollo):**
    ```env
-   NEXT_PUBLIC_SUPABASE_URL=https://swljiqodhagjtfgzcwyc.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bGppcW9kaGFnanRmZ3pjd3ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjU2MjAsImV4cCI6MjA3NjY0MTYyMH0.qRY7TmxISkm4n8DmP-yfXVe5DmC9lsqQevxTSBexzGI
+   NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_clave_anonima
    OPENAI_API_KEY=sk-REPLACE_ME
    ```
 

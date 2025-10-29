@@ -27,16 +27,16 @@ El código tiene valores de fallback, así que funciona con `npm run dev`
 
 **Paso 1: Crear `.env.local` localmente** (opcional, ya funciona sin él)
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://swljiqodhagjtfgzcwyc.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bGppcW9kaGFnanRmZ3pjd3ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjU2MjAsImV4cCI6MjA3NjY0MTYyMH0.qRY7TmxISkm4n8DmP-yfXVe5D الفرنسيةBexzGI
-OPENAI_API_KEY=sk-REPLACE_ME tutte-3iccHHe7n25g6rcRsNAa6ggYWT7Xt0VTv8h_92FPTUeYGtVfzkU9IIT3BlbkFJcqlpyN23_Ir1QZkV6OlEKmdj3nTnpHMbA4YbrqWjafVx9EYDtu5l2dGdIxxQC76V2MZbhJ41EA
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_clave_anonima
+OPENAI_API_KEY=sk-REPLACE_ME
 ```
 
 **Paso 2: Configurar Variables en Vercel** (CRÍTICO)
 1. Ve a: https://vercel.com/dashboard → Tu proyecto → **Settings** → **Environment Variables**
 2. Añade estas variables:
-   - `NEXT_PUBLIC_SUPABASE_URL` = `https://swljiqodhagjtfgzcwyc.supabase.co`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bGppcW9kaGFnanRmZ3pjd3ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNjU2MjAsImV4cCI6MjA3NjY0MTYyMH0.qRY7TmxISkm4n8DmP-yfXVe5DmC9lsqQevxTSBexzGI`
+   - `NEXT_PUBLIC_SUPABASE_URL` = `https://tu-proyecto.supabase.co`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = `tu_clave_anonima`
    - `OPENAI_API_KEY` = `sk-REPLACE_ME`
    - Selecciona: Production, Preview, Development
 3. **Redeploy** → Deployments → ⋮ → Redeploy
