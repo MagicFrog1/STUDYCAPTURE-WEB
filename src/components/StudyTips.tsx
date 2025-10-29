@@ -104,10 +104,6 @@ export default function StudyTips() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <div className="flex items-center gap-2 text-purple-100">
-                <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                <span className="text-sm">2 usos gratuitos</span>
-              </div>
-              <div className="flex items-center gap-2 text-purple-100">
                 <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
                 <span className="text-sm">Resultados instantáneos</span>
               </div>

@@ -252,7 +252,7 @@ export default function Home() {
             <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
               <span className="text-white font-bold text-sm">AI</span>
             </div>
-            <span className="font-bold text-xl">Apuntes IA</span>
+            <span className="font-bold text-xl">StudyCaptures</span>
           </div>
           <p className="text-gray-400 mb-4">
             © {new Date().getFullYear()} StudyCaptures · Revolucionando la educación con IA
