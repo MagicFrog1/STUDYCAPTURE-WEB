@@ -43,6 +43,13 @@ export default function Header() {
 
           {/* Right actions */}
           <div className="flex items-center gap-2">
+            <Link
+              href="/profile"
+              className="hidden md:inline-flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 transition-colors"
+            >
+              <span className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">👤</span>
+              <span className="text-sm">Mi cuenta</span>
+            </Link>
             {/* Hamburger (mobile) */}
             <button
               className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-gray-200 text-gray-700 tap-grow"
@@ -64,6 +71,7 @@ export default function Header() {
             <Link href="/" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Inicio</Link>
             <Link href="/generar" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Generar Apuntes</Link>
             <Link href="/privacy" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Privacidad</Link>
+                <Link href="/profile" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>
             <div className="pt-1">
               <Link
                 href="/generar"
@@ -73,7 +81,6 @@ export default function Header() {
                 Empezar ahora
               </Link>
             </div>
-            
           </div>
         </div>
       )}
