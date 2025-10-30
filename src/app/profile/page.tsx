@@ -15,6 +15,7 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<"change" | "cancel" | "" | "logout">("");
   const [noSession, setNoSession] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -22,7 +23,7 @@ export default function ProfilePage() {
       if (!data.session) {
         setNoSession(true);
         setLoading(false);
-        router.replace("/login");
+        setRedirecting(true);
         return;
       }
       setEmail(data.session.user.email ?? null);
@@ -41,6 +42,16 @@ export default function ProfilePage() {
       setLoading(false);
     })();
   }, [router]);
+
+  // Si no hay sesión, avisar y redirigir tras un breve retardo para evitar pantalla en blanco
+  useEffect(() => {
+    if (noSession && redirecting) {
+      const t = setTimeout(() => {
+        router.replace("/login");
+      }, 800);
+      return () => clearTimeout(t);
+    }
+  }, [noSession, redirecting, router]);
 
   async function cancelSubscription() {
     setActionLoading("cancel");
@@ -98,14 +109,12 @@ export default function ProfilePage() {
   if (noSession) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
-        <div className="text-gray-700 text-sm">
-          Redirigiendo a inicio de sesión…
-          <span className="ml-2">
-            Si no avanza, pulsa
-            <button onClick={() => router.replace("/login")} className="ml-1 text-purple-700 hover:text-purple-800 underline">
-              aquí
-            </button>
-          </span>
+        <div className="text-center">
+          <p className="text-gray-900 font-medium">Necesitas iniciar sesión</p>
+          <p className="text-gray-600 mt-1">Redirigiendo a la página de acceso…</p>
+          <div className="mt-3">
+            <button onClick={() => router.replace("/login")} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Ir a iniciar sesión ahora</button>
+          </div>
         </div>
       </main>
     );
