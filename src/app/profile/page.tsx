@@ -53,6 +53,25 @@ export default function ProfilePage() {
     }
   }, [noSession, redirecting, router]);
 
+  // Reveal on scroll (evita que los elementos con clase `reveal` queden invisibles)
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll<HTMLElement>('.reveal'));
+    if (!('IntersectionObserver' in window) || elements.length === 0) return;
+    const io = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.1 }
+    );
+    elements.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   async function cancelSubscription() {
     setActionLoading("cancel");
     try {
