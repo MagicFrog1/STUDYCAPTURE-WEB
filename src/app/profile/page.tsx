@@ -55,6 +55,7 @@ export default function ProfilePage() {
 
   // Reveal on scroll (evita que los elementos con clase `reveal` queden invisibles)
   useEffect(() => {
+    if (loading) return; // Esperar a que se monte el contenido real
     const elements = Array.from(document.querySelectorAll<HTMLElement>('.reveal'));
     if (!('IntersectionObserver' in window) || elements.length === 0) return;
     const io = new IntersectionObserver(
@@ -70,7 +71,7 @@ export default function ProfilePage() {
     );
     elements.forEach(el => io.observe(el));
     return () => io.disconnect();
-  }, []);
+  }, [loading]);
 
   async function cancelSubscription() {
     setActionLoading("cancel");
