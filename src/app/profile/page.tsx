@@ -5,7 +5,8 @@ import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-type Profile = { id: string; is_premium: boolean; stripe_customer_id?: string | null; updated_at?: string | null };
+type Profile = { id: string; is_premium: boolean; updated_at?: string | null };
+type SubscriptionRow = { id: string; status: string; current_period_end: string; updated_at: string };
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -22,12 +23,18 @@ export default function ProfilePage() {
         return;
       }
       setEmail(data.session.user.email ?? null);
-      const { data: prof } = await supabase
-        .from("profiles")
-        .select("id, is_premium, stripe_customer_id, updated_at")
+      const { data: sub } = await supabase
+        .from("subscriptions")
+        .select("id,status,current_period_end,updated_at")
         .eq("user_id", data.session.user.id)
-        .single();
-      setProfile(prof ?? null);
+        .eq("status", "active")
+        .gt("current_period_end", new Date().toISOString())
+        .maybeSingle();
+      const typedSub = sub as unknown as SubscriptionRow | null;
+      const mapped: Profile | null = typedSub
+        ? { id: typedSub.id, is_premium: true, updated_at: typedSub.updated_at }
+        : { id: data.session.user.id, is_premium: false, updated_at: null };
+      setProfile(mapped);
       setLoading(false);
     })();
   }, [router]);
