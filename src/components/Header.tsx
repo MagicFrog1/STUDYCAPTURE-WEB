@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import UserProfile from "@/components/UserProfile";
+ 
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,9 +43,6 @@ export default function Header() {
 
           {/* Right actions */}
           <div className="flex items-center gap-2">
-            <div className="hidden md:block">
-              <UserProfile />
-            </div>
             {/* Hamburger (mobile) */}
             <button
               className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-gray-200 text-gray-700 tap-grow"
@@ -76,10 +73,7 @@ export default function Header() {
                 Empezar ahora
               </Link>
             </div>
-            <div className="pt-1">
-              {/* User profile button also accesible on mobile */}
-              <UserProfile />
-            </div>
+            
           </div>
         </div>
       )}
