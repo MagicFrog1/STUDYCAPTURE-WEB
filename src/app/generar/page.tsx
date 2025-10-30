@@ -52,6 +52,25 @@ export default function GenerarPage() {
     }
   }, []);
 
+  // Reveal on scroll
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll<HTMLElement>('.reveal'));
+    if (!('IntersectionObserver' in window) || elements.length === 0) return;
+    const io = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.1 }
+    );
+    elements.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   // Check session and premium status on mount
   useEffect(() => {
     (async () => {
@@ -180,7 +199,7 @@ export default function GenerarPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
       {/* Header */}
-      <header className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between bg-white/80 backdrop-blur-sm border-b border-purple-200 sticky top-0 z-20">
+      <header className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-purple-200/70 sticky top-0 z-20 transition-all">
         <Link href="/" className="flex items-center gap-2 sm:gap-3">
           <div className="size-7 sm:size-8 md:size-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
             <img src="/logo.svg" alt="StudyCaptures" className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
@@ -191,7 +210,7 @@ export default function GenerarPage() {
         </Link>
         <nav className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm">
           <AppInfoDropdown />
-          <Link href="/" className="px-3 py-1.5 rounded-full border border-purple-200 hover:border-purple-300 text-gray-700 hover:text-purple-700 transition-all">
+          <Link href="/" className="px-3 py-1.5 rounded-full border border-purple-200 hover:border-purple-300 text-gray-700 hover:text-purple-700 transition-all tap-grow">
             Inicio
           </Link>
           <button
@@ -199,7 +218,7 @@ export default function GenerarPage() {
               await supabase.auth.signOut();
               router.replace("/login");
             }}
-            className="px-3 py-1.5 rounded-full border border-purple-200 hover:border-purple-300 text-gray-700 hover:text-purple-700 transition-all"
+            className="px-3 py-1.5 rounded-full border border-purple-200 hover:border-purple-300 text-gray-700 hover:text-purple-700 transition-all tap-grow"
           >
             Cerrar sesión
           </button>
@@ -209,7 +228,7 @@ export default function GenerarPage() {
       <main className="px-4 sm:px-6 py-6 sm:py-8">
         <div className="max-w-7xl mx-auto">
           {/* Page Header */}
-          <div className="text-center mb-8 sm:mb-12">
+          <div className="text-center mb-8 sm:mb-12 reveal">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
               <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
                 Genera tus apuntes
@@ -224,7 +243,7 @@ export default function GenerarPage() {
             {/* Upload Section */}
             <div ref={uploadRef} className="space-y-6 scroll-mt-28">
               {/* File Upload */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-purple-200 transition-transform duration-300 hover:-translate-y-0.5">
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-purple-200 transition-transform duration-300 hover:-translate-y-0.5 card-smooth reveal">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
                     <path d="M3 8a2 2 0 0 1 2-2h2l1.2-1.8A2 2 0 0 1 10.8 3h2.4a2 2 0 0 1 1.6.8L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z" stroke="#7c3aed" strokeWidth="1.8" strokeLinejoin="round"/>
@@ -263,7 +282,7 @@ export default function GenerarPage() {
                       </p>
                       <button 
                         onClick={handleUploadClick}
-                        className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transition-all transform hover:scale-105"
+                        className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transition-all transform hover:scale-105 tap-grow"
                       >
                         Seleccionar archivos
                       </button>
@@ -287,7 +306,7 @@ export default function GenerarPage() {
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       {files.map((f, i) => (
-                        <div key={i} className="group relative rounded-xl overflow-hidden border border-purple-200 hover:shadow-lg transition-all">
+                        <div key={i} className="group relative rounded-xl overflow-hidden border border-purple-200 hover:shadow-lg transition-all card-smooth">
                           <img 
                             src={URL.createObjectURL(f)} 
                             alt={f.name} 
@@ -312,7 +331,7 @@ export default function GenerarPage() {
               </div>
 
               {/* Contexto (opcional) */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-purple-200 transition-transform duration-300 hover:-translate-y-0.5">
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-purple-200 transition-transform duration-300 hover:-translate-y-0.5 card-smooth reveal">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
                     <path d="M4 7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H9l-4 3v-3a3 3 0 0 1-1-2V7Z" stroke="#7c3aed" strokeWidth="1.8"/>
@@ -348,7 +367,7 @@ export default function GenerarPage() {
               </div>
 
               {/* Settings */}
-              <div ref={settingsRef} className="bg-white rounded-2xl p-6 shadow-lg border border-purple-200 scroll-mt-28 transition-transform duration-300 hover:-translate-y-0.5">
+              <div ref={settingsRef} className="bg-white rounded-2xl p-6 shadow-lg border border-purple-200 scroll-mt-28 transition-transform duration-300 hover:-translate-y-0.5 card-smooth reveal">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
                     <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="#7c3aed" strokeWidth="1.8"/>
@@ -415,7 +434,7 @@ export default function GenerarPage() {
                   onClick={handleSubmit}
                   disabled={!canSubmit}
                   aria-disabled={!canSubmit}
-                  className={`mt-6 w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl transition-all transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center gap-3`}
+                  className={`mt-6 w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl transition-all transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center gap-3 tap-grow`}
                 >
                   {loading ? (
                     <>
@@ -438,7 +457,7 @@ export default function GenerarPage() {
 
             {/* Results Section */}
             <div className="lg:sticky lg:top-6 lg:h-fit">
-              <div ref={resultRef} className="bg-white rounded-2xl p-8 shadow-lg border border-purple-200 scroll-mt-28 max-w-none">
+              <div ref={resultRef} className="bg-white rounded-2xl p-8 shadow-lg border border-purple-200 scroll-mt-28 max-w-none card-smooth reveal">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6">Resultado</h2>
                 
                 {!results && (
@@ -477,7 +496,7 @@ export default function GenerarPage() {
                           const text = results.map((r) => r.title + "\n\n" + r.content.replace(/<[^>]+>/g, "")).join("\n\n---\n\n");
                           navigator.clipboard.writeText(text);
                         }}
-                        className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-4 rounded-xl font-semibold hover:shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+                        className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-4 rounded-xl font-semibold hover:shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2 tap-grow"
                       >
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-white">
                           <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
@@ -499,7 +518,7 @@ export default function GenerarPage() {
                           a.click();
                           URL.revokeObjectURL(url);
                         }}
-                        className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 rounded-xl font-semibold hover:shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+                        className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 rounded-xl font-semibold hover:shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2 tap-grow"
                       >
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-white">
                           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" strokeWidth="2"/>
@@ -518,17 +537,17 @@ export default function GenerarPage() {
       </main>
       {showPaywall && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-purple-200">
+          <div className="w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-purple-200 card-smooth reveal is-visible">
             <div className="flex items-start justify-between mb-4">
               <h3 className="text-xl font-bold text-gray-900">Has terminado tu plan gratuito</h3>
               <button onClick={() => setShowPaywall(false)} className="text-gray-500 hover:text-gray-700">✕</button>
             </div>
             <p className="text-gray-700 mb-4">Pásate a Premium para generar apuntes sin límites y con prioridad.</p>
             <div className="space-y-2">
-              <button onClick={() => handleSubscribe("monthly")} disabled={loadingPlan === "monthly"} className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg disabled:opacity-60">
+              <button onClick={() => handleSubscribe("monthly")} disabled={loadingPlan === "monthly"} className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg disabled:opacity-60 tap-grow">
                 {loadingPlan === "monthly" ? "Redirigiendo..." : "Elegir mensual (4,99€ / mes)"}
               </button>
-              <button onClick={() => handleSubscribe("yearly")} disabled={loadingPlan === "yearly"} className="w-full bg-white text-purple-600 ring-1 ring-purple-200 py-3 rounded-xl font-semibold hover:shadow-md disabled:opacity-60">
+              <button onClick={() => handleSubscribe("yearly")} disabled={loadingPlan === "yearly"} className="w-full bg-white text-purple-600 ring-1 ring-purple-200 py-3 rounded-xl font-semibold hover:shadow-md disabled:opacity-60 tap-grow">
                 {loadingPlan === "yearly" ? "Redirigiendo..." : "Elegir anual (39,99€ / año)"}
               </button>
             </div>

@@ -24,6 +24,25 @@ export default function LoginPage() {
     })();
   }, [router]);
 
+  // Reveal on scroll
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll<HTMLElement>('.reveal'));
+    if (!('IntersectionObserver' in window) || elements.length === 0) return;
+    const io = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.1 }
+    );
+    elements.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   const onSubmit = async () => {
     setError(null);
     setSuccess(null);
@@ -51,7 +70,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 px-4 sm:px-6 py-8 sm:py-10">
       <header className="max-w-6xl mx-auto flex items-center justify-between mb-6 sm:mb-8">
-        <Link href="/" className="flex items-center gap-3 text-gray-700 hover:text-purple-700 transition-colors">
+        <Link href="/" className="flex items-center gap-3 text-gray-700 hover:text-purple-700 transition-colors tap-grow">
           <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
             <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
           </div>
@@ -60,7 +79,7 @@ export default function LoginPage() {
         </Link>
         <button
           onClick={() => setMode((m) => (m === "login" ? "register" : "login"))}
-          className="text-sm text-purple-700 hover:underline"
+          className="text-sm text-purple-700 hover:underline tap-grow"
         >
           {mode === "login" ? "¿No tienes cuenta? Regístrate" : "¿Ya tienes cuenta? Inicia sesión"}
         </button>
@@ -68,8 +87,8 @@ export default function LoginPage() {
 
       <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-6 sm:gap-8 items-start">
         {/* Lado izquierdo: storytelling y beneficios */}
-        <section className="order-2 lg:order-1">
-          <div className="bg-white/80 backdrop-blur rounded-3xl border border-purple-200 shadow-lg p-6 sm:p-8">
+        <section className="order-2 lg:order-1 reveal">
+          <div className="bg-white/80 backdrop-blur rounded-3xl border border-purple-200 shadow-lg p-6 sm:p-8 card-smooth">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 ring-1 ring-purple-200 mb-3 sm:mb-4">
               <span className="w-2 h-2 rounded-full bg-purple-500" /> Hecho para estudiantes exigentes
             </span>
@@ -116,8 +135,8 @@ export default function LoginPage() {
         </section>
 
         {/* Lado derecho: panel del formulario (sin cambiar la lógica) */}
-        <section className="order-1 lg:order-2">
-          <div className="w-full bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-purple-200">
+        <section className="order-1 lg:order-2 reveal">
+          <div className="w-full bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-purple-200 card-smooth">
             {profileEmail && (
               <div className="mb-4 p-3 bg-purple-50 border border-purple-200 rounded-lg text-sm text-purple-800 flex items-center justify-between">
                 <span>Sesión iniciada como {profileEmail}</span>
@@ -128,7 +147,7 @@ export default function LoginPage() {
                     sessionStorage.clear();
                     setProfileEmail(null);
                   }}
-                  className="px-3 py-1 rounded-md bg-purple-600 text-white"
+                  className="px-3 py-1 rounded-md bg-purple-600 text-white tap-grow"
                 >Cerrar sesión</button>
               </div>
             )}
@@ -160,7 +179,7 @@ export default function LoginPage() {
               <button
                 onClick={onSubmit}
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg font-semibold hover:shadow-lg disabled:opacity-50"
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg font-semibold hover:shadow-lg disabled:opacity-50 tap-grow"
               >
                 {loading ? "Procesando..." : mode === "login" ? "Entrar" : "Registrarme"}
               </button>

@@ -88,7 +88,7 @@ export default function ProfilePage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
       {/* Hero de cuenta */}
-      <section className="px-6 pt-10">
+      <section className="px-6 pt-10 reveal">
         <div className="max-w-5xl mx-auto">
           <div className="relative overflow-hidden rounded-3xl">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600" />
@@ -113,7 +113,7 @@ export default function ProfilePage() {
       <section className="px-6 py-10">
         <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
           {/* Estado */}
-          <section className="bg-white rounded-2xl border border-purple-200 shadow-sm p-5">
+          <section className="bg-white rounded-2xl border border-purple-200 shadow-sm p-5 card-smooth reveal">
             <div className="flex items-center gap-3 mb-3">
               <IconStatus />
               <h2 className="font-semibold text-gray-900">Estado</h2>
@@ -133,28 +133,28 @@ export default function ProfilePage() {
           </section>
 
           {/* Acciones de suscripción */}
-          <section className="bg-white rounded-2xl border border-purple-200 shadow-sm p-5 md:col-span-2">
+          <section className="bg-white rounded-2xl border border-purple-200 shadow-sm p-5 md:col-span-2 card-smooth reveal">
             <div className="flex items-center justify-between gap-3 mb-4">
               <div className="flex items-center gap-3">
                 <IconCard />
                 <h2 className="font-semibold text-gray-900">Suscripción</h2>
               </div>
               {!profile?.is_premium && (
-                <Link href="/" className="text-sm text-purple-700 hover:text-purple-800 font-medium">Ver planes</Link>
+                <Link href="/" className="text-sm text-purple-700 hover:text-purple-800 font-medium tap-grow">Ver planes</Link>
               )}
             </div>
 
             {profile?.is_premium ? (
               <div className="grid sm:grid-cols-3 gap-3">
-                <button onClick={() => changePlan("monthly")} disabled={actionLoading === "change"} className="px-4 py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50">
+                <button onClick={() => changePlan("monthly")} disabled={actionLoading === "change"} className="px-4 py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 tap-grow">
                   Cambiar a mensual
                   <span className="block text-xs text-white/80">4,99€/mes</span>
                 </button>
-                <button onClick={() => changePlan("yearly")} disabled={actionLoading === "change"} className="px-4 py-3 rounded-xl bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-50">
+                <button onClick={() => changePlan("yearly")} disabled={actionLoading === "change"} className="px-4 py-3 rounded-xl bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-50 tap-grow">
                   Cambiar a anual
                   <span className="block text-xs text-white/80">39,99€/año</span>
                 </button>
-                <button onClick={cancelSubscription} disabled={actionLoading === "cancel"} className="px-4 py-3 rounded-xl bg-red-600 text-white hover:bg-red-700 disabled:opacity-50">
+                <button onClick={cancelSubscription} disabled={actionLoading === "cancel"} className="px-4 py-3 rounded-xl bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 tap-grow">
                   Cancelar suscripción
                 </button>
               </div>
@@ -166,13 +166,13 @@ export default function ProfilePage() {
           </section>
 
           {/* Privacidad y soporte */}
-          <section className="bg-white rounded-2xl border border-purple-200 shadow-sm p-5">
+          <section className="bg-white rounded-2xl border border-purple-200 shadow-sm p-5 card-smooth reveal">
             <div className="flex items-center gap-3 mb-3">
               <IconShield />
               <h2 className="font-semibold text-gray-900">Privacidad</h2>
             </div>
             <div className="space-y-3 text-sm">
-              <Link href="/privacy" className="inline-flex items-center gap-2 text-purple-700 hover:text-purple-800">
+              <Link href="/privacy" className="inline-flex items-center gap-2 text-purple-700 hover:text-purple-800 tap-grow">
                 Ver política de privacidad
                 <IconArrow />
               </Link>
@@ -181,12 +181,12 @@ export default function ProfilePage() {
           </section>
 
           {/* Sesión */}
-          <section className="bg-white rounded-2xl border border-purple-200 shadow-sm p-5">
+          <section className="bg-white rounded-2xl border border-purple-200 shadow-sm p-5 card-smooth reveal">
             <div className="flex items-center gap-3 mb-3">
               <IconLogout />
               <h2 className="font-semibold text-gray-900">Sesión</h2>
             </div>
-            <button onClick={logout} disabled={actionLoading === "logout"} className="w-full px-4 py-3 rounded-xl bg-gray-900 text-white hover:bg-black disabled:opacity-50">Cerrar sesión</button>
+            <button onClick={logout} disabled={actionLoading === "logout"} className="w-full px-4 py-3 rounded-xl bg-gray-900 text-white hover:bg-black disabled:opacity-50 tap-grow">Cerrar sesión</button>
           </section>
         </div>
       </section>

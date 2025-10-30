@@ -132,7 +132,7 @@ export default function SubscriptionManagement() {
   if (!profile?.is_premium) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6 text-center card-smooth reveal is-visible">
           <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -142,7 +142,7 @@ export default function SubscriptionManagement() {
           <p className="text-gray-600 mb-6">Suscríbete para acceder a todas las funciones premium.</p>
           <button
             onClick={() => router.push('/')}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors tap-grow"
           >
             Ver Planes
           </button>
@@ -154,7 +154,7 @@ export default function SubscriptionManagement() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-2xl mx-auto px-4">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden card-smooth reveal">
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8 text-white">
             <h1 className="text-2xl font-bold mb-2">Gestión de Suscripción</h1>
             <p className="text-blue-100">Administra tu plan y pagos</p>
@@ -162,7 +162,7 @@ export default function SubscriptionManagement() {
 
           <div className="p-6 space-y-6">
             {/* Estado de la suscripción */}
-            <div className="bg-gray-50 rounded-lg p-4">
+            <div className="bg-gray-50 rounded-lg p-4 card-smooth">
               <h3 className="font-semibold text-gray-900 mb-3">Estado Actual</h3>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
@@ -185,14 +185,14 @@ export default function SubscriptionManagement() {
             </div>
 
             {/* Cambiar plan */}
-            <div className="border border-gray-200 rounded-lg p-4">
+            <div className="border border-gray-200 rounded-lg p-4 card-smooth">
               <h3 className="font-semibold text-gray-900 mb-3">Cambiar Plan</h3>
               <div className="space-y-3">
                 {true && (
                   <button
                     onClick={() => handleChangePlan('monthly')}
                     disabled={actionLoading === 'change'}
-                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors tap-grow"
                   >
                     {actionLoading === 'change' ? 'Procesando...' : 'Cambiar a Plan Mensual (4,99€/mes)'}
                   </button>
@@ -201,7 +201,7 @@ export default function SubscriptionManagement() {
                   <button
                     onClick={() => handleChangePlan('yearly')}
                     disabled={actionLoading === 'change'}
-                    className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors tap-grow"
                   >
                     {actionLoading === 'change' ? 'Procesando...' : 'Cambiar a Plan Anual (39,99€/año)'}
                   </button>
@@ -210,7 +210,7 @@ export default function SubscriptionManagement() {
             </div>
 
             {/* Cancelar suscripción */}
-            <div className="border border-red-200 rounded-lg p-4 bg-red-50">
+            <div className="border border-red-200 rounded-lg p-4 bg-red-50 card-smooth">
               <h3 className="font-semibold text-red-900 mb-3">Zona de Peligro</h3>
               <p className="text-red-700 text-sm mb-4">
                 Al cancelar tu suscripción, perderás acceso a las funciones premium al final del período de facturación actual.
@@ -218,7 +218,7 @@ export default function SubscriptionManagement() {
               <button
                 onClick={handleCancelSubscription}
                 disabled={actionLoading === 'cancel'}
-                className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors tap-grow"
               >
                 {actionLoading === 'cancel' ? 'Cancelando...' : 'Cancelar Suscripción'}
               </button>
@@ -228,7 +228,7 @@ export default function SubscriptionManagement() {
             <div className="pt-4">
               <button
                 onClick={() => router.push('/')}
-                className="w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors"
+                className="w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors tap-grow"
               >
                 Volver al Inicio
               </button>

@@ -3,6 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.32, 0, 0.67, 0);
+  --radius-lg: 16px;
+  --shadow-soft: 0 8px 30px rgba(17, 17, 17, 0.08);
+  scroll-padding-top: calc(env(safe-area-inset-top) + 72px);
 }
 
 @theme inline {
@@ -28,6 +33,36 @@ body {
 html, body {
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+::selection {
+  background: rgba(168, 85, 247, 0.25);
+  color: #111827;
+}
+
+/* Base interactive transitions */
+a, button, [role="button"], input, select, textarea {
+  transition: color 200ms var(--ease-out), background-color 200ms var(--ease-out),
+              border-color 200ms var(--ease-out), transform 250ms var(--ease-out),
+              box-shadow 250ms var(--ease-out);
+}
+
+/* Subtle global background polish */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -10% -10% auto -10%;
+  height: 40vh;
+  background: radial-gradient(60% 60% at 30% 20%, rgba(124, 58, 237, 0.07), transparent 60%),
+              radial-gradient(50% 50% at 70% 10%, rgba(236, 72, 153, 0.07), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(20px);
 }
 
 img, svg, video, canvas {
@@ -398,5 +433,49 @@ img, svg, video, canvas {
   
   .generated-html code {
     font-size: 0.85rem;
+  }
+}
+
+/* =============================
+   Scroll reveal animations
+   ============================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: transform 600ms var(--ease-out), opacity 600ms var(--ease-out);
+}
+
+/* Card hover polish */
+.card-smooth {
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  transition: transform 280ms var(--ease-out), box-shadow 280ms var(--ease-out),
+              border-color 200ms var(--ease-out), background-color 200ms var(--ease-out);
+}
+.card-smooth:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Mobile specific tap target better feedback */
+@media (max-width: 640px) {
+  .tap-grow:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.is-visible,
+  .card-smooth,
+  a, button, [role="button"], input, select, textarea {
+    transition: none !important;
+    animation: none !important;
   }
 }
