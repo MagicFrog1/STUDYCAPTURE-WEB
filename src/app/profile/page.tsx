@@ -14,11 +14,14 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<"change" | "cancel" | "" | "logout">("");
+  const [noSession, setNoSession] = useState(false);
 
   useEffect(() => {
     (async () => {
       const { data } = await supabase.auth.getSession();
       if (!data.session) {
+        setNoSession(true);
+        setLoading(false);
         router.replace("/login");
         return;
       }
@@ -88,6 +91,22 @@ export default function ProfilePage() {
     return (
       <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
         <div className="text-gray-600">Cargando…</div>
+      </main>
+    );
+  }
+
+  if (noSession) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+        <div className="text-gray-700 text-sm">
+          Redirigiendo a inicio de sesión…
+          <span className="ml-2">
+            Si no avanza, pulsa
+            <button onClick={() => router.replace("/login")} className="ml-1 text-purple-700 hover:text-purple-800 underline">
+              aquí
+            </button>
+          </span>
+        </div>
       </main>
     );
   }
