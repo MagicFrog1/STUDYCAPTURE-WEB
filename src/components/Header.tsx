@@ -28,6 +28,12 @@ export default function Header() {
               Inicio
             </Link>
             <Link
+              href="/#como-funciona"
+              className="text-gray-600 hover:text-purple-600 transition-all hover:translate-y-[-1px]"
+            >
+              Cómo funciona
+            </Link>
+            <Link
               href="/generar"
               className="text-gray-600 hover:text-purple-600 transition-all hover:translate-y-[-1px]"
             >
@@ -69,6 +75,7 @@ export default function Header() {
         <div className="md:hidden bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm transition-all">
           <div className="px-4 py-4 flex flex-col gap-3">
             <Link href="/" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Inicio</Link>
+            <Link href="/#como-funciona" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Cómo funciona</Link>
             <Link href="/generar" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Generar Apuntes</Link>
             <Link href="/privacy" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Privacidad</Link>
                 <Link href="/profile" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>

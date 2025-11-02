@@ -81,6 +81,9 @@ export default function Home() {
           <Link href="#porque" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
             Características
           </Link>
+          <Link href="#como-funciona" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
+            Cómo funciona
+          </Link>
           {isLoggedIn && (
             <Link href="/profile" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
               Mi cuenta
@@ -123,6 +126,7 @@ export default function Home() {
           <div className="sm:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur border-b border-purple-200 shadow-sm">
             <div className="px-4 py-4 flex flex-col gap-3">
               <Link href="#porque" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Características</Link>
+              <Link href="#como-funciona" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Cómo funciona</Link>
               {isLoggedIn && (
                 <Link href="/profile" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>
               )}
@@ -234,9 +238,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* (Se elimina la sección Mi cuenta para que abra página aparte) */}
-
-      
+      {/* Cómo funciona (video) */}
+      <section id="como-funciona" className="px-4 sm:px-6 py-12 sm:py-20 scroll-mt-24">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8 sm:mb-10 reveal">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Cómo funciona</h2>
+            <p className="text-gray-600 mt-2">Es súper sencillo: subes tus fotos y obtienes tus resúmenes listos</p>
+          </div>
+          <div className="relative bg-white rounded-2xl border border-purple-200 shadow-sm p-3 sm:p-4 reveal card-smooth">
+            <div className="aspect-video w-full overflow-hidden rounded-xl bg-gray-100">
+              <video
+                src=""
+                controls
+                className="w-full h-full object-cover"
+                poster="/video-poster.jpg"
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-2 text-center">Sustituye el vídeo cuando lo tengas (formato mp4/webm)</p>
+          </div>
+        </div>
+      </section>
 
       {/* Pricing Section */}
       <section id="precios" className="px-4 sm:px-6 py-12 sm:py-20 bg-gradient-to-br from-purple-50 to-pink-50 scroll-mt-24">
