@@ -89,7 +89,7 @@ export default function Home() {
         </nav>
         {/* Mobile menu button */}
         <button
-          className="sm:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-purple-200 text-gray-700 tap-grow"
+          className="hidden"
           aria-label="Abrir menú"
           onClick={() => setIsMenuOpen((v) => !v)}
         >
