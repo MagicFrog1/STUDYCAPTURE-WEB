@@ -210,7 +210,7 @@ export default function GenerarPage() {
         </Link>
         <nav className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm">
           <AppInfoDropdown />
-          <Link href="/profile" className="px-3 py-1.5 rounded-full border border-purple-200 hover:border-purple-300 text-gray-700 hover:text-purple-700 transition-all tap-grow">
+          <Link href="/profile" className="px-2 py-1 sm:px-3 sm:py-1.5 rounded-full border border-purple-200 hover:border-purple-300 text-gray-700 hover:text-purple-700 transition-all tap-grow">
             Mi cuenta
           </Link>
         </nav>

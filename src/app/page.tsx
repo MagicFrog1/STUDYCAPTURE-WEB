@@ -156,44 +156,53 @@ export default function Home() {
               priorizando definiciones, fórmulas, pasos de resolución y ejemplos frecuentes de exámenes.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div className="bg-white p-6 rounded-2xl border border-purple-200 card-smooth reveal shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-purple-50 text-purple-600 ring-1 ring-purple-200">
+            <div className="space-y-4 sm:space-y-5">
+              <div className="relative overflow-hidden rounded-2xl border border-purple-200 bg-white card-smooth reveal shadow-sm hover:shadow-lg transition-all">
+                <div className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-purple-500 to-pink-500" />
+                <div className="p-5 sm:p-6 md:p-7 flex items-start gap-4">
+                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-purple-50 text-purple-600 ring-1 ring-purple-200 flex-shrink-0">
                     <IconCamera />
                   </span>
-                  <h3 className="text-lg font-semibold text-gray-900">Subida inteligente</h3>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-1">Subida inteligente</h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      OCR de alta calidad para texto manuscrito y diagramas. El sistema limpia ruido, endereza la captura y
+                      separa títulos, listas y fórmulas para un resultado legible y ordenado.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-gray-700 leading-relaxed">
-                  OCR de alta calidad para texto manuscrito y diagramas. El sistema limpia ruido, endereza la captura y
-                  separa títulos, listas y fórmulas para un resultado legible y ordenado.
-                </p>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl border border-blue-200 card-smooth reveal shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-blue-50 text-blue-600 ring-1 ring-blue-200">
+              <div className="relative overflow-hidden rounded-2xl border border-blue-200 bg-white card-smooth reveal shadow-sm hover:shadow-lg transition-all">
+                <div className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-blue-500 to-indigo-500" />
+                <div className="p-5 sm:p-6 md:p-7 flex items-start gap-4">
+                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-blue-50 text-blue-600 ring-1 ring-blue-200 flex-shrink-0">
                     <IconPalette />
                   </span>
-                  <h3 className="text-lg font-semibold text-gray-900">Personalización total</h3>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-1">Personalización total</h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      Elige nivel (básico, medio, avanzado), enfoque (definiciones, demostraciones, problemas tipo) y estilo visual
+                      (neutro, pastel o vivo) para estudiar a tu manera.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-gray-700 leading-relaxed">
-                  Elige nivel (básico, medio, avanzado), enfoque (definiciones, demostraciones, problemas tipo) y estilo visual
-                  (neutro, pastel o vivo) para estudiar a tu manera.
-                </p>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl border border-purple-200 card-smooth reveal shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-purple-50 text-purple-600 ring-1 ring-purple-200">
+              <div className="relative overflow-hidden rounded-2xl border border-purple-200 bg-white card-smooth reveal shadow-sm hover:shadow-lg transition-all">
+                <div className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-fuchsia-500 to-purple-600" />
+                <div className="p-5 sm:p-6 md:p-7 flex items-start gap-4">
+                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-purple-50 text-purple-600 ring-1 ring-purple-200 flex-shrink-0">
                     <IconBolt />
                   </span>
-                  <h3 className="text-lg font-semibold text-gray-900">Resultados al instante</h3>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-1">Resultados al instante</h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      Apuntes estructurados por secciones, con puntos clave, pasos enumerados y bloques destacados para fórmulas y
+                      conceptos que suelen caer.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-gray-700 leading-relaxed">
-                  Apuntes estructurados por secciones, con puntos clave, pasos enumerados y bloques destacados para fórmulas y
-                  conceptos que suelen caer.
-                </p>
               </div>
             </div>
           </div>
