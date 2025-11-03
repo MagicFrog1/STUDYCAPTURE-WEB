@@ -204,14 +204,15 @@ export default function GenerarPage() {
           <div className="size-7 sm:size-8 md:size-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
             <img src="/logo.svg" alt="StudyCaptures" className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
           </div>
-          <span className="font-bold text-base sm:text-lg md:text-xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <span className="hidden sm:inline font-bold text-base sm:text-lg md:text-xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             StudyCaptures
           </span>
         </Link>
         <nav className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm">
           <AppInfoDropdown />
-          <Link href="/profile" className="px-2 py-1 sm:px-3 sm:py-1.5 rounded-full border border-purple-200 hover:border-purple-300 text-gray-700 hover:text-purple-700 transition-all tap-grow">
-            Mi cuenta
+          <Link href="/profile" className="flex items-center gap-2 px-1.5 py-1 sm:px-3 sm:py-1.5 rounded-md border border-transparent sm:border-purple-200 text-gray-700 hover:text-purple-700 hover:border-purple-300 transition-all tap-grow">
+            <span className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs">👤</span>
+            <span className="hidden sm:inline">Mi cuenta</span>
           </Link>
         </nav>
       </header>
