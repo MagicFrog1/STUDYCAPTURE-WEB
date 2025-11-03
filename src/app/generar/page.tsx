@@ -199,7 +199,7 @@ export default function GenerarPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
       {/* Header */}
-      <header className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-purple-200/70 sticky top-0 z-20 transition-all">
+      <header className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-purple-200/70 sticky top-0 z-30 pt-[env(safe-area-inset-top)] transition-all">
         <Link href="/" className="flex items-center gap-2 sm:gap-3">
           <div className="size-7 sm:size-8 md:size-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
             <img src="/logo.svg" alt="StudyCaptures" className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
@@ -210,18 +210,9 @@ export default function GenerarPage() {
         </Link>
         <nav className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm">
           <AppInfoDropdown />
-          <Link href="/" className="px-3 py-1.5 rounded-full border border-purple-200 hover:border-purple-300 text-gray-700 hover:text-purple-700 transition-all tap-grow">
-            Inicio
+          <Link href="/profile" className="px-3 py-1.5 rounded-full border border-purple-200 hover:border-purple-300 text-gray-700 hover:text-purple-700 transition-all tap-grow">
+            Mi cuenta
           </Link>
-          <button
-            onClick={async () => {
-              await supabase.auth.signOut();
-              router.replace("/login");
-            }}
-            className="px-3 py-1.5 rounded-full border border-purple-200 hover:border-purple-300 text-gray-700 hover:text-purple-700 transition-all tap-grow"
-          >
-            Cerrar sesión
-          </button>
         </nav>
       </header>
 

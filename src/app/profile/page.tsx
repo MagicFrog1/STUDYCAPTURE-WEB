@@ -148,7 +148,12 @@ export default function ProfilePage() {
           <div className="relative overflow-hidden rounded-3xl">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600" />
             <div className="relative px-8 py-10 text-white">
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">Mi cuenta</h1>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center">
+                  <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
+                </div>
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Mi cuenta</h1>
+              </div>
               <p className="text-white/80">Gestiona tu suscripción, privacidad y sesión</p>
               <div className="mt-6 inline-flex items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full ring-1 ring-white/30">
                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/20 font-semibold">
@@ -156,7 +161,7 @@ export default function ProfilePage() {
                 </span>
                 <span className="text-sm">{email}</span>
                 <span className={`text-xs px-2 py-1 rounded-full ring-1 ${profile?.is_premium ? "bg-green-500/20 ring-green-400/50 text-green-50" : "bg-white/10 ring-white/30 text-white"}`}>
-                  {profile?.is_premium ? "Premium activo" : "Plan gratuito"}
+                  {profile?.is_premium ? "Premium activo" : "Suscripción requerida"}
                 </span>
               </div>
             </div>
@@ -181,7 +186,7 @@ export default function ProfilePage() {
               <div>
                 <p className="text-gray-500">Plan</p>
                 <p className={`font-medium ${profile?.is_premium ? "text-green-600" : "text-gray-900"}`}>
-                  {profile?.is_premium ? "Premium (sin límites)" : "Gratis (2 usos)"}
+                  {profile?.is_premium ? "Premium (sin límites)" : "Suscripción requerida"}
                 </p>
               </div>
             </div>
@@ -215,7 +220,7 @@ export default function ProfilePage() {
               </div>
             ) : (
               <div className="rounded-xl border border-dashed border-purple-300 p-4 bg-purple-50 text-purple-800">
-                Actualmente estás en el plan gratuito. Suscríbete desde la portada o desde Generar.
+                Esta herramienta es de pago. Suscríbete desde la portada o desde Generar para utilizar StudyCaptures.
               </div>
             )}
           </section>

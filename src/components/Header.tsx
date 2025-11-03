@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
+import AppInfoDropdown from "@/components/AppInfoDropdown";
  
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-gray-200/70 sticky top-0 z-40 pt-[env(safe-area-inset-top)] transition-all">
@@ -13,37 +16,28 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 transition-transform hover:translate-y-[-1px]">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
-              <span className="text-white font-bold text-sm">SC</span>
+            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center shadow-sm">
+              <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">StudyCaptures</span>
           </Link>
 
           {/* Navigation (desktop) */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/"
-              className="text-gray-600 hover:text-purple-600 transition-all hover:translate-y-[-1px]"
-            >
-              Inicio
-            </Link>
-            <Link
-              href="/#como-funciona"
-              className="text-gray-600 hover:text-purple-600 transition-all hover:translate-y-[-1px]"
-            >
-              Cómo funciona
-            </Link>
+          <nav className="hidden md:flex items-center space-x-6">
+            <AppInfoDropdown />
+            {pathname !== "/profile" && (
+              <Link
+                href="/profile"
+                className="text-gray-600 hover:text-purple-600 transition-all hover:translate-y-[-1px]"
+              >
+                Mi cuenta
+              </Link>
+            )}
             <Link
               href="/generar"
-              className="text-gray-600 hover:text-purple-600 transition-all hover:translate-y-[-1px]"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full font-medium shadow-sm hover:shadow-md transition-all"
             >
               Generar Apuntes
-            </Link>
-            <Link
-              href="/privacy"
-              className="text-gray-600 hover:text-purple-600 transition-all hover:translate-y-[-1px]"
-            >
-              Privacidad
             </Link>
           </nav>
 
@@ -74,18 +68,17 @@ export default function Header() {
       {isMenuOpen && (
         <div className="md:hidden bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm transition-all">
           <div className="px-4 py-4 flex flex-col gap-3">
-            <Link href="/" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Inicio</Link>
-            <Link href="/#como-funciona" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Cómo funciona</Link>
-            <Link href="/generar" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Generar Apuntes</Link>
-            <Link href="/privacy" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Privacidad</Link>
-                <Link href="/profile" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>
+            <AppInfoDropdown />
+            {pathname !== "/profile" && (
+              <Link href="/profile" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>
+            )}
             <div className="pt-1">
               <Link
                 href="/generar"
                 className="block bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full font-medium text-center tap-grow shadow-sm"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Empezar ahora
+                Generar Apuntes
               </Link>
             </div>
           </div>

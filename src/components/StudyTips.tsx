@@ -52,23 +52,25 @@ export default function StudyTips() {
 
   return (
     <div className="relative">
-      {/* Fondo sutil como en el ejemplo */}
+      {/* Fondo sutil mejorado */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50"></div>
+      <div className="pointer-events-none absolute -top-10 -left-10 w-72 h-72 bg-purple-200/40 blur-3xl rounded-full"></div>
+      <div className="pointer-events-none absolute -bottom-10 -right-10 w-72 h-72 bg-blue-200/40 blur-3xl rounded-full"></div>
 
       <div className="relative max-w-6xl mx-auto">
         {/* Encabezado */}
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold mb-5 tracking-tight">
             <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
               Consejos para mejores resultados
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Descubre las técnicas que utilizan los estudiantes más exitosos para obtener apuntes de máxima calidad
           </p>
         </div>
 
-        {/* Tarjetas estilo ejemplo */}
+        {/* Tarjetas con efecto de realce */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {tips.map((tip, i) => {
             const c = accentToClasses[tip.accent];
@@ -77,7 +79,7 @@ export default function StudyTips() {
                 {/* Overlay de color muy sutil */}
                 <div className={`absolute inset-0 rounded-3xl bg-gradient-to-b ${c.overlay} to-transparent`}></div>
 
-                <div className="relative bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="relative bg-white rounded-3xl p-8 border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-purple-200/70">
                   {/* Icono dentro de contenedor cuadrado redondeado */}
                   <div className="mb-6">
                     <span className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl ring-1 ${c.ring}`}>
@@ -93,26 +95,6 @@ export default function StudyTips() {
               </div>
             );
           })}
-        </div>
-
-        {/* CTA en violeta de marca */}
-        <div className="mt-12 sm:mt-16 text-center">
-          <div className="bg-gradient-to-r from-purple-600 to-violet-600 rounded-2xl p-6 sm:p-8 text-white">
-            <h4 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">¿Listo para mejorar tus apuntes?</h4>
-            <p className="text-purple-100 mb-4 sm:mb-6 max-w-2xl mx-auto text-sm sm:text-base">
-              Aplica estos consejos y descubre cómo la IA puede transformar tu forma de estudiar
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-              <div className="flex items-center gap-2 text-purple-100">
-                <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                <span className="text-sm">Resultados instantáneos</span>
-              </div>
-              <div className="flex items-center gap-2 text-purple-100">
-                <span className="w-2 h-2 bg-purple-300 rounded-full"></span>
-                <span className="text-sm">Totalmente personalizable</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

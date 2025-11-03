@@ -28,7 +28,7 @@ export default function AppInfoDropdown() {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-96 bg-white rounded-2xl shadow-xl border border-purple-200 p-6 z-50">
+        <div className="absolute top-full left-0 mt-2 w-[calc(100vw-2rem)] sm:w-96 bg-white rounded-2xl shadow-xl border border-purple-200 p-6 z-50">
           <div className="space-y-6">
             <div className="text-center">
               <h3 className="text-xl font-bold text-gray-800 mb-2">

@@ -66,7 +66,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 overflow-x-hidden">
       {/* Header */}
-      <header className="px-4 sm:px-6 py-4 flex items-center justify-between bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-purple-200/70 sticky top-0 z-30 pt-[env(safe-area-inset-top)] transition-all">
+      <header className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-purple-200/70 sticky top-0 z-30 pt-[env(safe-area-inset-top)] transition-all">
         <div className="flex items-center gap-3">
             <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
               <img src="/logo.svg" alt="StudyCaptures" className="w-6 h-6" />
@@ -78,33 +78,9 @@ export default function Home() {
         {/* Desktop nav */}
         <nav className="hidden sm:flex items-center gap-6">
           <AppInfoDropdown />
-          <Link href="#porque" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
-            Características
-          </Link>
-          <Link href="#como-funciona" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
-            Cómo funciona
-          </Link>
           {isLoggedIn && (
             <Link href="/profile" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
               Mi cuenta
-            </Link>
-          )}
-          <Link href="#precios" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
-            Precios
-          </Link>
-          {isLoggedIn ? (
-            <button
-              onClick={async () => {
-                await supabase.auth.signOut();
-                setIsLoggedIn(false);
-              }}
-              className="text-gray-600 hover:text-purple-600 transition-colors font-medium"
-            >
-              Cerrar sesión
-            </button>
-          ) : (
-            <Link href="/login" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
-              Entrar
             </Link>
           )}
           <Link href={isLoggedIn ? "/generar" : "/login"} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transition-all transform hover:scale-105">
@@ -125,25 +101,11 @@ export default function Home() {
         {isMenuOpen && (
           <div className="sm:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur border-b border-purple-200 shadow-sm">
             <div className="px-4 py-4 flex flex-col gap-3">
-              <Link href="#porque" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Características</Link>
-              <Link href="#como-funciona" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Cómo funciona</Link>
+              <div className="pb-2 border-b border-purple-100">
+                <AppInfoDropdown />
+              </div>
               {isLoggedIn && (
                 <Link href="/profile" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>
-              )}
-              <Link href="#precios" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Precios</Link>
-              {isLoggedIn ? (
-                <button
-                  onClick={async () => {
-                    await supabase.auth.signOut();
-                    setIsLoggedIn(false);
-                    setIsMenuOpen(false);
-                  }}
-                  className="text-left text-gray-700"
-                >
-                  Cerrar sesión
-                </button>
-              ) : (
-                <Link href="/login" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Entrar</Link>
               )}
               <Link href={isLoggedIn ? "/generar" : "/login"} onClick={() => setIsMenuOpen(false)} className="mt-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full font-medium text-center">
                 Generar Apuntes
@@ -177,7 +139,7 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 reveal">
-              <Link href="/generar" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:shadow-xl transition-all transform hover:scale-105 tap-grow flex items-center gap-3 w-fit">
+              <Link href="/generar" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all transform hover:scale-105 tap-grow flex items-center justify-center gap-3 w-full sm:w-fit">
                 Comenzar ahora
                 <IconArrowRight />
               </Link>
@@ -194,8 +156,8 @@ export default function Home() {
               priorizando definiciones, fórmulas, pasos de resolución y ejemplos frecuentes de exámenes.
             </p>
 
-            <div className="space-y-5">
-              <div className="bg-white p-6 rounded-2xl border border-purple-200 card-smooth reveal">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="bg-white p-6 rounded-2xl border border-purple-200 card-smooth reveal shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5">
                 <div className="flex items-center gap-3 mb-3">
                   <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-purple-50 text-purple-600 ring-1 ring-purple-200">
                     <IconCamera />
@@ -208,7 +170,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl border border-blue-200 card-smooth reveal">
+              <div className="bg-white p-6 rounded-2xl border border-blue-200 card-smooth reveal shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5">
                 <div className="flex items-center gap-3 mb-3">
                   <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-blue-50 text-blue-600 ring-1 ring-blue-200">
                     <IconPalette />
@@ -221,7 +183,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl border border-purple-200 card-smooth reveal">
+              <div className="bg-white p-6 rounded-2xl border border-purple-200 card-smooth reveal shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5">
                 <div className="flex items-center gap-3 mb-3">
                   <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-purple-50 text-purple-600 ring-1 ring-purple-200">
                     <IconBolt />
@@ -242,19 +204,25 @@ export default function Home() {
       <section id="como-funciona" className="px-4 sm:px-6 py-12 sm:py-20 scroll-mt-24">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8 sm:mb-10 reveal">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Cómo funciona</h2>
-            <p className="text-gray-600 mt-2">Es súper sencillo: subes tus fotos y obtienes tus resúmenes listos</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Cómo funciona
+            </h2>
+            <p className="mt-3 text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+              Sube tus fotos y obtén resúmenes claros, bonitos y listos para estudiar.
+            </p>
           </div>
           <div className="relative bg-white rounded-2xl border border-purple-200 shadow-sm p-3 sm:p-4 reveal card-smooth">
-            <div className="aspect-video w-full overflow-hidden rounded-xl bg-gray-100">
+            <div className="aspect-video w-full rounded-xl bg-gray-100 relative overflow-hidden">
+              <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/10 to-transparent" />
               <video
-                src=""
+                src="/copy_C17B0044-CCF5-4355-85D1-E04EB3792482%20(1).mp4"
                 controls
-                className="w-full h-full object-cover"
-                poster="/video-poster.jpg"
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover rounded-xl"
+                poster="/how-it-works-poster.svg"
               />
             </div>
-            <p className="text-xs text-gray-500 mt-2 text-center">Sustituye el vídeo cuando lo tengas (formato mp4/webm)</p>
           </div>
         </div>
       </section>
@@ -267,8 +235,8 @@ export default function Home() {
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-12">Elige el plan que mejor encaja con tu ritmo de estudio</p>
           
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="relative group reveal">
+          <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 md:gap-8 md:overflow-visible -mx-4 px-4 md:m-0 md:p-0">
+            <div className="relative group reveal shrink-0 min-w-[88%] snap-center md:min-w-0 md:shrink">
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-400/30 via-pink-400/30 to-blue-400/30 opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500"></div>
               <div className="relative bg-white p-8 rounded-2xl border border-purple-200 shadow-lg text-left transition-all duration-300 md:group-hover:shadow-2xl md:group-hover:-translate-y-1 group-hover:border-purple-400 card-smooth">
               <h3 className="text-2xl font-bold text-gray-800 mb-2">Mensual</h3>
@@ -283,10 +251,13 @@ export default function Home() {
                 <button onClick={() => handleSubscribe("monthly")} className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-full font-semibold hover:shadow-xl hover:shadow-purple-300/50 transition-all disabled:opacity-60 tap-grow" disabled={loadingPlan === "monthly"}>
                   {loadingPlan === "monthly" ? "Redirigiendo..." : "Elegir mensual"}
                 </button>
+                <div className="mt-3 flex items-center justify-center gap-2 text-gray-500 text-sm">
+                  <span role="img" aria-label="seguro">🔒</span>
+                  <span>Pagos 100% seguros con Stripe</span>
+                </div>
               </div>
               </div>
-
-            <div className="relative group reveal">
+            <div className="relative group reveal shrink-0 min-w-[88%] snap-center md:min-w-0 md:shrink">
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-600/40 via-pink-600/40 to-purple-800/40 opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500"></div>
               <div className="relative bg-gradient-to-br from-purple-500 to-pink-500 p-8 rounded-2xl text-white shadow-xl md:transform md:scale-105 text-left transition-all duration-300 md:group-hover:-translate-y-1 md:group-hover:shadow-2xl md:group-hover:scale-110">
                 <div className="absolute -top-3 right-4">
@@ -307,6 +278,10 @@ export default function Home() {
                 <button onClick={() => handleSubscribe("yearly")} className="w-full bg-white text-purple-600 py-3 rounded-full font-semibold hover:shadow-2xl hover:shadow-white/30 transition-all disabled:opacity-60 tap-grow" disabled={loadingPlan === "yearly"}>
                   {loadingPlan === "yearly" ? "Redirigiendo..." : "Elegir anual"}
                 </button>
+                <div className="mt-3 flex items-center justify-center gap-2 text-white/90 text-sm">
+                  <span role="img" aria-label="seguro">🔒</span>
+                  <span>Pagos 100% seguros con Stripe</span>
+                </div>
               </div>
             </div>
           </div>
@@ -330,7 +305,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center reveal">
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">AI</span>
+              <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
             </div>
             <span className="font-bold text-xl">StudyCaptures</span>
           </div>

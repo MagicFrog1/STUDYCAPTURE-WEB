@@ -1,11 +1,16 @@
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8 text-white">
-            <h1 className="text-3xl font-bold mb-2">Política de Privacidad</h1>
-            <p className="text-blue-100">Última actualización: {new Date().toLocaleDateString('es-ES')}</p>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 py-10">
+      <div className="max-w-5xl mx-auto px-4">
+        <div className="bg-white rounded-2xl border border-purple-200 shadow-sm overflow-hidden card-smooth">
+          <div className="relative px-6 py-8 text-white bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center">
+                <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
+              </div>
+              <h1 className="text-3xl font-bold tracking-tight">Política de Privacidad</h1>
+            </div>
+            <p className="text-white/80">Última actualización: {new Date().toLocaleDateString('es-ES')}</p>
           </div>
 
           <div className="p-8 prose prose-lg max-w-none">
