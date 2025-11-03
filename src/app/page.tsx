@@ -66,7 +66,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 overflow-x-hidden">
       {/* Header */}
-      <header className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-purple-200/70 sticky top-0 z-30 pt-[env(safe-area-inset-top)] transition-all">
+      <header className="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-purple-200/70 sticky top-2 z-30 pt-[env(safe-area-inset-top)] transition-all mx-2 rounded-xl">
         <div className="flex items-center gap-2 sm:gap-3">
             <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
               <img src="/logo.svg" alt="StudyCaptures" className="w-6 h-6" />

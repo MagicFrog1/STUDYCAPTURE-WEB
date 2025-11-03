@@ -199,7 +199,7 @@ export default function GenerarPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
       {/* Header */}
-      <header className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-purple-200/70 sticky top-0 z-30 pt-[env(safe-area-inset-top)] transition-all">
+      <header className="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-purple-200/70 sticky top-2 z-30 pt-[env(safe-area-inset-top)] transition-all mx-2 rounded-xl">
         <Link href="/" className="flex items-center gap-2 sm:gap-3">
           <div className="size-7 sm:size-8 md:size-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
             <img src="/logo.svg" alt="StudyCaptures" className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
@@ -208,10 +208,10 @@ export default function GenerarPage() {
             StudyCaptures
           </span>
         </Link>
-        <nav className="hidden sm:flex items-center gap-2 sm:gap-4 text-xs sm:text-sm">
+        <nav className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm">
           <AppInfoDropdown />
           <Link href="/profile" className="flex items-center gap-2 px-1.5 py-1 sm:px-3 sm:py-1.5 rounded-md border border-transparent sm:border-purple-200 text-gray-700 hover:text-purple-700 hover:border-purple-300 transition-all tap-grow">
-            <span className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs">👤</span>
+            <span className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full flex items-center justify-center text-xs">👤</span>
             <span className="hidden sm:inline">Mi cuenta</span>
           </Link>
         </nav>

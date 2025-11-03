@@ -11,9 +11,9 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-gray-200/70 sticky top-0 z-40 pt-[env(safe-area-inset-top)] transition-all">
+    <header className="bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-gray-200/70 sticky top-2 z-40 pt-[env(safe-area-inset-top)] transition-all mx-2 rounded-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-2">
+        <div className="flex justify-between items-center py-3 sm:py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 transition-transform hover:translate-y-[-1px]">
             <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center shadow-sm">
@@ -28,9 +28,10 @@ export default function Header() {
             {pathname !== "/profile" && (
               <Link
                 href="/profile"
-                className="text-gray-600 hover:text-purple-600 transition-all hover:translate-y-[-1px]"
+                className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-all hover:translate-y-[-1px]"
               >
-                Mi cuenta
+                <span className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full flex items-center justify-center text-xs">👤</span>
+                <span>Mi cuenta</span>
               </Link>
             )}
             <Link
