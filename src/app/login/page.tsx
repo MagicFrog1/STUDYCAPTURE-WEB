@@ -14,6 +14,8 @@ export default function LoginPage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [profileEmail, setProfileEmail] = useState<string | null>(null);
+  const [accepted, setAccepted] = useState(false);
+  const [showLegal, setShowLegal] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -50,6 +52,9 @@ export default function LoginPage() {
     try {
       if (!email || !password) throw new Error("Email y contraseña son obligatorios");
       if (mode === "register") {
+        if (!accepted) {
+          throw new Error("Debes aceptar la Política de Privacidad y los Términos y Condiciones para registrarte");
+        }
         const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: (typeof window !== 'undefined' ? window.location.origin : '') + '/generar' } });
         if (error) throw error;
         setSuccess("¡Cuenta creada! Revisa tu correo y confirma tu email para comenzar.");
@@ -176,9 +181,25 @@ export default function LoginPage() {
                   placeholder="••••••••"
                 />
               </div>
+              {/* Aceptación legal solo en registro */}
+              {mode === "register" && (
+                <label className="flex items-start gap-3 text-xs text-gray-600 mt-1 select-none">
+                  <input
+                    type="checkbox"
+                    checked={accepted}
+                    onChange={(e) => setAccepted(e.target.checked)}
+                    className="mt-0.5 h-4 w-4 text-purple-600 rounded border-purple-300 focus:ring-purple-400"
+                  />
+                  <span>
+                    He leído y acepto la <Link href="/privacy" className="text-purple-700 hover:underline">Política de Privacidad</Link> y los
+                    <Link href="/terms" className="text-purple-700 hover:underline"> Términos y Condiciones</Link>.
+                  </span>
+                </label>
+              )}
+
               <button
                 onClick={onSubmit}
-                disabled={loading}
+                disabled={loading || (mode === "register" && !accepted)}
                 className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg font-semibold hover:shadow-lg disabled:opacity-50 tap-grow"
               >
                 {loading ? "Procesando..." : mode === "login" ? "Entrar" : "Registrarme"}
@@ -194,6 +215,13 @@ export default function LoginPage() {
 
             <div className="mt-6 text-xs text-gray-500">
               Al continuar aceptas nuestra política de privacidad.
+              <button onClick={() => setShowLegal((v) => !v)} className="ml-2 underline text-purple-700 hover:text-purple-800">Ver detalles legales</button>
+              {showLegal && (
+                <div className="mt-2 text-xs">
+                  <Link href="/privacy" className="text-purple-700 hover:underline mr-3">Política de Privacidad</Link>
+                  <Link href="/terms" className="text-purple-700 hover:underline">Términos y Condiciones</Link>
+                </div>
+              )}
             </div>
           </div>
         </section>

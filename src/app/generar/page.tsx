@@ -11,6 +11,7 @@ type FormValues = {
   complexity: "baja" | "media" | "alta";
   colorStyle: "neutro" | "pastel" | "vivo";
   creativity: "preciso" | "equilibrado" | "creativo";
+  fullTopic: boolean;
 };
 
 type ResultChunk = { id: string; title: string; content: string };
@@ -26,6 +27,7 @@ export default function GenerarPage() {
     complexity: "media",
     colorStyle: "pastel",
     creativity: "equilibrado",
+    fullTopic: false,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -153,7 +155,8 @@ export default function GenerarPage() {
       router.push("/login");
       return;
     }
-    if (!isPremium && process.env.NODE_ENV === "production") {
+    // Si no hay suscripción activa, mostrar paywall amable y salir
+    if (!isPremium) {
       setShowPaywall(true);
       return;
     }
@@ -178,6 +181,7 @@ export default function GenerarPage() {
       const res = await fetch("/api/process", { method: "POST", body: form, headers });
       if (!res.ok) {
         if (res.status === 402) {
+          setShowPaywall(true);
           throw new Error("Necesitas una suscripción activa para generar apuntes.");
         }
         const msg = await res.text();
@@ -188,9 +192,6 @@ export default function GenerarPage() {
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Error desconocido";
       setError(message);
-      if (message.includes("Necesitas") || message.includes("suscripción") || message.includes("suscrip")) {
-        setShowPaywall(true);
-      }
     } finally {
       setLoading(false);
     }
@@ -210,7 +211,7 @@ export default function GenerarPage() {
         </Link>
         <nav className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm">
           <AppInfoDropdown />
-          <Link href="/profile" className="flex items-center gap-2 px-1.5 py-1 sm:px-3 sm:py-1.5 rounded-md border border-transparent sm:border-purple-200 text-gray-700 hover:text-purple-700 hover:border-purple-300 transition-all tap-grow">
+          <Link href={isLoggedIn ? "/profile" : "/login"} className="flex items-center gap-2 px-1.5 py-1 sm:px-3 sm:py-1.5 rounded-md border border-transparent sm:border-purple-200 text-gray-700 hover:text-purple-700 hover:border-purple-300 transition-all tap-grow">
             <span className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full flex items-center justify-center text-xs">👤</span>
             <span className="hidden sm:inline">Mi cuenta</span>
           </Link>
@@ -290,6 +291,21 @@ export default function GenerarPage() {
                   </div>
                 </div>
 
+                <div className="mt-4">
+                  <label className="flex items-start gap-3 p-4 rounded-xl border border-purple-200 hover:border-purple-300 transition-all cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={values.fullTopic}
+                      onChange={(e) => setValues((v) => ({ ...v, fullTopic: e.target.checked }))}
+                      className="mt-1 h-4 w-4 text-purple-600 rounded border-purple-300 focus:ring-purple-400"
+                    />
+                    <div>
+                      <div className="font-semibold text-gray-800">Desarrollar apuntes completos del tema</div>
+                      <p className="text-sm text-gray-600">Genera un desarrollo completo del tema detectado en las imágenes: puntos clave, definiciones, propiedades, ejemplos, aplicaciones, errores comunes, ejercicios sugeridos y resumen final.</p>
+                    </div>
+                  </label>
+                </div>
+
                 {/* File Preview */}
                 {files.length > 0 && (
                   <div className="mt-6">
@@ -330,17 +346,45 @@ export default function GenerarPage() {
                   </svg>
                   Contexto Educativo (opcional pero recomendado)
                 </h2>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                  <h3 className="font-semibold text-blue-800 mb-2">💡 ¿Cómo obtener mejores apuntes?</h3>
-                  <p className="text-sm text-blue-700 mb-2">La IA puede usar su conocimiento interno para enriquecer tus apuntes. Proporciona contexto para obtener:</p>
-                  <ul className="text-sm text-blue-700 space-y-1 ml-4">
-                    <li>• <strong>Explicaciones más completas</strong> de conceptos incompletos</li>
-                    <li>• <strong>Ejemplos adicionales</strong> relevantes para tu nivel</li>
-                    <li>• <strong>Conexiones entre temas</strong> que faciliten el aprendizaje</li>
-                    <li>• <strong>Contexto histórico</strong> y aplicaciones prácticas</li>
-                    <li>• <strong>Ejercicios sugeridos</strong> para practicar</li>
-                  </ul>
+              <div className="relative overflow-hidden rounded-2xl p-5 sm:p-6 mb-4 border border-purple-200 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+                <div className="pointer-events-none absolute -top-16 -left-16 w-40 h-40 rounded-full bg-purple-200/30 blur-2xl" />
+                <div className="pointer-events-none absolute -bottom-16 -right-12 w-44 h-44 rounded-full bg-pink-200/30 blur-2xl" />
+                <div className="relative">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-base sm:text-lg font-extrabold bg-gradient-to-r from-purple-700 via-pink-700 to-indigo-700 bg-clip-text text-transparent flex items-center gap-2">
+                      ✨ Consejos para mejores resultados
+                    </h3>
+                    <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-white/70 text-purple-700 ring-1 ring-purple-200">
+                      Recomendado
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-700 mb-4">
+                    La IA puede enriquecer tus apuntes si le das contexto. Añade detalles sobre asignatura, nivel y objetivos para conseguir:
+                  </p>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div className="flex items-start gap-3 rounded-xl bg-white/70 backdrop-blur p-3 ring-1 ring-purple-200">
+                      <div className="shrink-0 w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center">📘</div>
+                      <p className="text-sm text-gray-800"><strong>Explicaciones más completas</strong> de conceptos incompletos</p>
+                    </div>
+                    <div className="flex items-start gap-3 rounded-xl bg-white/70 backdrop-blur p-3 ring-1 ring-pink-200">
+                      <div className="shrink-0 w-8 h-8 rounded-lg bg-pink-100 text-pink-700 flex items-center justify-center">🧩</div>
+                      <p className="text-sm text-gray-800"><strong>Ejemplos adicionales</strong> relevantes para tu nivel</p>
+                    </div>
+                    <div className="flex items-start gap-3 rounded-xl bg-white/70 backdrop-blur p-3 ring-1 ring-indigo-200">
+                      <div className="shrink-0 w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center">🔗</div>
+                      <p className="text-sm text-gray-800"><strong>Conexiones entre temas</strong> que faciliten el aprendizaje</p>
+                    </div>
+                    <div className="flex items-start gap-3 rounded-xl bg-white/70 backdrop-blur p-3 ring-1 ring-amber-200">
+                      <div className="shrink-0 w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center">🕰️</div>
+                      <p className="text-sm text-gray-800"><strong>Contexto histórico</strong> y aplicaciones prácticas</p>
+                    </div>
+                    <div className="flex items-start gap-3 rounded-xl bg-white/70 backdrop-blur p-3 ring-1 ring-emerald-200 sm:col-span-2">
+                      <div className="shrink-0 w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">✅</div>
+                      <p className="text-sm text-gray-800"><strong>Ejercicios sugeridos</strong> para practicar y afianzar</p>
+                    </div>
+                  </div>
                 </div>
+              </div>
                 <p className="text-sm text-gray-600 mb-3">Describe la asignatura, nivel académico, objetivos de aprendizaje y cualquier preferencia específica:</p>
                 <textarea
                   value={context}
@@ -531,20 +575,23 @@ export default function GenerarPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-purple-200 card-smooth reveal is-visible">
             <div className="flex items-start justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-900">Has terminado tu plan gratuito</h3>
+              <h3 className="text-xl font-bold text-gray-900">Suscripción necesaria</h3>
               <button onClick={() => setShowPaywall(false)} className="text-gray-500 hover:text-gray-700">✕</button>
             </div>
-            <p className="text-gray-700 mb-4">Pásate a Premium para generar apuntes sin límites y con prioridad.</p>
+            <p className="text-gray-700 mb-4">Para generar apuntes ilimitados y con prioridad necesitas una suscripción activa. Es rápida, segura y puedes cancelarla cuando quieras.</p>
             <div className="space-y-2">
-              <button onClick={() => handleSubscribe("monthly")} disabled={loadingPlan === "monthly"} className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg disabled:opacity-60 tap-grow">
-                {loadingPlan === "monthly" ? "Redirigiendo..." : "Elegir mensual (4,99€ / mes)"}
+              <Link href="/#precios" className="w-full inline-flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg tap-grow">
+                Ir al panel de suscripción
+              </Link>
+              <button onClick={() => handleSubscribe("monthly")} disabled={loadingPlan === "monthly"} className="w-full bg-white text-purple-600 ring-1 ring-purple-200 py-3 rounded-xl font-semibold hover:shadow-md disabled:opacity-60 tap-grow">
+                {loadingPlan === "monthly" ? "Redirigiendo..." : "Suscribirme mensual (4,99€ / mes)"}
               </button>
               <button onClick={() => handleSubscribe("yearly")} disabled={loadingPlan === "yearly"} className="w-full bg-white text-purple-600 ring-1 ring-purple-200 py-3 rounded-xl font-semibold hover:shadow-md disabled:opacity-60 tap-grow">
-                {loadingPlan === "yearly" ? "Redirigiendo..." : "Elegir anual (39,99€ / año)"}
+                {loadingPlan === "yearly" ? "Redirigiendo..." : "Suscribirme anual (39,99€ / año)"}
               </button>
             </div>
-            <div className="mt-4 text-center">
-              <Link href="/#precios" className="text-sm text-gray-600 hover:underline">Ver detalle de planes</Link>
+            <div className="mt-4 text-center text-sm">
+              <Link href="/#precios" className="text-gray-600 hover:underline">Ver detalle de planes</Link>
             </div>
           </div>
         </div>

@@ -1,14 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import AppInfoDropdown from "@/components/AppInfoDropdown";
+import { supabase } from "@/lib/supabaseClient";
  
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.auth.getSession();
+      setIsLoggedIn(Boolean(data.session));
+    })();
+  }, []);
 
   return (
     <header className="bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-gray-200/70 sticky top-2 z-40 pt-[env(safe-area-inset-top)] transition-all mx-2 rounded-xl">
@@ -27,7 +36,7 @@ export default function Header() {
             <AppInfoDropdown />
             {pathname !== "/profile" && (
               <Link
-                href="/profile"
+                href={isLoggedIn ? "/profile" : "/login"}
                 className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-all hover:translate-y-[-1px]"
               >
                 <span className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full flex items-center justify-center text-xs">👤</span>
@@ -45,7 +54,7 @@ export default function Header() {
           {/* Right actions */}
           <div className="flex items-center gap-2">
             <Link
-              href="/profile"
+              href={isLoggedIn ? "/profile" : "/login"}
               className="hidden md:inline-flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 transition-colors"
             >
               <span className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">👤</span>
@@ -71,7 +80,7 @@ export default function Header() {
           <div className="px-4 py-4 flex flex-col gap-3">
             <AppInfoDropdown />
             {pathname !== "/profile" && (
-              <Link href="/profile" className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>
+              <Link href={isLoggedIn ? "/profile" : "/login"} className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>
             )}
             <div className="pt-1">
               <Link

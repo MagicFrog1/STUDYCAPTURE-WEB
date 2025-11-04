@@ -12,6 +12,7 @@ export const dynamic = "force-dynamic";
     complexity: z.enum(["baja", "media", "alta"]),
     colorStyle: z.enum(["neutro", "pastel", "vivo"]),
     creativity: z.enum(["preciso", "equilibrado", "creativo"]),
+    fullTopic: z.boolean().optional().default(false),
   }),
 });
 
@@ -90,39 +91,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
      
      console.log("DEBUG USER:", userId ? "Authenticated" : "Not authenticated");
     
-    // Verificar que el usuario esté suscrito (premium) en producción
+    // Verificar login en producción (la generación es gratuita temporalmente; sin check de suscripción)
     if (!isDev) {
       if (!userId || !accessToken) {
         return NextResponse.json({ error: "login_required" }, { status: 401 });
       }
-      
-      // Usar el cliente autenticado para consultar suscripción activa
-      const { createClient } = await import("@supabase/supabase-js");
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string | undefined;
-      const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string | undefined;
-      if (!supabaseUrl || !supabaseAnonKey) {
-        throw new Error("Supabase env vars missing (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY)");
-      }
-
-      const authenticatedSupabase = createClient(supabaseUrl as string, supabaseAnonKey as string, {
-        global: {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        }
-      });
-
-      const { data: sub } = await authenticatedSupabase
-        .from('subscriptions')
-        .select('id,status,current_period_end')
-        .eq('user_id', userId)
-        .eq('status', 'active')
-        .gt('current_period_end', new Date().toISOString())
-        .maybeSingle();
-
-      if (!sub) {
-        return NextResponse.json({ error: "subscription_required" }, { status: 402 });
-      }
+      // Suscripción NO requerida temporalmente
     }
 
     const formData = await req.formData();
@@ -151,6 +125,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       media: 1500,
       larga: 2800,
     };
+    let maxTokens = sizeToMaxTokens[options.size];
+    if (options.fullTopic) {
+      // Modo "apuntes completos": sube sustancialmente el presupuesto de tokens
+      if (options.size === "mini") {
+        maxTokens = 5000;
+      } else if (options.size === "media") {
+        maxTokens = 9000;
+      } else {
+        maxTokens = 12000;
+      }
+      // Seguridad: no exceder un límite razonable
+      maxTokens = Math.min(maxTokens, 12000);
+    }
 
     const openaiApiKey = process.env.OPENAI_API_KEY;
     console.log("DEBUG API KEY:", openaiApiKey ? `Present (length: ${openaiApiKey.length})` : "MISSING");
@@ -164,11 +151,11 @@ METODOLOGÍA DE ANÁLISIS Y ENRIQUECIMIENTO:
 2. IDENTIFICA el tema/disciplina académica específica
 3. USA tu conocimiento interno para:
    - Completar definiciones incompletas o ambiguas
-   - Añadir ejemplos ilustrativos relevantes
+   - Añadir ejemplos ilustrativos relevantes 
    - Explicar conexiones entre conceptos
    - Proporcionar contexto histórico o teórico cuando sea educativo
    - Sugerir aplicaciones prácticas del conocimiento
-4. ESTRUCTURA el contenido de forma pedagógica y progresiva
+4. ESTRUCTURA el contenido de forma pedagógica y progresiva 
 
 PRINCIPIOS EDUCATIVOS:
 - Prioriza la comprensión sobre la memorización
@@ -275,6 +262,61 @@ INSTRUCCIONES PARA USAR EL CONTEXTO:
 `;
     }
 
+    if (options.fullTopic) {
+      // Modo "apuntes completos del tema": fuerza un desarrollo exhaustivo
+      prompt += `
+
+MODO APUNTES COMPLETOS DEL TEMA:
+- Detecta el TEMA global de las imágenes y desarróllalo de forma EXHAUSTIVA.
+- Identifica el TIPO DE CONTENIDO predominante:
+  • Ejercicio/Problema: infiere enunciado y objetivo, datos dados, estrategia, resolución paso a paso con justificación, comprobación del resultado y variantes similares.
+  • Clasificación/Esquema: define criterio de clasificación, lista subtipos, diferencias clave entre subtipos, ejemplos de cada uno y cuándo usar cada categoría.
+  • Resumen teórico/mapa conceptual: define conceptos, propiedades/leyes/teoremas, relaciones entre conceptos, ejemplos canónicos y aplicaciones prácticas.
+- Referénciate explícitamente a elementos visibles (símbolos, unidades, diagramas, tablas, títulos parciales) para anclar el contenido a la imagen.
+- Estructura recomendada (ajústala si el tipo lo requiere):
+  1) <h3>Resumen del tema</h3>
+  2) <p><strong>Puntos clave:</strong> lista breve de ideas principales</p>
+  3) <h3>Definiciones y conceptos fundamentales</h3>
+  4) <h3>Propiedades, teoremas o leyes</h3>
+  5) <h3>Procedimientos o métodos</h3>
+     <ol>
+       <li>Pasos numerados con <strong>justificación</strong> de cada paso</li>
+       <li>Condiciones previas y <strong>supuestos</strong> de aplicación</li>
+       <li><strong>Variantes</strong> del método según casos y cómo elegir</li>
+       <li><strong>Validaciones</strong> y comprobaciones del resultado</li>
+     </ol>
+  6) <h3>Ejemplos resueltos</h3>
+     <ul>
+       <li>Mínimo 3: <em>básico</em>, <em>intermedio</em>, <em>avanzado</em></li>
+       <li>Mostrar datos, desarrollo paso a paso, resultado y <strong>por qué</strong> funciona</li>
+       <li>Incluir <strong>variación</strong> o alternativa y su efecto</li>
+       <li>Referenciar elementos visibles de la imagen si aplica</li>
+     </ul>
+  7) <h3>Aplicaciones prácticas</h3>
+  8) <h3>Errores comunes y cómo evitarlos</h3>
+     <ul>
+       <li>Al menos 6 errores típicos con causa y prevención</li>
+       <li>Ejemplo de <code>mal</code> vs <code>correcto</code> cuando sea útil</li>
+     </ul>
+  9) <h3>Ejercicios sugeridos</h3>
+     <ul>
+       <li>Al menos 8 enunciados variados por nivel y tipo</li>
+       <li>Incluir <strong>pista</strong> o resultado esperado de forma breve</li>
+       <li>Indicar criterio de corrección o rúbrica cuando aplique</li>
+     </ul>
+  10) <h3>Resumen final</h3> con ideas para repasar rápido
+- Adaptación por ASIGNATURA (si se detecta):
+  • Matemáticas: tipo de objeto (funciones, límites, derivadas, integrales, álgebra lineal, probabilidad), notación coherente, demostraciones abreviadas cuando aporte valor, interpretación geométrica.
+  • Física: magnitudes, unidades SI, leyes relevantes, modelado, aproximaciones, análisis dimensional y orden de magnitud.
+  • Química: reacciones, estequiometría, estados, mecanismos, condiciones, seguridad y aplicaciones.
+  • Biología: niveles (celular, tisular, sistémico), procesos/mecanismos y relaciones estructura-función.
+  • Informática: definiciones formales, pseudocódigo/algoritmos, complejidad, estructuras de datos, casos borde.
+  • Economía/Derecho/Sociales: definiciones operativas, marcos teóricos, supuestos, casos y contraejemplos.
+  • Lenguas/Literatura: recursos, figuras, géneros, análisis textual, ejemplos comentados.
+- Mantén únicamente las etiquetas HTML permitidas y segmenta con títulos/listas para máxima claridad.
+`;
+    }
+
     // Convert images to base64 (cap first 3)
     const images: { mime: string; b64: string }[] = [];
     for (const f of files.slice(0, 3)) {
@@ -298,7 +340,7 @@ INSTRUCCIONES PARA USAR EL CONTEXTO:
         model: "gpt-4o-mini",
         messages: [{ role: "user", content }],
         temperature: options.creativity === "preciso" ? 0.2 : options.creativity === "equilibrado" ? 0.6 : 0.85,
-        max_tokens: sizeToMaxTokens[options.size],
+        max_tokens: maxTokens,
       });
       html = response.choices[0]?.message?.content ?? "";
       // Clean model output: strip code fences and any html/body wrappers

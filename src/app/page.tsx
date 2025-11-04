@@ -20,6 +20,7 @@ export default function Home() {
     })();
   }, []);
 
+
   useEffect(() => {
     const elements = Array.from(document.querySelectorAll<HTMLElement>('.reveal'));
     if (!('IntersectionObserver' in window) || elements.length === 0) return;
@@ -78,18 +79,16 @@ export default function Home() {
         {/* Desktop nav */}
         <nav className="hidden sm:flex items-center gap-6">
           <AppInfoDropdown />
-          {isLoggedIn && (
-            <Link href="/profile" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
-              Mi cuenta
-            </Link>
-          )}
-          <Link href={isLoggedIn ? "/generar" : "/login"} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transition-all transform hover:scale-105">
+          <Link href={isLoggedIn ? "/profile" : "/login"} className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
+            Mi cuenta
+          </Link>
+          <Link href="/generar" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transition-all transform hover:scale-105">
             Generar Apuntes
           </Link>
         </nav>
         {/* Mobile menu button */}
         <button
-          className="hidden"
+          className="sm:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-purple-200 text-gray-700 tap-grow"
           aria-label="Abrir menú"
           onClick={() => setIsMenuOpen((v) => !v)}
         >
@@ -99,15 +98,13 @@ export default function Home() {
         </button>
         {/* Mobile dropdown */}
         {isMenuOpen && (
-          <div className="sm:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur border-b border-purple-200 shadow-sm">
+          <div className="sm:hidden absolute top-full left-0 right-0 z-40 bg-white/95 backdrop-blur border-b border-purple-200 shadow-sm">
             <div className="px-4 py-4 flex flex-col gap-3">
               <div className="pb-2 border-b border-purple-100">
                 <AppInfoDropdown />
               </div>
-              {isLoggedIn && (
-                <Link href="/profile" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>
-              )}
-              <Link href={isLoggedIn ? "/generar" : "/login"} onClick={() => setIsMenuOpen(false)} className="mt-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full font-medium text-center">
+              <Link href={isLoggedIn ? "/profile" : "/login"} className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>
+              <Link href="/generar" onClick={() => setIsMenuOpen(false)} className="mt-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full font-medium text-center">
                 Generar Apuntes
               </Link>
             </div>
@@ -115,92 +112,115 @@ export default function Home() {
         )}
       </header>
 
-      {/* Hero + Why Section side by side */}
-      <section className="px-4 sm:px-6 py-10 sm:py-16">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 sm:gap-10 items-start">
-          {/* Left: Hero */}
-          <div className="text-left reveal">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 rounded-full text-purple-700 font-medium mb-6">
-              <span className="size-2 rounded-full bg-purple-500 inline-block" />
-              Optimizado para universidad, bachillerato y oposiciones
-            </div>
+      {/* Hero centrado y destacado */}
+      <section className="px-4 sm:px-6 py-12 sm:py-20">
+        <div className="max-w-5xl mx-auto">
+          <div className="group relative overflow-hidden rounded-3xl chalkboard px-6 sm:px-10 py-10 sm:py-16 shadow-sm transition-all duration-500 hover:shadow-2xl hover:-translate-y-0.5 reveal will-change-transform [transform-style:preserve-3d] hover:[transform:perspective(1200px)_rotateX(1.2deg)_rotateY(-1deg)]">
+            <div className="chalk-noise" />
+            <div className="pointer-events-none absolute -top-24 -left-10 w-56 h-56 rounded-full bg-white/5 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -right-10 w-64 h-64 rounded-full bg-white/5 blur-3xl" />
 
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 reveal">
-              <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
-                Convierte fotos de apuntes y pizarras
-              </span>
-              <br />
-              <span className="text-gray-800">en resúmenes listos para examen</span>
-            </h1>
+            <div className="text-center relative">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 rounded-full text-purple-700 font-medium mb-6 ring-1 ring-purple-200/60">
+                <span className="size-2 rounded-full bg-purple-500 inline-block" />
+                Optimizado para universidad, bachillerato y oposiciones
+              </div>
 
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl leading-relaxed reveal">
-              Extraemos conceptos clave, fórmulas, definiciones y esquemas para crear resúmenes por temas,
-              priorizando lo que más cae en examen. Ideal para repasar rápido, preparar fichas y memorizar con color.
-            </p>
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-2 sm:mb-3 leading-tight">
+                <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+                  Convierte fotos de apuntes y pizarras
+                </span>
+                <br />
+                <span className="text-gray-900">en resúmenes listos para examen</span>
+              </h1>
 
-            <div className="flex flex-col sm:flex-row gap-4 reveal">
-              <Link href="/generar" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all transform hover:scale-105 tap-grow flex items-center justify-center gap-3 w-full sm:w-fit">
-                Comenzar ahora
-                <IconArrowRight />
-              </Link>
+              <p className="mx-auto text-base sm:text-lg md:text-xl text-gray-700 mb-7 sm:mb-10 max-w-3xl leading-relaxed">
+                Extraemos conceptos clave, fórmulas, definiciones y esquemas para crear resúmenes por temas,
+                priorizando lo que más cae en examen. Ideal para repasar rápido, preparar fichas y memorizar con color.
+              </p>
+
+              <div className="flex items-center justify-center">
+                <Link href="/generar" className="group/cta bg-gradient-to-r from-purple-500 to-pink-500 text-white px-7 sm:px-9 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all transform hover:scale-[1.03] tap-grow flex items-center gap-3 ring-1 ring-purple-200/60 hover:ring-purple-300/70">
+                  Comenzar ahora
+                  <span className="transition-transform duration-300 group-hover/cta:translate-x-1">
+                    <IconArrowRight />
+                  </span>
+                </Link>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Right: Why Apuntes IA */}
-          <div id="porque" className="text-left lg:border-l lg:border-black/10 lg:pl-10 scroll-mt-24 reveal">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+      {/* ¿Por qué elegir StudyCaptures? */}
+      <section id="porque" className="px-4 sm:px-6 pt-2 pb-10 sm:pt-4 sm:pb-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-left reveal">
+            <h2 className="section-title text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 mb-6">
               ¿Por qué elegir <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">StudyCaptures</span>?
             </h2>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+            <p className="section-lead mb-10">
               Diseñado para el estudio real: convierte fotos con luces, sombras o escritura irregular en material claro,
               priorizando definiciones, fórmulas, pasos de resolución y ejemplos frecuentes de exámenes.
             </p>
 
-            <div className="space-y-4 sm:space-y-5">
-              <div className="relative overflow-hidden rounded-2xl border border-purple-200 bg-white card-smooth reveal shadow-sm hover:shadow-lg transition-all">
-                <div className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-purple-500 to-pink-500" />
-                <div className="p-5 sm:p-6 md:p-7 flex items-start gap-4">
-                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-purple-50 text-purple-600 ring-1 ring-purple-200 flex-shrink-0">
-                    <IconCamera />
-                  </span>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-1">Subida inteligente</h3>
-                    <p className="text-gray-700 leading-relaxed">
-                      OCR de alta calidad para texto manuscrito y diagramas. El sistema limpia ruido, endereza la captura y
-                      separa títulos, listas y fórmulas para un resultado legible y ordenado.
-                    </p>
+            <div className="grid lg:grid-cols-3 gap-5">
+              {/* Card 1 */}
+              <div className="group relative overflow-visible rounded-2xl p-0.5 bg-gradient-to-br from-purple-200 via-pink-200 to-indigo-200 shadow-sm hover:shadow-xl transition-all reveal">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-gradient-to-br from-purple-400/25 via-pink-400/25 to-indigo-400/25 transition-opacity" />
+                <div className="pointer-events-none absolute inset-x-2 -bottom-4 h-8 rounded-2xl bg-gradient-to-r from-fuchsia-200 via-pink-200 to-indigo-200 opacity-70 blur-sm shadow-md" aria-hidden />
+                <div className="relative bg-white rounded-[1rem] p-5 sm:p-6 md:p-7 border border-purple-100 overflow-hidden">
+                  <div className="absolute -top-6 -right-6 w-16 h-16 bg-gradient-to-tr from-purple-200 to-pink-200 rounded-full blur-2xl opacity-60" />
+                  <div className="flex items-start gap-4">
+                    <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 text-white ring-1 ring-purple-300/40 shadow-sm flex-shrink-0">
+                      <IconCamera />
+                    </span>
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Subida inteligente</h3>
+                      <p className="text-gray-700 leading-relaxed">
+                        OCR de alta calidad para manuscritos y diagramas. Limpieza de ruido, enderezado y segmentación en títulos, listas y fórmulas.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="relative overflow-hidden rounded-2xl border border-blue-200 bg-white card-smooth reveal shadow-sm hover:shadow-lg transition-all">
-                <div className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-blue-500 to-indigo-500" />
-                <div className="p-5 sm:p-6 md:p-7 flex items-start gap-4">
-                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-blue-50 text-blue-600 ring-1 ring-blue-200 flex-shrink-0">
-                    <IconPalette />
-                  </span>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-1">Personalización total</h3>
-                    <p className="text-gray-700 leading-relaxed">
-                      Elige nivel (básico, medio, avanzado), enfoque (definiciones, demostraciones, problemas tipo) y estilo visual
-                      (neutro, pastel o vivo) para estudiar a tu manera.
-                    </p>
+              {/* Card 2 */}
+              <div className="group relative overflow-visible rounded-2xl p-0.5 bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200 shadow-sm hover:shadow-xl transition-all reveal">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-gradient-to-br from-indigo-400/25 via-purple-400/25 to-pink-400/25 transition-opacity" />
+                <div className="pointer-events-none absolute inset-x-2 -bottom-4 h-8 rounded-2xl bg-gradient-to-r from-fuchsia-200 via-pink-200 to-indigo-200 opacity-70 blur-sm shadow-md" aria-hidden />
+                <div className="relative bg-white rounded-[1rem] p-5 sm:p-6 md:p-7 border border-purple-100 overflow-hidden">
+                  <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-gradient-to-tr from-indigo-200 to-purple-200 rounded-full blur-2xl opacity-60" />
+                  <div className="flex items-start gap-4">
+                    <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white ring-1 ring-indigo-300/40 shadow-sm flex-shrink-0">
+                      <IconPalette />
+                    </span>
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Personalización total</h3>
+                      <p className="text-gray-700 leading-relaxed">
+                        Elige nivel, enfoque y estilo visual (neutro, pastel o vivo) para estudiar a tu manera.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="relative overflow-hidden rounded-2xl border border-purple-200 bg-white card-smooth reveal shadow-sm hover:shadow-lg transition-all">
-                <div className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-fuchsia-500 to-purple-600" />
-                <div className="p-5 sm:p-6 md:p-7 flex items-start gap-4">
-                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-purple-50 text-purple-600 ring-1 ring-purple-200 flex-shrink-0">
-                    <IconBolt />
-                  </span>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-1">Resultados al instante</h3>
-                    <p className="text-gray-700 leading-relaxed">
-                      Apuntes estructurados por secciones, con puntos clave, pasos enumerados y bloques destacados para fórmulas y
-                      conceptos que suelen caer.
-                    </p>
+              {/* Card 3 */}
+              <div className="group relative overflow-visible rounded-2xl p-0.5 bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200 shadow-sm hover:shadow-xl transition-all reveal">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-gradient-to-br from-pink-400/25 via-purple-400/25 to-indigo-400/25 transition-opacity" />
+                <div className="pointer-events-none absolute inset-x-2 -bottom-4 h-8 rounded-2xl bg-gradient-to-r from-fuchsia-200 via-pink-200 to-indigo-200 opacity-70 blur-sm shadow-md" aria-hidden />
+                <div className="relative bg-white rounded-[1rem] p-5 sm:p-6 md:p-7 border border-purple-100 overflow-hidden">
+                  <div className="absolute -top-5 -left-5 w-14 h-14 bg-gradient-to-tr from-pink-200 to-purple-200 rounded-full blur-2xl opacity-60" />
+                  <div className="flex items-start gap-4">
+                    <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-fuchsia-600 to-purple-600 text-white ring-1 ring-fuchsia-300/40 shadow-sm flex-shrink-0">
+                      <IconBolt />
+                    </span>
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Resultados al instante</h3>
+                      <p className="text-gray-700 leading-relaxed">
+                        Apuntes claros por secciones, con puntos clave, pasos enumerados y bloques destacados para fórmulas.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -209,95 +229,75 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Cómo funciona (video) */}
-      <section id="como-funciona" className="px-4 sm:px-6 py-12 sm:py-20 scroll-mt-24">
+      {/* Sección de video eliminada temporalmente */}
+
+      {/* Planes y precios (Mensual / Anual) */}
+      <section id="precios" className="px-4 sm:px-6 py-14 sm:py-20 bg-gradient-to-br from-purple-50 to-pink-50 scroll-mt-24">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8 sm:mb-10 reveal">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Cómo funciona
+          <div className="text-center mb-10">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
+              Planes <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">claros</span>
             </h2>
-            <p className="mt-3 text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              Sube tus fotos y obtén resúmenes claros, bonitos y listos para estudiar.
-            </p>
+            <p className="text-gray-600 mt-3">Elige el plan que encaja con tu curso y tu ritmo de estudio.</p>
           </div>
-          <div className="relative bg-white rounded-2xl border border-purple-200 shadow-sm p-3 sm:p-4 reveal card-smooth">
-            <div className="aspect-video w-full rounded-xl bg-gray-100 relative overflow-hidden">
-              <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/10 to-transparent" />
-              <video
-                src="/copy_C17B0044-CCF5-4355-85D1-E04EB3792482%20(1).mp4"
-                controls
-                playsInline
-                preload="metadata"
-                className="w-full h-full object-cover rounded-xl"
-                poster="/how-it-works-poster.svg"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Pricing Section */}
-      <section id="precios" className="px-4 sm:px-6 py-12 sm:py-20 bg-gradient-to-br from-purple-50 to-pink-50 scroll-mt-24">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3 sm:mb-4">
-            Planes <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">claros</span>
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-12">Elige el plan que mejor encaja con tu ritmo de estudio</p>
-          
-          <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 md:gap-8 md:overflow-visible -mx-4 px-4 md:m-0 md:p-0">
-            <div className="relative group reveal shrink-0 min-w-[88%] snap-center md:min-w-0 md:shrink">
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-400/30 via-pink-400/30 to-blue-400/30 opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500"></div>
-              <div className="relative bg-white p-8 rounded-2xl border border-purple-200 shadow-lg text-left transition-all duration-300 md:group-hover:shadow-2xl md:group-hover:-translate-y-1 group-hover:border-purple-400 card-smooth">
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">Mensual</h3>
-              <p className="text-gray-600 mb-6">Ideal para trabajos y épocas de exámenes</p>
-                <div className="text-4xl font-bold text-purple-600 mb-6 transition-transform duration-300 group-hover:scale-105">4,99€ <span className="text-base font-normal text-gray-500">/ mes</span></div>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-3"><Check /> Procesamiento alto sin esperas</li>
-                <li className="flex items-start gap-3"><Check /> Plantillas y estilos personalizables</li>
-                <li className="flex items-start gap-3"><Check /> Exportación a HTML limpia</li>
-                <li className="flex items-start gap-3"><Check /> Soporte por email en 24h</li>
-              </ul>
-                <button onClick={() => handleSubscribe("monthly")} className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-full font-semibold hover:shadow-xl hover:shadow-purple-300/50 transition-all disabled:opacity-60 tap-grow" disabled={loadingPlan === "monthly"}>
-                  {loadingPlan === "monthly" ? "Redirigiendo..." : "Elegir mensual"}
-                </button>
-                <div className="mt-3 flex items-center justify-center gap-2 text-gray-500 text-sm">
-                  <span role="img" aria-label="seguro">🔒</span>
-                  <span>Pagos 100% seguros con Stripe</span>
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+            {/* Mensual */}
+            <div className="group relative overflow-visible reveal">
+              <div className="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-500 bg-gradient-to-br from-purple-300/25 via-pink-300/25 to-indigo-300/25 rounded-3xl" />
+              <div className="relative rounded-3xl p-0.5 bg-gradient-to-r from-purple-300 via-pink-300 to-indigo-300">
+                <div className="rounded-3xl bg-white p-7 sm:p-8 border border-purple-100">
+                  <div className="mb-5">
+                    <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 ring-1 ring-purple-200">Flexibilidad mensual</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">Mensual</h3>
+                  <p className="text-gray-600 mt-1 mb-5">Ideal para trabajos y épocas de exámenes</p>
+                  <div className="text-4xl font-extrabold text-purple-600">4,99€ <span className="text-base font-normal text-gray-500">/ mes</span></div>
+                  <ul className="space-y-3 mt-6 mb-7">
+                    <li className="flex items-start gap-3"><Check /> Procesamiento alto sin esperas</li>
+                    <li className="flex items-start gap-3"><Check /> Plantillas y estilos personalizables</li>
+                    <li className="flex items-start gap-3"><Check /> Exportación a HTML limpia</li>
+                    <li className="flex items-start gap-3"><Check /> Soporte por email en 24h</li>
+                  </ul>
+                  <button onClick={() => handleSubscribe("monthly")} className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-full font-semibold hover:shadow-xl hover:shadow-purple-300/50 transition-all disabled:opacity-60 tap-grow" disabled={loadingPlan === "monthly"}>
+                    {loadingPlan === "monthly" ? "Redirigiendo..." : "Elegir mensual"}
+                  </button>
                 </div>
               </div>
-              </div>
-            <div className="relative group reveal shrink-0 min-w-[88%] snap-center md:min-w-0 md:shrink">
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-600/40 via-pink-600/40 to-purple-800/40 opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500"></div>
-              <div className="relative bg-gradient-to-br from-purple-500 to-pink-500 p-8 rounded-2xl text-white shadow-xl md:transform md:scale-105 text-left transition-all duration-300 md:group-hover:-translate-y-1 md:group-hover:shadow-2xl md:group-hover:scale-110">
-                <div className="absolute -top-3 right-4">
-                  <span className="px-3 py-1 rounded-full bg-white text-purple-600 text-xs font-bold shadow-sm ring-1 ring-white/60">Popular</span>
-                </div>
-                <div className="flex items-center justify-between mb-2">
+            </div>
+
+            {/* Anual */}
+            <div className="group relative overflow-visible reveal">
+              <div className="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-500 bg-gradient-to-br from-purple-500/30 via-pink-500/30 to-purple-800/30 rounded-3xl" />
+              <div className="relative rounded-3xl p-0.5 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-700">
+                <div className="rounded-3xl bg-gradient-to-br from-purple-600 to-pink-600 p-7 sm:p-8 text-white">
+                  <div className="mb-5 flex items-center justify-between">
+                    <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-bold bg-white/15 ring-1 ring-white/30">Mejor relación</span>
+                    <span className="hidden sm:inline text-xs bg-white/20 px-2.5 py-1 rounded-full">Ahorra 33%</span>
+                  </div>
                   <h3 className="text-2xl font-bold">Anual</h3>
-                  <span className="hidden sm:inline-block bg-white/20 backdrop-blur px-3 py-1 rounded-full text-sm font-semibold">Mejor relación calidad/precio</span>
-                </div>
-                <p className="text-purple-100 mb-6">Para todo el curso con máximo ahorro</p>
-                <div className="text-4xl font-bold mb-6 transition-transform duration-300 group-hover:scale-110">39,99€ <span className="text-base font-normal text-purple-100">/ año</span></div>
-                <ul className="space-y-3 mb-8">
-                  <li className="flex items-start gap-3"><Check contrast /> Todo del plan mensual</li>
-                  <li className="flex items-start gap-3"><Check contrast /> Historial y organización de proyectos</li>
-                  <li className="flex items-start gap-3"><Check contrast /> Prioridad en nuevas funciones</li>
-                  <li className="flex items-start gap-3"><Check contrast /> Descuentos en futuras herramientas</li>
-                </ul>
-                <button onClick={() => handleSubscribe("yearly")} className="w-full bg-white text-purple-600 py-3 rounded-full font-semibold hover:shadow-2xl hover:shadow-white/30 transition-all disabled:opacity-60 tap-grow" disabled={loadingPlan === "yearly"}>
-                  {loadingPlan === "yearly" ? "Redirigiendo..." : "Elegir anual"}
-                </button>
-                <div className="mt-3 flex items-center justify-center gap-2 text-white/90 text-sm">
-                  <span role="img" aria-label="seguro">🔒</span>
-                  <span>Pagos 100% seguros con Stripe</span>
+                  <p className="text-purple-100 mt-1 mb-5">Para todo el curso con máximo ahorro</p>
+                  <div className="text-4xl font-extrabold">39,99€ <span className="text-base font-normal text-purple-100">/ año</span></div>
+                  <ul className="space-y-3 mt-6 mb-7">
+                    <li className="flex items-start gap-3"><Check contrast /> Todo del plan mensual</li>
+                    <li className="flex items-start gap-3"><Check contrast /> Historial y organización de proyectos</li>
+                    <li className="flex items-start gap-3"><Check contrast /> Prioridad en nuevas funciones</li>
+                    <li className="flex items-start gap-3"><Check contrast /> Descuentos en futuras herramientas</li>
+                  </ul>
+                  <button onClick={() => handleSubscribe("yearly")} className="w-full bg-white text-purple-600 py-3 rounded-full font-semibold hover:shadow-2xl hover:shadow-white/30 transition-all disabled:opacity-60 tap-grow" disabled={loadingPlan === "yearly"}>
+                    {loadingPlan === "yearly" ? "Redirigiendo..." : "Elegir anual"}
+                  </button>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mt-12 bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-200 text-left reveal card-smooth">
-            <h3 className="text-xl font-bold text-gray-800 mb-2">🔒 Acceso de Pago</h3>
-            <p className="text-gray-700">Para usar StudyCaptures necesitas una suscripción activa. Elige el plan que mejor se adapte a tu ritmo de estudio.</p>
+          <div className="mt-8 sm:mt-10 text-center text-sm text-gray-600 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <span className="inline-flex items-center gap-2"><span role="img" aria-label="seguro">🔒</span> Pagos seguros con Stripe</span>
+            <span className="hidden sm:inline">·</span>
+            <span className="inline-flex items-center gap-2">⏱️ Cancelas cuando quieras</span>
+            <span className="hidden sm:inline">·</span>
+            <span className="inline-flex items-center gap-2">🎯 Sin límites para estudiar a tu ritmo</span>
           </div>
         </div>
       </section>
@@ -309,21 +309,25 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="px-4 sm:px-6 py-8 sm:py-12 bg-gray-800 text-white">
-        <div className="max-w-4xl mx-auto text-center reveal">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-              <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
+      {/* Footer claro y atractivo */}
+      <footer className="px-4 sm:px-6 py-10 sm:py-14">
+        <div className="max-w-6xl mx-auto">
+          <div className="relative overflow-hidden rounded-3xl border border-purple-200 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 p-8 sm:p-10 text-center reveal">
+            <div className="pointer-events-none absolute -top-16 -left-16 w-40 h-40 rounded-full bg-purple-200/30 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-20 -right-10 w-48 h-48 rounded-full bg-pink-200/30 blur-3xl" />
+            <div className="relative flex items-center justify-center gap-3 mb-5">
+              <div className="size-9 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center shadow-sm">
+                <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
+              </div>
+              <span className="font-extrabold text-lg bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-transparent">StudyCaptures</span>
             </div>
-            <span className="font-bold text-xl">StudyCaptures</span>
+            <p className="text-gray-700 mb-4">© {new Date().getFullYear()} StudyCaptures · Revolucionando la educación con IA</p>
+            <div className="flex items-center justify-center gap-5 text-sm">
+              <a href="/privacy" className="text-purple-700 hover:underline">Privacidad</a>
+              <a href="/terms" className="text-purple-700 hover:underline">Términos</a>
+              <span className="text-gray-500">Soporte: tastypathhelp@gmail.com</span>
+            </div>
           </div>
-          <p className="text-gray-400 mb-4">
-            © {new Date().getFullYear()} StudyCaptures · Revolucionando la educación con IA
-          </p>
-          <p className="text-gray-500 text-sm">
-            Soporte: tastypathhelp@gmail.com
-          </p>
         </div>
       </footer>
     </div>
