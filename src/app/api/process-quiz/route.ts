@@ -37,7 +37,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     if (!userId) {
       return NextResponse.json({ error: "login_required" }, { status: 401 });
     }
-    // Suscripción deshabilitada temporalmente para pruebas
+    const { data: sub } = await authenticatedSupabase
+      .from('subscriptions')
+      .select('id,status,current_period_end')
+      .eq('user_id', userId)
+      .eq('status', 'active')
+      .gt('current_period_end', new Date().toISOString())
+      .maybeSingle();
+    if (!sub) {
+      return NextResponse.json({ error: "subscription_required" }, { status: 402 });
+    }
 
     const form = await req.formData();
     const rawOptions = form.get("options");

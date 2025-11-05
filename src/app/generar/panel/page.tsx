@@ -155,7 +155,11 @@ export default function GenerarPanelPage() {
       router.push("/login");
       return;
     }
-    // Suscripción deshabilitada temporalmente para pruebas: permitir generar sin premium
+    // Si no hay suscripción activa, mostrar paywall amable y salir
+    if (!isPremium) {
+      setShowPaywall(true);
+      return;
+    }
     setError(null);
     setLoading(true);
     setResults(null);
