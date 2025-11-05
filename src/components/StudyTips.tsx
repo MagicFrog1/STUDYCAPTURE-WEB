@@ -2,33 +2,40 @@
 
 export default function StudyTips() {
   type Tip = {
-    icon: "squareStar" | "sparkleChat" | "document";
+    icon: "squareStar" | "sparkleChat" | "document" | "branches";
     title: string;
     description: string;
-    accent: "violet" | "blue" | "emerald";
+    accent: "violet" | "blue" | "emerald" | "teal";
   };
 
   const tips: Tip[] = [
     {
       icon: "squareStar",
-      title: "Calidad de imagen",
+      title: "Apuntes: un tema por lote",
       description:
-        "Usa buena iluminación y mantén la cámara estable. Evita sombras y reflejos para un OCR más preciso.",
+        "Sube fotos del mismo tema y añade contexto (nivel, objetivos). Así la IA estructura mejor definiciones, pasos y ejemplos.",
       accent: "violet",
     },
     {
       icon: "sparkleChat",
-      title: "Contexto educativo",
+      title: "Flashcards: preguntas precisas",
       description:
-        "Indica asignatura, nivel y objetivos. Menciona el tipo de examen para afinar explicaciones y ejemplos.",
+        "Pide preguntas concretas y respuestas cortas. Indica el nivel de dificultad para optimizar la retención espaciada.",
       accent: "blue",
     },
     {
       icon: "document",
-      title: "Personalización",
+      title: "Tipo Test: simula examen",
       description:
-        "Ajusta tamaño, complejidad y estilo visual hasta que el resultado encaje con tu forma de estudiar.",
+        "Activa comprobación al final para evaluar sin pistas. Revisa luego la explicación de errores y anótalos como reglas.",
       accent: "emerald",
+    },
+    {
+      icon: "branches",
+      title: "Mapas: de lo general a lo específico",
+      description:
+        "Empieza por ideas principales y baja de nivel. Ajusta simpleza/definiciones según si buscas visión global o detalle.",
+      accent: "teal",
     },
   ];
 
@@ -48,6 +55,11 @@ export default function StudyTips() {
       text: "text-emerald-600",
       overlay: "from-emerald-50",
     },
+    teal: {
+      ring: "ring-teal-200 bg-white text-teal-600",
+      text: "text-teal-600",
+      overlay: "from-teal-50",
+    },
   };
 
   return (
@@ -66,12 +78,12 @@ export default function StudyTips() {
             </span>
           </h2>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Descubre las técnicas que utilizan los estudiantes más exitosos para obtener apuntes de máxima calidad
+            Descubre cómo exprimir las 4 herramientas (Apuntes, Flashcards, Tipo Test y Mapas) para mejorar tus resultados
           </p>
         </div>
 
-        {/* Tarjetas con efecto de realce */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        {/* Tarjetas con efecto de realce (2x2) */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8">
           {tips.map((tip, i) => {
             const c = accentToClasses[tip.accent];
             return (
@@ -79,18 +91,22 @@ export default function StudyTips() {
                 {/* Overlay de color muy sutil */}
                 <div className={`absolute inset-0 rounded-3xl bg-gradient-to-b ${c.overlay} to-transparent`}></div>
 
-                <div className="relative bg-white rounded-3xl p-8 border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-purple-200/70">
+                {/* Borde degradado suave */}
+                <div className="rounded-3xl p-[1px] bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100">
+                  <div className="relative bg-white rounded-3xl p-8 border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-purple-200/70">
                   {/* Icono dentro de contenedor cuadrado redondeado */}
                   <div className="mb-6">
                     <span className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl ring-1 ${c.ring}`}>
                       {tip.icon === "squareStar" && <IconSquareStar />}
                       {tip.icon === "sparkleChat" && <IconSparkleChat />}
                       {tip.icon === "document" && <IconDocument />}
+                      {tip.icon === "branches" && <IconBranches />}
                     </span>
                   </div>
 
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">{tip.title}</h3>
                   <p className="text-gray-700 leading-relaxed">{tip.description}</p>
+                  </div>
                 </div>
               </div>
             );
@@ -126,6 +142,14 @@ function IconDocument() {
       <path d="M7 3h6l4 4v12a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z" stroke="currentColor" strokeWidth="2" />
       <path d="M13 3v4h4" stroke="currentColor" strokeWidth="2" />
       <path d="M8 11h8M8 15h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconBranches() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M12 3v18M5 8h8M11 8l1.5 1.5L11 11M5 16h8M11 16l1.5 1.5L11 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }

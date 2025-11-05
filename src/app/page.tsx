@@ -128,15 +128,15 @@ export default function Home() {
 
               <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-2 sm:mb-3 leading-tight">
                 <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
-                  Convierte fotos de apuntes y pizarras
+                  Eleva tus estudios al siguiente nivel
                 </span>
                 <br />
-                <span className="text-gray-900">en resúmenes listos para examen</span>
+                <span className="text-gray-900">con 4 herramientas: Apuntes, Flashcards, Tipo Test y Mapas</span>
               </h1>
 
               <p className="mx-auto text-base sm:text-lg md:text-xl text-gray-700 mb-7 sm:mb-10 max-w-3xl leading-relaxed">
-                Extraemos conceptos clave, fórmulas, definiciones y esquemas para crear resúmenes por temas,
-                priorizando lo que más cae en examen. Ideal para repasar rápido, preparar fichas y memorizar con color.
+                Pasa de fotos a resultados: crea apuntes claros, flashcards para memorizar, tests con explicación y mapas mentales en PDF.
+                Personaliza nivel, complejidad y estilo para estudiar mejor y subir tus notas.
               </p>
 
               <div className="flex items-center justify-center">
@@ -164,7 +164,7 @@ export default function Home() {
               priorizando definiciones, fórmulas, pasos de resolución y ejemplos frecuentes de exámenes.
             </p>
 
-            <div className="grid lg:grid-cols-3 gap-5">
+            <div className="grid lg:grid-cols-4 gap-5">
               {/* Card 1 */}
               <div className="group relative overflow-visible rounded-2xl p-0.5 bg-gradient-to-br from-purple-200 via-pink-200 to-indigo-200 shadow-sm hover:shadow-xl transition-all reveal">
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-gradient-to-br from-purple-400/25 via-pink-400/25 to-indigo-400/25 transition-opacity" />
@@ -176,9 +176,9 @@ export default function Home() {
                       <IconCamera />
                     </span>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Subida inteligente</h3>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Apuntes enriquecidos</h3>
                       <p className="text-gray-700 leading-relaxed">
-                        OCR de alta calidad para manuscritos y diagramas. Limpieza de ruido, enderezado y segmentación en títulos, listas y fórmulas.
+                        Convierte fotos en apuntes didácticos con explicaciones, ejemplos y conexiones entre conceptos. Ideal para repasar rápido.
                       </p>
                     </div>
                   </div>
@@ -196,9 +196,9 @@ export default function Home() {
                       <IconPalette />
                     </span>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Personalización total</h3>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Flashcards automáticas</h3>
                       <p className="text-gray-700 leading-relaxed">
-                        Elige nivel, enfoque y estilo visual (neutro, pastel o vivo) para estudiar a tu manera.
+                        Genera tarjetas pregunta/respuesta listas para memorizar. Copia, exporta y practica con feedback inmediato.
                       </p>
                     </div>
                   </div>
@@ -216,14 +216,92 @@ export default function Home() {
                       <IconBolt />
                     </span>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Resultados al instante</h3>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Tipo Test con explicación</h3>
                       <p className="text-gray-700 leading-relaxed">
-                        Apuntes claros por secciones, con puntos clave, pasos enumerados y bloques destacados para fórmulas.
+                        Crea preguntas de opción múltiple y comprueba al instante o al final, con explicación de aciertos y errores.
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
+
+              {/* Card 4 */}
+              <div className="group relative overflow-visible rounded-2xl p-0.5 bg-gradient-to-br from-teal-200 via-cyan-200 to-blue-200 shadow-sm hover:shadow-xl transition-all reveal">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-gradient-to-br from-teal-400/25 via-cyan-400/25 to-blue-400/25 transition-opacity" />
+                <div className="pointer-events-none absolute inset-x-2 -bottom-4 h-8 rounded-2xl bg-gradient-to-r from-teal-200 via-cyan-200 to-blue-200 opacity-70 blur-sm shadow-md" aria-hidden />
+                <div className="relative bg-white rounded-[1rem] p-5 sm:p-6 md:p-7 border border-teal-100 overflow-hidden">
+                  <div className="absolute -top-6 -right-6 w-16 h-16 bg-gradient-to-tr from-teal-200 to-cyan-200 rounded-full blur-2xl opacity-60" />
+                  <div className="flex items-start gap-4">
+                    <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-teal-600 to-cyan-600 text-white ring-1 ring-teal-300/40 shadow-sm flex-shrink-0">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <path d="M12 3v18M4 8h10M10.5 8l1.5 1.5L10.5 11M4 16h10M10.5 16l1.5 1.5L10.5 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Mapas mentales PDF</h3>
+                      <p className="text-gray-700 leading-relaxed">
+                        Genera mapas jerárquicos claros y descárgalos en PDF. Ajusta simpleza, definiciones y complejidad para tu nivel.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4 herramientas indispensables */}
+      <section className="px-4 sm:px-6 py-12 sm:py-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8 sm:mb-12 reveal">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">4 herramientas indispensables</h2>
+            <p className="text-gray-600 mt-3">Todo lo que necesitas para estudiar mejor y subir tus notas</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 reveal">
+            {/* Apuntes */}
+            <div className="bg-white rounded-2xl p-6 border border-purple-100 shadow-sm hover:shadow-lg transition-all">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white flex items-center justify-center mb-4">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M7 3h6l4 4v12a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              </div>
+              <h3 className="font-bold text-lg text-gray-900">Apuntes enriquecidos</h3>
+              <p className="text-gray-700 mt-1">Resúmenes claros con explicaciones, ejemplos y pasos clave por tema.</p>
+              <Link href="/generar/panel" className="inline-block mt-3 text-sm font-semibold text-purple-700 hover:underline">Ir a apuntes →</Link>
+            </div>
+            {/* Flashcards */}
+            <div className="bg-white rounded-2xl p-6 border border-blue-100 shadow-sm hover:shadow-lg transition-all">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white flex items-center justify-center mb-4">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <rect x="4" y="6" width="16" height="10" rx="2" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              </div>
+              <h3 className="font-bold text-lg text-gray-900">Flashcards automáticas</h3>
+              <p className="text-gray-700 mt-1">Crea tarjetas Q/A para memorizar más rápido con práctica activa.</p>
+              <Link href="/generar/flashcards" className="inline-block mt-3 text-sm font-semibold text-blue-700 hover:underline">Ir a flashcards →</Link>
+            </div>
+            {/* Tipo Test */}
+            <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-sm hover:shadow-lg transition-all">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-amber-500 to-red-500 text-white flex items-center justify-center mb-4">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M6 8h12M6 12h12M6 16h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </div>
+              <h3 className="font-bold text-lg text-gray-900">Tipo Test con feedback</h3>
+              <p className="text-gray-700 mt-1">Practica preguntas reales y aprende de los fallos con explicación.</p>
+              <Link href="/generar/test" className="inline-block mt-3 text-sm font-semibold text-amber-700 hover:underline">Ir a test →</Link>
+            </div>
+            {/* Mapas mentales */}
+            <div className="bg-white rounded-2xl p-6 border border-teal-100 shadow-sm hover:shadow-lg transition-all">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 text-white flex items-center justify-center mb-4">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M12 3v18M4 8h10M10.5 8l1.5 1.5L10.5 11M4 16h10M10.5 16l1.5 1.5L10.5 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <h3 className="font-bold text-lg text-gray-900">Mapas mentales</h3>
+              <p className="text-gray-700 mt-1">Organiza ideas en nodos y descárgalos en PDF listos para estudio.</p>
+              <Link href="/generar/mapas" className="inline-block mt-3 text-sm font-semibold text-teal-700 hover:underline">Ir a mapas →</Link>
             </div>
           </div>
         </div>
@@ -254,6 +332,7 @@ export default function Home() {
                   <p className="text-gray-600 mt-1 mb-5">Ideal para trabajos y épocas de exámenes</p>
                   <div className="text-4xl font-extrabold text-purple-600">4,99€ <span className="text-base font-normal text-gray-500">/ mes</span></div>
                   <ul className="space-y-3 mt-6 mb-7">
+                    <li className="flex items-start gap-3"><Check /> Desbloquea las 4 herramientas: Apuntes, Flashcards, Tipo Test y Mapas mentales</li>
                     <li className="flex items-start gap-3"><Check /> Procesamiento alto sin esperas</li>
                     <li className="flex items-start gap-3"><Check /> Plantillas y estilos personalizables</li>
                     <li className="flex items-start gap-3"><Check /> Exportación a HTML limpia</li>
@@ -279,6 +358,7 @@ export default function Home() {
                   <p className="text-purple-100 mt-1 mb-5">Para todo el curso con máximo ahorro</p>
                   <div className="text-4xl font-extrabold">39,99€ <span className="text-base font-normal text-purple-100">/ año</span></div>
                   <ul className="space-y-3 mt-6 mb-7">
+                    <li className="flex items-start gap-3"><Check contrast /> Desbloquea las 4 herramientas: Apuntes, Flashcards, Tipo Test y Mapas mentales</li>
                     <li className="flex items-start gap-3"><Check contrast /> Todo del plan mensual</li>
                     <li className="flex items-start gap-3"><Check contrast /> Historial y organización de proyectos</li>
                     <li className="flex items-start gap-3"><Check contrast /> Prioridad en nuevas funciones</li>

@@ -59,44 +59,38 @@ function normalizeMathInCode(html: string): string {
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
-    const isDev = process.env.NODE_ENV !== "production";
-    
-     // Leer token del header Authorization
-     const authHeader = req.headers.get("authorization");
-     const accessToken = authHeader?.replace("Bearer ", "") ?? null;
-     
-     let userId = null;
-    if (accessToken) {
-      // Crear cliente de Supabase autenticado con el token
-      const { createClient } = await import("@supabase/supabase-js");
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string | undefined;
-      const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string | undefined;
-      if (!supabaseUrl || !supabaseAnonKey) {
-        throw new Error("Supabase env vars missing (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY)");
-      }
-
-      const authenticatedSupabase = createClient(supabaseUrl as string, supabaseAnonKey as string, {
-         global: {
-           headers: {
-             Authorization: `Bearer ${accessToken}`
-           }
-         }
-       });
-       
-       const { data, error } = await authenticatedSupabase.auth.getUser();
-       if (!error && data?.user) {
-         userId = data.user.id;
-       }
-     }
-     
-     console.log("DEBUG USER:", userId ? "Authenticated" : "Not authenticated");
-    
-    // Verificar login en producción (la generación es gratuita temporalmente; sin check de suscripción)
-    if (!isDev) {
-      if (!userId || !accessToken) {
-        return NextResponse.json({ error: "login_required" }, { status: 401 });
-      }
-      // Suscripción NO requerida temporalmente
+    // Requerir login + suscripción activa
+    const authHeader = req.headers.get("authorization");
+    const accessToken = authHeader?.replace("Bearer ", "") ?? null;
+    if (!accessToken) {
+      return NextResponse.json({ error: "login_required" }, { status: 401 });
+    }
+    let userId: string | null = null;
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string | undefined;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string | undefined;
+    if (!supabaseUrl || !supabaseAnonKey) {
+      throw new Error("Supabase env vars missing (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY)");
+    }
+    const authenticatedSupabase = createClient(supabaseUrl as string, supabaseAnonKey as string, {
+      global: { headers: { Authorization: `Bearer ${accessToken}` } }
+    });
+    const { data, error } = await authenticatedSupabase.auth.getUser();
+    if (!error && data?.user) {
+      userId = data.user.id;
+    }
+    if (!userId) {
+      return NextResponse.json({ error: "login_required" }, { status: 401 });
+    }
+    const { data: sub } = await authenticatedSupabase
+      .from('subscriptions')
+      .select('id,status,current_period_end')
+      .eq('user_id', userId)
+      .eq('status', 'active')
+      .gt('current_period_end', new Date().toISOString())
+      .maybeSingle();
+    if (!sub) {
+      return NextResponse.json({ error: "subscription_required" }, { status: 402 });
     }
 
     const formData = await req.formData();
