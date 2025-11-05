@@ -27,6 +27,7 @@ type MindmapResponse = {
 export default function MindmapsPage() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [context, setContext] = useState("");
@@ -46,7 +47,21 @@ export default function MindmapsPage() {
       const { data } = await supabase.auth.getSession();
       const logged = Boolean(data.session);
       setIsLoggedIn(logged);
-      if (!logged) router.replace("/login");
+      if (!logged) {
+        router.replace("/login");
+        return;
+      }
+      // Comprobar suscripción activa (igual que en panel)
+      if (data.session?.user) {
+        const { data: sub } = await supabase
+          .from('subscriptions')
+          .select('id,status,current_period_end')
+          .eq('user_id', data.session.user.id)
+          .eq('status', 'active')
+          .gt('current_period_end', new Date().toISOString())
+          .maybeSingle();
+        if (sub) setIsPremium(true);
+      }
     })();
   }, [router]);
 
@@ -72,6 +87,11 @@ export default function MindmapsPage() {
     setLoading(true);
     setMindmap(null);
     try {
+      // Bloqueo amable si no hay suscripción
+      if (!isPremium) {
+        setShowPaywall(true);
+        throw new Error("Suscripción requerida");
+      }
       const form = new FormData();
       files.forEach((f) => form.append("files", f));
       form.append("options", JSON.stringify(values));
@@ -92,7 +112,7 @@ export default function MindmapsPage() {
     } finally {
       setLoading(false);
     }
-  }, [files, values, context]);
+  }, [files, values, context, isPremium]);
 
   async function handleSubscribe(plan: "monthly" | "yearly") {
     try {

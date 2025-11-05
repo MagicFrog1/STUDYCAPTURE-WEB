@@ -18,6 +18,7 @@ type Flashcard = { id: string; question: string; answer: string };
 export default function FlashcardsPage() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [context, setContext] = useState("");
@@ -78,6 +79,17 @@ export default function FlashcardsPage() {
         router.replace("/login");
         return;
       }
+      // Comprobar suscripción activa (igual que en panel)
+      if (data.session?.user) {
+        const { data: sub } = await supabase
+          .from('subscriptions')
+          .select('id,status,current_period_end')
+          .eq('user_id', data.session.user.id)
+          .eq('status', 'active')
+          .gt('current_period_end', new Date().toISOString())
+          .maybeSingle();
+        if (sub) setIsPremium(true);
+      }
     })();
   }, [router]);
 
@@ -136,6 +148,11 @@ export default function FlashcardsPage() {
       router.push("/login");
       return;
     }
+    // Bloqueo amable si no hay suscripción
+    if (!isPremium) {
+      setShowPaywall(true);
+      return;
+    }
     setError(null);
     setLoading(true);
     setResults(null);
@@ -170,7 +187,7 @@ export default function FlashcardsPage() {
     } finally {
       setLoading(false);
     }
-  }, [files, values, context, isLoggedIn, router]);
+  }, [files, values, context, isLoggedIn, router, isPremium]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
