@@ -27,17 +27,22 @@ export default function ProfilePage() {
         return;
       }
       setEmail(data.session.user.email ?? null);
-      const { data: sub } = await supabase
-        .from("subscriptions")
-        .select("id,status,current_period_end,updated_at")
+      // Buscar en la tabla profiles el estado premium
+      const { data: profileData, error: profileError } = await supabase
+        .from("profiles")
+        .select("id, is_premium, updated_at")
         .eq("user_id", data.session.user.id)
-        .eq("status", "active")
-        .gt("current_period_end", new Date().toISOString())
         .maybeSingle();
-      const typedSub = sub as unknown as SubscriptionRow | null;
-      const mapped: Profile | null = typedSub
-        ? { id: typedSub.id, is_premium: true, updated_at: typedSub.updated_at }
-        : { id: data.session.user.id, is_premium: false, updated_at: null };
+      
+      if (profileError) {
+        console.error("Error fetching profile:", profileError);
+      }
+      
+      const mapped: Profile = {
+        id: profileData?.id || data.session.user.id,
+        is_premium: profileData?.is_premium || false,
+        updated_at: profileData?.updated_at || null
+      };
       setProfile(mapped);
       setLoading(false);
     })();
@@ -73,40 +78,23 @@ export default function ProfilePage() {
     return () => io.disconnect();
   }, [loading]);
 
-  async function cancelSubscription() {
-    setActionLoading("cancel");
-    try {
-      const { data } = await supabase.auth.getSession();
-      const token = data.session?.access_token;
-      const res = await fetch("/api/subscription/cancel", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-      });
-      if (!res.ok) throw new Error(await res.text());
-      alert("Suscripción cancelada. Seguirás teniendo acceso hasta el fin del período actual.");
-      router.refresh();
-    } catch (e) {
-      alert((e as Error).message || "Error al cancelar la suscripción");
-    } finally {
-      setActionLoading("");
-    }
-  }
-
-  async function changePlan(newPlan: "monthly" | "yearly") {
+  async function manageSubscription() {
     setActionLoading("change");
     try {
       const { data } = await supabase.auth.getSession();
       const token = data.session?.access_token;
-      const res = await fetch("/api/subscription/change", {
+      const res = await fetch("/api/create-portal-session", {
         method: "POST",
-        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-        body: JSON.stringify({ newPlan }),
+        headers: { 
+          "Content-Type": "application/json", 
+          ...(token ? { Authorization: `Bearer ${token}` } : {}) 
+        },
       });
       if (!res.ok) throw new Error(await res.text());
       const json = (await res.json()) as { url?: string };
       if (json.url) window.location.href = json.url;
     } catch (e) {
-      alert((e as Error).message || "Error al cambiar de plan");
+      alert((e as Error).message || "Error al abrir portal de suscripción");
     } finally {
       setActionLoading("");
     }
@@ -205,17 +193,16 @@ export default function ProfilePage() {
             </div>
 
             {profile?.is_premium ? (
-              <div className="grid sm:grid-cols-3 gap-3">
-                <button onClick={() => changePlan("monthly")} disabled={actionLoading === "change"} className="px-4 py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 tap-grow">
-                  Cambiar a mensual
-                  <span className="block text-xs text-white/80">4,99€/mes</span>
-                </button>
-                <button onClick={() => changePlan("yearly")} disabled={actionLoading === "change"} className="px-4 py-3 rounded-xl bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-50 tap-grow">
-                  Cambiar a anual
-                  <span className="block text-xs text-white/80">39,99€/año</span>
-                </button>
-                <button onClick={cancelSubscription} disabled={actionLoading === "cancel"} className="px-4 py-3 rounded-xl bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 tap-grow">
-                  Cancelar suscripción
+              <div className="space-y-3">
+                <p className="text-sm text-gray-600">
+                  Gestiona tu suscripción, actualiza métodos de pago o cancela desde el portal de Stripe.
+                </p>
+                <button 
+                  onClick={manageSubscription} 
+                  disabled={actionLoading === "change"} 
+                  className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 tap-grow font-medium"
+                >
+                  {actionLoading === "change" ? "Abriendo..." : "Gestionar suscripción"}
                 </button>
               </div>
             ) : (

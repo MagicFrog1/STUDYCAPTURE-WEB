@@ -29,18 +29,24 @@ export default function SubscriptionManagement() {
       }
 
       const { data, error } = await supabase
-        .from('subscriptions')
-        .select('id,status,current_period_end,updated_at')
+        .from('profiles')
+        .select('id, is_premium, updated_at')
         .eq('user_id', session.user.id)
-        .eq('status', 'active')
-        .gt('current_period_end', new Date().toISOString())
         .maybeSingle();
 
-      if (!error) {
-        const mapped = data
-          ? { id: data.id, is_premium: true, updated_at: data.updated_at }
-          : { id: session.user.id, is_premium: false, updated_at: new Date().toISOString() };
-        setProfile(mapped);
+      if (!error && data) {
+        setProfile({
+          id: data.id,
+          is_premium: data.is_premium || false,
+          updated_at: data.updated_at
+        });
+      } else {
+        // Si no existe el perfil, crear uno
+        setProfile({
+          id: session.user.id,
+          is_premium: false,
+          updated_at: new Date().toISOString()
+        });
       }
     } catch (error) {
       console.error("Error fetching profile:", error);

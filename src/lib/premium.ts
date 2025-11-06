@@ -1,24 +1,23 @@
 import { supabase } from "./supabaseClient";
 
-// Función simple para verificar si el usuario es premium
+// Función para verificar si el usuario es premium
 export async function isPremium(userId: string): Promise<boolean> {
   try {
-    // Obtener la sesión del usuario
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.user) return false;
+    // Verificar en la tabla profiles si el usuario tiene is_premium = true
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("is_premium")
+      .eq("user_id", userId)
+      .single();
 
-    // Verificar si tiene suscripción activa en Stripe
-    // Esto se puede hacer de varias formas:
-    // 1. Verificar en la tabla subscriptions (si existe)
-    // 2. Llamar directamente a Stripe API
-    // 3. Usar un campo simple en la tabla profiles
-    
-    // Por ahora, vamos a usar un enfoque simple:
-    // Si el usuario existe en Supabase, asumimos que puede ser premium
-    // La verificación real se hará en el webhook de Stripe
-    
-    return true; // Temporalmente true para testing
-  } catch {
+    if (error || !data) {
+      console.error("Error checking premium status:", error);
+      return false;
+    }
+
+    return data.is_premium === true;
+  } catch (error) {
+    console.error("Exception checking premium status:", error);
     return false;
   }
 }
