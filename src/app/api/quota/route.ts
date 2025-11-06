@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export const runtime = "nodejs";
@@ -7,55 +7,56 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   try {
-    // Crear cliente de Supabase que puede leer cookies
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    
     const cookieStore = await cookies();
-    const authCookie = cookieStore.get('sb-access-token')?.value || 
-                       cookieStore.get('sb-uhruxfhexzthuvpreahi-auth-token')?.value;
     
-    // Intentar obtener usuario desde el header Authorization o cookies
-    let userId: string | null = null;
-    let isPremium = false;
+    // Crear cliente de Supabase para servidor que maneja cookies automáticamente
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value;
+          },
+        },
+      }
+    );
     
-    // Opción 1: Desde header Authorization
-    const authHeader = req.headers.get('authorization');
-    if (authHeader?.startsWith('Bearer ')) {
-      const token = authHeader.slice(7);
-      const supabase = createClient(supabaseUrl, supabaseAnonKey);
-      const { data: { user } } = await supabase.auth.getUser(token);
-      userId = user?.id || null;
+    // Obtener sesión del usuario
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    
+    if (sessionError || !session?.user) {
+      console.log('No session found:', sessionError);
+      return NextResponse.json({ 
+        remaining: 2, 
+        max: 2, 
+        isLoggedIn: false, 
+        hasActiveSubscription: false 
+      });
     }
     
-    // Opción 2: Desde cookies (para peticiones desde el navegador)
-    if (!userId && authCookie) {
-      const supabase = createClient(supabaseUrl, supabaseAnonKey);
-      try {
-        const { data: { user } } = await supabase.auth.getUser(authCookie);
-        userId = user?.id || null;
-      } catch {}
+    const userId = session.user.id;
+    
+    // Verificar estado premium
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('is_premium')
+      .eq('user_id', userId)
+      .maybeSingle();
+    
+    if (profileError) {
+      console.error('Error fetching profile:', profileError);
     }
     
-    // Si tenemos userId, verificar estado premium
-    if (userId) {
-      const supabase = createClient(supabaseUrl, supabaseAnonKey);
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('is_premium')
-        .eq('user_id', userId)
-        .maybeSingle();
-      
-      isPremium = profile?.is_premium || false;
-    }
-    
-    const isLoggedIn = Boolean(userId);
+    const isPremium = profile?.is_premium || false;
     const remainingUses = isPremium ? -1 : 2;
+    
+    console.log('Quota check:', { userId, isPremium, remainingUses });
     
     return NextResponse.json({ 
       remaining: remainingUses,
       max: 2,
-      isLoggedIn,
+      isLoggedIn: true,
       hasActiveSubscription: isPremium
     });
   } catch (error) {
