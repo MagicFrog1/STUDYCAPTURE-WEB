@@ -51,16 +51,14 @@ export default function MindmapsPage() {
         router.replace("/login");
         return;
       }
-      // Comprobar suscripción activa (igual que en panel)
+      // Comprobar estado premium desde profiles
       if (data.session?.user) {
-        const { data: sub } = await supabase
-          .from('subscriptions')
-          .select('id,status,current_period_end')
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_premium')
           .eq('user_id', data.session.user.id)
-          .eq('status', 'active')
-          .gt('current_period_end', new Date().toISOString())
           .maybeSingle();
-        if (sub) setIsPremium(true);
+        if (profile?.is_premium) setIsPremium(true);
       }
     })();
   }, [router]);

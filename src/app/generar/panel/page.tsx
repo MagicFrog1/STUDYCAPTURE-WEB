@@ -83,17 +83,15 @@ export default function GenerarPanelPage() {
         router.replace("/login");
         return;
       }
-      // Check premium status by subscriptions table (active and not expired)
+      // Check premium status from profiles table
       if (data.session?.user) {
-        const { data: sub } = await supabase
-          .from('subscriptions')
-          .select('id,status,current_period_end')
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_premium')
           .eq('user_id', data.session.user.id)
-          .eq('status', 'active')
-          .gt('current_period_end', new Date().toISOString())
           .maybeSingle();
-        if (sub) {
-          setRemaining(-1); // Premium active
+        if (profile?.is_premium) {
+          setRemaining(-1); // Premium active - unlimited access
         }
       }
     })();
