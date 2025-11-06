@@ -1,9 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+// Crear cliente de Supabase para el servidor con la Service Role Key
+function getSupabaseAdmin() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  
+  if (!supabaseUrl || !supabaseServiceKey) {
+    throw new Error("Supabase credentials not configured");
+  }
+  
+  return createClient(supabaseUrl, supabaseServiceKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  });
+}
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
@@ -16,9 +33,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
     
     if (!token) {
-      return new NextResponse("No autorizado", { status: 401 });
+      return new NextResponse("No autorizado - Sin token", { status: 401 });
     }
 
+    const supabase = getSupabaseAdmin();
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     
     if (authError || !user) {
