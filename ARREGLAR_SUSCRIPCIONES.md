@@ -112,7 +112,7 @@ SELECT
   false,  -- Cambia a true si ya pagaste
   NULL    -- Se actualizará cuando Stripe procese el webhook
 FROM auth.users
-WHERE email = 'tu-email@ejemplo.com'
+WHERE email = 'angeldcchp94@gmail.com'
 ON CONFLICT (user_id) DO NOTHING;
 ```
 

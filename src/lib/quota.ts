@@ -14,25 +14,24 @@ async function getCurrentUser() {
   }
 }
 
-// Función simple para verificar si el usuario es premium
-// Por ahora, asumimos que si está logueado puede ser premium
-// La verificación real se hará en el webhook de Stripe
+// Función para verificar si el usuario tiene suscripción activa
 async function hasActiveSubscription(userId: string): Promise<boolean> {
   try {
-    // Verificar si el usuario tiene una suscripción activa
-    // Por simplicidad, vamos a usar un campo en la tabla profiles
+    // Verificar en la tabla profiles si tiene is_premium = true
     const { data, error } = await supabase
-      .from('subscriptions')
-      .select('id,status,current_period_end')
+      .from('profiles')
+      .select('is_premium')
       .eq('user_id', userId)
-      .eq('status', 'active')
-      .gt('current_period_end', new Date().toISOString())
       .maybeSingle();
     
-    if (error || !data) return false;
+    if (error || !data) {
+      console.error('Error checking subscription:', error);
+      return false;
+    }
     
-    return Boolean(data);
-  } catch {
+    return data.is_premium === true;
+  } catch (err) {
+    console.error('Exception checking subscription:', err);
     return false;
   }
 }
