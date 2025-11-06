@@ -101,11 +101,40 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
   const { supabase } = await import("@/lib/supabaseClient");
   
   // Buscar el usuario por customer_id en Supabase
-  const { data: user } = await supabase
+  let { data: user } = await supabase
     .from("profiles")
-    .select("id")
+    .select("id, user_id, stripe_customer_id")
     .eq("stripe_customer_id", customerId)
-    .single();
+    .maybeSingle();
+  
+  // Si no encontramos por customer_id, intentar buscar por metadata del customer en Stripe
+  if (!user) {
+    try {
+      const stripe = getStripe();
+      const customer = await stripe.customers.retrieve(customerId);
+      if (customer && !customer.deleted && customer.metadata?.supabase_user_id) {
+        const userId = customer.metadata.supabase_user_id;
+        const { data: profileData } = await supabase
+          .from("profiles")
+          .select("id, user_id, stripe_customer_id")
+          .eq("user_id", userId)
+          .maybeSingle();
+        
+        if (profileData) {
+          user = profileData;
+          // Actualizar el stripe_customer_id si no lo tiene
+          if (!profileData.stripe_customer_id) {
+            await supabase
+              .from("profiles")
+              .update({ stripe_customer_id: customerId })
+              .eq("id", profileData.id);
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Error retrieving customer from Stripe:", err);
+    }
+  }
   
   if (!user) {
     console.error("User not found for customer:", customerId);
@@ -119,6 +148,7 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
     .from("profiles")
     .update({ 
       is_premium: isActive,
+      stripe_customer_id: customerId, // Asegurar que siempre se guarde
       updated_at: new Date().toISOString()
     })
     .eq("id", user.id);

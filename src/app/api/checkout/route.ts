@@ -68,6 +68,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
     const customerId = customer.id;
 
+    // Metadata común para ambos planes
+    const sessionMetadata = {
+      supabase_user_id: authUser.id,
+      user_email: authUser.email!,
+    };
+
     let session: Stripe.Checkout.Session;
     if (plan === "monthly") {
       // Crear la sesión usando price_data con Product ID, importe y recurrencia mensual
@@ -88,6 +94,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         ],
         success_url: `${baseUrl}/thanks`,
         cancel_url: `${baseUrl}/`,
+        metadata: sessionMetadata,
       });
     } else {
       // Plan anual: crear sesión con price_data (Product ID + recurrencia anual)
@@ -108,6 +115,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         ],
         success_url: `${baseUrl}/thanks`,
         cancel_url: `${baseUrl}/`,
+        metadata: sessionMetadata,
       });
     }
     return NextResponse.json({ url: session.url });
