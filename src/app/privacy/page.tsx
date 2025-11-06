@@ -85,8 +85,8 @@ export default function PrivacyPolicy() {
                 </ul>
                 <p>
                   Para ejercer estos derechos, contacta con nosotros en:{" "}
-                  <a href="mailto:tastypathhelp@gmail.com" className="text-blue-600 hover:underline">
-                    tastypathhelp@gmail.com
+                  <a href="mailto:studycapturesai@gmail.com" className="text-blue-600 hover:underline">
+                    studycapturesai@gmail.com
                   </a>
                 </p>
               </div>
@@ -158,7 +158,7 @@ export default function PrivacyPolicy() {
                   Si tienes preguntas sobre esta política de privacidad, puedes contactarnos:
                 </p>
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <p><strong>Email:</strong> tastypathhelp@gmail.com</p>
+                  <p><strong>Email:</strong> studycapturesai@gmail.com</p>
                   <p><strong>Asunto:</strong> Consulta sobre Política de Privacidad</p>
                 </div>
               </div>

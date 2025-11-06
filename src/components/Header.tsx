@@ -25,8 +25,8 @@ export default function Header() {
         <div className="flex justify-between items-center py-3 sm:py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 transition-transform hover:translate-y-[-1px]">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center shadow-sm">
-              <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
+            <div className="w-10 h-10 flex items-center justify-center">
+              <img src="/logo.png" alt="StudyCaptures" className="w-full h-full object-contain" />
             </div>
             <span className="hidden sm:inline text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">StudyCaptures</span>
           </Link>

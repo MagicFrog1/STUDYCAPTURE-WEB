@@ -236,7 +236,7 @@ export default function ProfilePage() {
                 Ver política de privacidad
                 <IconArrow />
               </Link>
-              <p className="text-gray-700">Soporte: <a className="text-purple-700 hover:text-purple-800" href="mailto:tastypathhelp@gmail.com">tastypathhelp@gmail.com</a></p>
+              <p className="text-gray-700">Soporte: <a className="text-purple-700 hover:text-purple-800" href="mailto:studycapturesai@gmail.com">studycapturesai@gmail.com</a></p>
             </div>
           </section>
 

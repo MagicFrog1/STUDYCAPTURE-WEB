@@ -405,7 +405,7 @@ export default function Home() {
             <div className="flex items-center justify-center gap-5 text-sm">
               <a href="/privacy" className="text-purple-700 hover:underline">Privacidad</a>
               <a href="/terms" className="text-purple-700 hover:underline">Términos</a>
-              <span className="text-gray-500">Soporte: tastypathhelp@gmail.com</span>
+              <span className="text-gray-500">Soporte: studycapturesai@gmail.com</span>
             </div>
           </div>
         </div>

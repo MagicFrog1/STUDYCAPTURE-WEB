@@ -34,7 +34,7 @@ export default function TermsPage() {
           </p>
           <h2 className="font-bold text-xl mt-6">Contacto</h2>
           <p>
-            Si tienes dudas sobre estos términos, escríbenos a <a href="mailto:tastypathhelp@gmail.com" className="text-purple-700 hover:underline">tastypathhelp@gmail.com</a>.
+            Si tienes dudas sobre estos términos, escríbenos a <a href="mailto:studycapturesai@gmail.com" className="text-purple-700 hover:underline">studycapturesai@gmail.com</a>.
           </p>
         </div>
 

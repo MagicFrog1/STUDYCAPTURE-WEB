@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirmación de Correo | StudyCaptures</title>
+    <style type="text/css">
+        /* Client-specific styles */
+        #outlook a {padding: 0;} /* Force Outlook to provide a "view in browser" button. */
+        body{width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; margin: 0; padding: 0;}
+        /* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not overriding user preferences */
+        .ExternalClass {width: 100%;} /* Force Hotmail to display emails at full width */
+        .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;}
+        /* End reset */
+        
+        /* General styling */
+        p, a, li, td {
+            -webkit-font-smoothing: antialiased;
+            -ms-text-size-adjust: none;
+            mso-line-height-rule: exactly;
+        }
+        
+        /* Link styling */
+        a[href^="tel"], a[href^="sms"] {
+            color: inherit;
+            text-decoration: none;
+            /* Prevent iOS 7 from adding unwanted blue links */
+        }
+        
+        /* Mobile styles */
+        @media only screen and (max-width: 600px) {
+            table[class="body"] { width: 100% !important; }
+            td[class="wrapper"] { padding: 10px !important; }
+            .btn { width: 100% !important; display: block !important; margin-bottom: 10px !important; }
+            .btn a { display: block !important; }
+        }
+    </style>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; background-color: #f4f4f4; margin: 0; padding: 0;">
+
+    <span class="preheader" style="display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0; border-collapse: collapse; mso-hide: all;">
+        Confirma tu correo para activar tu cuenta y empezar a generar apuntes.
+    </span>
+
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%; background-color: #f4f4f4;">
+        <tr>
+            <td align="center" style="padding: 20px 10px 40px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+                    
+                    <!-- Header con logo -->
+                    <tr>
+                        <td align="center" style="padding: 30px 20px 20px 20px; border-bottom: 1px solid #eeeeee;">
+                            <img src="{{ .SiteURL }}/logo.png" alt="StudyCaptures" style="width: 60px; height: 60px; margin-bottom: 10px;" />
+                            <h1 style="margin: 0; font-size: 28px; font-weight: bold; background: linear-gradient(135deg, #7c3aed 0%, #ec4899 60%, #2563eb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">StudyCaptures</h1>
+                        </td>
+                    </tr>
+                    
+                    <!-- Cuerpo del mensaje -->
+                    <tr>
+                        <td class="wrapper" style="padding: 40px 30px 40px 30px;">
+                            <h2 style="font-size: 24px; color: #333333; margin-top: 0; margin-bottom: 20px;">¡Solo un paso más!</h2>
+                            
+                            <p style="margin-bottom: 20px; font-size: 16px; color: #555555;">Gracias por registrarte en StudyCaptures. Para activar tu cuenta, haz clic en el botón de confirmación a continuación:</p>
+
+                            <!-- Botón de confirmación -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+                                <tr>
+                                    <td align="center" style="padding: 15px 0;">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td align="center" style="border-radius: 9999px; background: linear-gradient(135deg, #7c3aed 0%, #ec4899 60%, #2563eb 100%);">
+                                                    <a href="{{ .ConfirmationURL }}" target="_blank" style="font-size: 16px; font-family: Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 9999px; padding: 14px 32px; display: inline-block; font-weight: bold;">
+                                                        ✨ Confirmar correo
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="margin-top: 30px; font-size: 14px; color: #777777;">Si el botón no funciona, copia y pega este enlace en tu navegador:</p>
+                            <p style="font-size: 14px; color: #7c3aed; overflow-wrap: break-word; word-wrap: break-word; -ms-word-break: break-all; word-break: break-word; padding: 10px; background-color: #f9f9f9; border-radius: 6px;"><a href="{{ .ConfirmationURL }}" style="color: #7c3aed; text-decoration: none;">{{ .ConfirmationURL }}</a></p>
+                            
+                            <div style="margin-top: 30px; padding: 15px; background-color: #f0f9ff; border-left: 4px solid #7c3aed; border-radius: 4px;">
+                                <p style="margin: 0; font-size: 14px; color: #555555;">
+                                    <strong>💡 Consejo:</strong> Una vez confirmes tu cuenta, podrás generar apuntes profesionales desde fotos, crear flashcards y mapas mentales automáticamente.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding: 20px 30px; border-top: 1px solid #eeeeee; background-color: #f9f9f9; border-radius: 0 0 8px 8px;">
+                            <p style="margin: 0 0 10px 0; font-size: 12px; color: #aaaaaa;">
+                                Si no creaste esta cuenta, ignora este correo. Este enlace expirará en 24 horas por seguridad.
+                            </p>
+                            <p style="margin: 0 0 10px 0; font-size: 12px; color: #aaaaaa;">
+                                ¿Necesitas ayuda? Contáctanos: <a href="mailto:studycapturesai@gmail.com" style="color: #7c3aed; text-decoration: none;">studycapturesai@gmail.com</a>
+                            </p>
+                            <p style="margin: 0; font-size: 12px; color: #aaaaaa;">
+                                © 2025 StudyCaptures · 
+                                <a href="{{ .SiteURL }}/privacy" style="color: #aaaaaa; text-decoration: underline;">Política de Privacidad</a> · 
+                                <a href="{{ .SiteURL }}/terms" style="color: #aaaaaa; text-decoration: underline;">Términos</a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
+
