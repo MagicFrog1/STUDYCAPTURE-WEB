@@ -328,7 +328,7 @@ MODO APUNTES COMPLETOS DEL TEMA:
     
     // Cargar pdf-parse on-demand
     let pdfParseFn: ((data: Buffer) => Promise<{ text: string }>) | null = null;
-    for (const f of files.slice(0, 10)) {
+    for (const f of files) {
       if (typeof f === "string") continue;
       const file = f as File;
       const arrayBuffer = await file.arrayBuffer();

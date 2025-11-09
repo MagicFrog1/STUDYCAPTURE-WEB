@@ -109,27 +109,20 @@ export default function GenerarPanelPage() {
       const directImages = incoming.filter((f) => f.type.startsWith("image/"));
       const pdfs = incoming.filter((f) => f.type === "application/pdf");
 
-      // Convertir tantas páginas como haya huecos disponibles (máx. 20 archivos en total)
-      let remainingSlots = Math.max(0, 20 - files.length - directImages.length);
-      const renderedFromPdfs: File[] = [];
-      for (const pdf of pdfs) {
-        if (remainingSlots <= 0) break;
-        const pagesToRender = Math.min(remainingSlots, 20);
-        const imgs = await pdfFileToImages(pdf, pagesToRender, 1.5);
-        const usable = imgs.slice(0, remainingSlots);
-        renderedFromPdfs.push(...usable);
-        remainingSlots -= usable.length;
-      }
+      // Convertir TODAS las páginas de cada PDF a imágenes (puede tardar en PDFs muy largos)
+      const renderedFromPdfArrays = await Promise.all(pdfs.map((pdf) => pdfFileToImages(pdf, Number.MAX_SAFE_INTEGER, 1.5)));
+      const renderedFromPdfs = renderedFromPdfArrays.flat();
 
-      const next = [...directImages, ...renderedFromPdfs];
-      setFiles((prev) => [...prev, ...next].slice(0, 20));
+      // Añadimos también los PDFs originales para extraer su texto completo en el backend
+      const next = [...directImages, ...renderedFromPdfs, ...pdfs];
+      setFiles((prev) => [...prev, ...next]);
     } catch (e) {
       console.error("Error convirtiendo PDF a imágenes", e);
       setError("No se pudo procesar uno de los PDFs. Intenta con otro archivo o sube imágenes.");
     } finally {
       setConverting(false);
     }
-  }, [files.length]);
+  }, []);
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
