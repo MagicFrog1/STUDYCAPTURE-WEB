@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { pdfFileToImages } from "@/lib/pdfToImages";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AppInfoDropdown from "@/components/AppInfoDropdown";
@@ -30,6 +31,7 @@ export default function GenerarPanelPage() {
     fullTopic: false,
   });
   const [loading, setLoading] = useState(false);
+  const [converting, setConverting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [results, setResults] = useState<ResultChunk[] | null>(null);
   const themeClass = useMemo(() => {
@@ -97,12 +99,27 @@ export default function GenerarPanelPage() {
     })();
   }, []);
 
-  const onFiles = useCallback((list: FileList | null) => {
+  const onFiles = useCallback(async (list: FileList | null) => {
     if (!list) return;
-    const accepted = Array.from(list).filter((f) => 
-      f.type.startsWith("image/") || f.type === "application/pdf"
-    );
-    setFiles((prev) => [...prev, ...accepted].slice(0, 20));
+    const incoming = Array.from(list).filter((f) => f.type.startsWith("image/") || f.type === "application/pdf");
+    if (incoming.length === 0) return;
+
+    setConverting(true);
+    try {
+      const directImages = incoming.filter((f) => f.type.startsWith("image/"));
+      const pdfs = incoming.filter((f) => f.type === "application/pdf");
+
+      const renderedFromPdfArrays = await Promise.all(pdfs.map((pdf) => pdfFileToImages(pdf, 5, 1.5)));
+      const renderedFromPdfs = renderedFromPdfArrays.flat();
+
+      const next = [...directImages, ...renderedFromPdfs];
+      setFiles((prev) => [...prev, ...next].slice(0, 20));
+    } catch (e) {
+      console.error("Error convirtiendo PDF a imágenes", e);
+      setError("No se pudo procesar uno de los PDFs. Intenta con otro archivo o sube imágenes.");
+    } finally {
+      setConverting(false);
+    }
   }, []);
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -122,8 +139,8 @@ export default function GenerarPanelPage() {
 
   const isPremium = remaining === -1;
   const canSubmit = useMemo(() => {
-    return files.length > 0 && files.length <= 20 && !loading;
-  }, [files.length, loading]);
+    return files.length > 0 && files.length <= 20 && !loading && !converting;
+  }, [files.length, loading, converting]);
   
   const fileWarning = useMemo(() => {
     if (files.length === 0) return null;
@@ -278,7 +295,7 @@ export default function GenerarPanelPage() {
                         Arrastra y suelta tus imágenes o PDFs aquí
                       </p>
                       <p className="text-gray-500 mb-4">
-                        o haz clic para explorar archivos (máx. 20)
+                        o haz clic para explorar archivos (máx. 20). Los PDFs escaneados se convierten a imágenes automáticamente.
                       </p>
                       <button 
                         onClick={handleUploadClick}

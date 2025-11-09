@@ -1,0 +1,42 @@
+export async function pdfFileToImages(file: File, maxPages = 5, scale = 1.5): Promise<File[]> {
+	// Sólo en cliente
+	if (typeof window === "undefined") return [];
+
+	const [{ getDocument }] = await Promise.all([import("pdfjs-dist")]);
+
+	const data = await file.arrayBuffer();
+	// Desactivar worker para evitar configuración adicional en Next
+	const loadingTask = getDocument({
+		data,
+		disableWorker: true,
+		disableFontFace: true,
+		useSystemFonts: true,
+		isEvalSupported: true,
+		disableRange: true,
+	});
+
+	const pdf = await loadingTask.promise;
+	const pageCount = Math.min(pdf.numPages, maxPages);
+	const imageFiles: File[] = [];
+
+	for (let i = 1; i <= pageCount; i++) {
+		const page = await pdf.getPage(i);
+		const viewport = page.getViewport({ scale });
+		const canvas = document.createElement("canvas");
+		const ctx = canvas.getContext("2d");
+		if (!ctx) continue;
+		canvas.width = Math.floor(viewport.width);
+		canvas.height = Math.floor(viewport.height);
+		await page.render({ canvasContext: ctx as any, viewport } as any).promise;
+
+		const blob: Blob = await new Promise((resolve, reject) => {
+			canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("No se pudo convertir canvas a blob"))), "image/jpeg", 0.92);
+		});
+		const imgFile = new File([blob], `${file.name.replace(/\.pdf$/i, "")}-p${i}.jpg`, { type: "image/jpeg" });
+		imageFiles.push(imgFile);
+	}
+
+	return imageFiles;
+}
+
+
