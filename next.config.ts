@@ -10,6 +10,11 @@ const nextConfig = {
       bodySizeLimit: '10mb',
     },
   },
+  async rewrites() {
+    return [
+      { source: '/api/process', destination: '/api/process-notes' },
+    ];
+  },
 };
 
 export default nextConfig;
