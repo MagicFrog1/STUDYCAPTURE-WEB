@@ -185,7 +185,7 @@ export default function GenerarPanelPage() {
         headers["Authorization"] = `Bearer ${session.access_token}`;
       }
 
-      const res = await fetch("/api/process", { method: "POST", body: form, headers });
+      const res = await fetch("/api/process-notes", { method: "POST", body: form, headers });
       if (!res.ok) {
         if (res.status === 402) {
           setShowPaywall(true);
