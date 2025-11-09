@@ -4,7 +4,6 @@ import { z } from "zod";
 // Cargar pdf-parse dinámicamente para evitar problemas ESM/CJS en build de Vercel
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function getPdfParse(): Promise<any> {
-  // @ts-expect-error - compat CJS/ESM
   const mod: any = await import("pdf-parse");
   return mod.default || mod;
 }
@@ -85,7 +84,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             pdfParseFn = await getPdfParse();
           }
-          const pdfData = await pdfParseFn(Buffer.from(arrayBuffer));
+          const pdfData = await pdfParseFn!(Buffer.from(arrayBuffer));
           pdfTexts.push(pdfData.text);
         } catch (pdfError) {
           console.error("Error parsing PDF:", pdfError);

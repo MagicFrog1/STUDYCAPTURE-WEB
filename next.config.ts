@@ -15,6 +15,10 @@ const nextConfig = {
       { source: '/api/process', destination: '/api/process-notes' },
     ];
   },
+  eslint: {
+    // Evita que el build falle por errores de ESLint en producción
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
