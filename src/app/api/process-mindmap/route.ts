@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { z } from "zod";
-import * as pdfParseModule from "pdf-parse";
+// Cargar pdf-parse dinámicamente para evitar problemas ESM/CJS en build de Vercel
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function getPdfParse(): Promise<any> {
+  // @ts-expect-error - compat CJS/ESM
+  const mod: any = await import("pdf-parse");
+  return mod.default || mod;
+}
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -65,6 +71,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const images: { mime: string; b64: string }[] = [];
     const pdfTexts: string[] = [];
     
+    // Cargar pdf-parse on-demand
+    let pdfParseFn: ((data: Buffer) => Promise<{ text: string }>) | null = null;
     for (const f of files.slice(0, 10)) {
       if (typeof f === "string") continue;
       const file = f as File;
@@ -73,9 +81,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       // Check if it's a PDF
       if (file.type === "application/pdf") {
         try {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const pdfParse = (pdfParseModule as any).default || pdfParseModule;
-          const pdfData = await pdfParse(Buffer.from(arrayBuffer));
+          if (!pdfParseFn) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            pdfParseFn = await getPdfParse();
+          }
+          const pdfData = await pdfParseFn(Buffer.from(arrayBuffer));
           pdfTexts.push(pdfData.text);
         } catch (pdfError) {
           console.error("Error parsing PDF:", pdfError);
