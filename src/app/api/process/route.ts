@@ -143,6 +143,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const openaiApiKey = process.env.OPENAI_API_KEY;
     console.log("DEBUG API KEY:", openaiApiKey ? `Present (length: ${openaiApiKey.length})` : "MISSING");
     const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
+    const isDev = process.env.NODE_ENV !== "production";
+    if (!openai && !isDev) {
+      return NextResponse.json({ error: "openai_key_missing" }, { status: 500 });
+    }
 
     // Build prompt (enhanced with AI knowledge integration)
     let prompt = `Eres StudyCaptures, un asistente educativo avanzado que transforma fotos de apuntes en apuntes completos y pedagógicos usando tu conocimiento académico.
@@ -353,7 +357,9 @@ MODO APUNTES COMPLETOS DEL TEMA:
       // Add PDF texts to the prompt if any
       let finalPrompt = prompt;
       if (pdfTexts.length > 0) {
-        finalPrompt += `\n\nTEXTO EXTRAÍDO DE PDFs:\n${pdfTexts.join("\n\n---\n\n")}`;
+        const joined = pdfTexts.join("\n\n---\n\n");
+        const truncated = joined.slice(0, 12000);
+        finalPrompt += `\n\nTEXTO EXTRAÍDO DE PDFs (usa estrictamente este contenido como base del desarrollo):\n${truncated}`;
       }
       
       // Use GPT-4o-mini for vision if available

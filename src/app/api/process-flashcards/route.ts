@@ -104,6 +104,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     const openaiApiKey = process.env.OPENAI_API_KEY;
     const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
+    const isDev = process.env.NODE_ENV !== "production";
+    if (!openai && !isDev) {
+      return NextResponse.json({ error: "openai_key_missing" }, { status: 500 });
+    }
 
     let flashcards: { id: string; question: string; answer: string }[] = [];
 
@@ -139,7 +143,9 @@ Si el contexto del usuario se incluye, adáptate a él.
       
       // Add PDF texts if any
       if (pdfTexts.length > 0) {
-        finalInstruction += `\n\nTEXTO EXTRAÍDO DE PDFs:\n${pdfTexts.join("\n\n---\n\n")}`;
+        const joined = pdfTexts.join("\n\n---\n\n");
+        const truncated = joined.slice(0, 12000);
+        finalInstruction += `\n\nTEXTO EXTRAÍDO DE PDFs (usa estrictamente este contenido como base de las tarjetas):\n${truncated}`;
       }
       
       const content = [
