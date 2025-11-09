@@ -93,8 +93,10 @@ export default function FlashcardsPage() {
 
   const onFiles = useCallback((list: FileList | null) => {
     if (!list) return;
-    const accepted = Array.from(list).filter((f) => f.type.startsWith("image/"));
-    setFiles((prev) => [...prev, ...accepted].slice(0, 10));
+    const accepted = Array.from(list).filter((f) => 
+      f.type.startsWith("image/") || f.type === "application/pdf"
+    );
+    setFiles((prev) => [...prev, ...accepted].slice(0, 20));
   }, []);
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -113,8 +115,15 @@ export default function FlashcardsPage() {
   }, []);
 
   const canSubmit = useMemo(() => {
-    return files.length > 0 && !loading;
+    return files.length > 0 && files.length <= 20 && !loading;
   }, [files.length, loading]);
+  
+  const fileWarning = useMemo(() => {
+    if (files.length === 0) return null;
+    if (files.length > 20) return "Has seleccionado demasiados archivos. El máximo son 20.";
+    if (files.length < 2) return "Para mejores resultados, sube al menos 2 archivos.";
+    return null;
+  }, [files.length]);
 
   async function handleSubscribe(plan: "monthly" | "yearly") {
     try {
@@ -230,7 +239,7 @@ export default function FlashcardsPage() {
                     <path d="M3 8a2 2 0 0 1 2-2h2l1.2-1.8A2 2 0 0 1 10.8 3h2.4a2 2 0 0 1 1.6.8L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z" stroke="#7c3aed" strokeWidth="1.8" strokeLinejoin="round"/>
                     <circle cx="12" cy="13" r="3.5" stroke="#7c3aed" strokeWidth="1.8"/>
                   </svg>
-                  Sube tus imágenes
+                  Sube tus imágenes o PDFs
                 </h2>
                 
                 <div
@@ -247,27 +256,55 @@ export default function FlashcardsPage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-lg font-medium text-gray-700 mb-2">Arrastra y suelta tus imágenes aquí</p>
-                      <p className="text-gray-500 mb-4">o haz clic para explorar archivos</p>
+                      <p className="text-lg font-medium text-gray-700 mb-2">Arrastra y suelta tus imágenes o PDFs aquí</p>
+                      <p className="text-gray-500 mb-4">o haz clic para explorar archivos (máx. 20)</p>
                       <button onClick={handleUploadClick} className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transition-all transform hover:scale-105 tap-grow">Seleccionar archivos</button>
                     </div>
-                    <input ref={inputRef} type="file" accept="image/*" multiple className="hidden" onChange={(e) => onFiles(e.target.files)} />
+                    <input ref={inputRef} type="file" accept="image/*,.pdf,application/pdf" multiple className="hidden" onChange={(e) => onFiles(e.target.files)} />
                   </div>
                 </div>
 
                 {files.length > 0 && (
                   <div className="mt-6">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Imágenes seleccionadas ({files.length})</h3>
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        Archivos seleccionados ({files.length}/20)
+                      </h3>
+                      {fileWarning && (
+                        <span className={`text-xs font-medium px-3 py-1 rounded-full ${files.length > 20 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}`}>
+                          {fileWarning}
+                        </span>
+                      )}
+                    </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
-                      {files.map((f, i) => (
-                        <div key={i} className="group relative rounded-xl overflow-hidden border border-purple-200 hover:shadow-lg transition-all card-smooth">
-                          <img src={URL.createObjectURL(f)} alt={f.name} className="h-28 sm:h-32 w-full object-cover" />
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                            <button onClick={() => removeFile(i)} className="opacity-0 group-hover:opacity-100 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium transition-all transform hover:scale-105">Eliminar</button>
+                      {files.map((f, i) => {
+                        const isPdf = f.type === "application/pdf";
+                        return (
+                          <div key={i} className="group relative rounded-xl overflow-hidden border border-purple-200 hover:shadow-lg transition-all card-smooth">
+                            {isPdf ? (
+                              <div className="h-28 sm:h-32 w-full bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="text-red-600">
+                                  <path d="M7 3h6l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="2"/>
+                                  <path d="M13 3v5h5" stroke="currentColor" strokeWidth="2"/>
+                                  <text x="50%" y="60%" fontSize="6" fill="currentColor" textAnchor="middle">PDF</text>
+                                </svg>
+                              </div>
+                            ) : (
+                              <img src={URL.createObjectURL(f)} alt={f.name} className="h-28 sm:h-32 w-full object-cover" />
+                            )}
+                            <button
+                              onClick={() => removeFile(i)}
+                              className="absolute top-2 right-2 bg-red-500 text-white w-8 h-8 rounded-full text-sm font-medium transition-all transform hover:scale-110 active:scale-95 flex items-center justify-center shadow-lg z-10"
+                              aria-label={`Eliminar ${f.name}`}
+                            >
+                              ✕
+                            </button>
+                            <div className="absolute bottom-2 left-2 bg-white/95 px-2 py-1 rounded text-xs font-medium text-gray-700 max-w-[calc(100%-1rem)] truncate">
+                              {f.name.length > 15 ? f.name.substring(0, 15) + "..." : f.name}
+                            </div>
                           </div>
-                          <div className="absolute top-2 left-2 bg-white/90 px-2 py-1 rounded text-xs font-medium text-gray-700">{f.name.length > 15 ? f.name.substring(0, 15) + "..." : f.name}</div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 )}

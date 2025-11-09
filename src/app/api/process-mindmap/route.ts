@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { z } from "zod";
+import * as pdfParseModule from "pdf-parse";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -60,13 +61,30 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     const options = schema.shape.options.parse(JSON.parse(String(rawOptions)));
 
-    // Convertir imágenes (máx 3) a base64
+    // Convertir hasta 10 archivos (imágenes y PDFs) a base64
     const images: { mime: string; b64: string }[] = [];
-    for (const f of files.slice(0, 3)) {
+    const pdfTexts: string[] = [];
+    
+    for (const f of files.slice(0, 10)) {
       if (typeof f === "string") continue;
-      const arrayBuffer = await (f as File).arrayBuffer();
-      const b64 = Buffer.from(arrayBuffer).toString("base64");
-      images.push({ mime: (f as File).type, b64 });
+      const file = f as File;
+      const arrayBuffer = await file.arrayBuffer();
+      
+      // Check if it's a PDF
+      if (file.type === "application/pdf") {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const pdfParse = (pdfParseModule as any).default || pdfParseModule;
+          const pdfData = await pdfParse(Buffer.from(arrayBuffer));
+          pdfTexts.push(pdfData.text);
+        } catch (pdfError) {
+          console.error("Error parsing PDF:", pdfError);
+          pdfTexts.push("[Error al procesar PDF]");
+        }
+      } else if (file.type.startsWith("image/")) {
+        const b64 = Buffer.from(arrayBuffer).toString("base64");
+        images.push({ mime: file.type, b64 });
+      }
     }
 
     const openaiApiKey = process.env.OPENAI_API_KEY;
@@ -95,8 +113,15 @@ CONTEXTO USUARIO (si existe):
 ${userContext || "(sin contexto)"}
 `;
 
+      let finalInstruction = instruction;
+      
+      // Add PDF texts if any
+      if (pdfTexts.length > 0) {
+        finalInstruction += `\n\nTEXTO EXTRAÍDO DE PDFs:\n${pdfTexts.join("\n\n---\n\n")}`;
+      }
+      
       const content = [
-        { type: "text" as const, text: instruction },
+        { type: "text" as const, text: finalInstruction },
         ...images.map((img) => ({ type: "image_url" as const, image_url: { url: `data:${img.mime};base64,${img.b64}` } })),
       ];
 

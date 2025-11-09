@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { z } from "zod";
 import { supabase } from "@/lib/supabaseClient";
+import * as pdfParseModule from "pdf-parse";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -312,20 +313,43 @@ MODO APUNTES COMPLETOS DEL TEMA:
 `;
     }
 
-    // Convert images to base64 (cap first 3)
+    // Convert images and PDFs to base64 (up to 10 files)
     const images: { mime: string; b64: string }[] = [];
-    for (const f of files.slice(0, 3)) {
+    const pdfTexts: string[] = [];
+    
+    for (const f of files.slice(0, 10)) {
       if (typeof f === "string") continue;
-      const arrayBuffer = await (f as File).arrayBuffer();
-      const b64 = Buffer.from(arrayBuffer).toString("base64");
-      images.push({ mime: (f as File).type, b64 });
+      const file = f as File;
+      const arrayBuffer = await file.arrayBuffer();
+      
+      // Check if it's a PDF
+      if (file.type === "application/pdf") {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const pdfParse = (pdfParseModule as any).default || pdfParseModule;
+          const pdfData = await pdfParse(Buffer.from(arrayBuffer));
+          pdfTexts.push(pdfData.text);
+        } catch (pdfError) {
+          console.error("Error parsing PDF:", pdfError);
+          pdfTexts.push("[Error al procesar PDF]");
+        }
+      } else if (file.type.startsWith("image/")) {
+        const b64 = Buffer.from(arrayBuffer).toString("base64");
+        images.push({ mime: file.type, b64 });
+      }
     }
 
     let html = "";
     if (openai) {
+      // Add PDF texts to the prompt if any
+      let finalPrompt = prompt;
+      if (pdfTexts.length > 0) {
+        finalPrompt += `\n\nTEXTO EXTRAÍDO DE PDFs:\n${pdfTexts.join("\n\n---\n\n")}`;
+      }
+      
       // Use GPT-4o-mini for vision if available
       const content = [
-        { type: "text" as const, text: prompt },
+        { type: "text" as const, text: finalPrompt },
         ...images.map((img) => ({
           type: "image_url" as const,
           image_url: { url: `data:${img.mime};base64,${img.b64}` },
