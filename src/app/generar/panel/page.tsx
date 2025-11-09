@@ -109,8 +109,17 @@ export default function GenerarPanelPage() {
       const directImages = incoming.filter((f) => f.type.startsWith("image/"));
       const pdfs = incoming.filter((f) => f.type === "application/pdf");
 
-      const renderedFromPdfArrays = await Promise.all(pdfs.map((pdf) => pdfFileToImages(pdf, 5, 1.5)));
-      const renderedFromPdfs = renderedFromPdfArrays.flat();
+      // Convertir tantas páginas como haya huecos disponibles (máx. 20 archivos en total)
+      let remainingSlots = Math.max(0, 20 - files.length - directImages.length);
+      const renderedFromPdfs: File[] = [];
+      for (const pdf of pdfs) {
+        if (remainingSlots <= 0) break;
+        const pagesToRender = Math.min(remainingSlots, 20);
+        const imgs = await pdfFileToImages(pdf, pagesToRender, 1.5);
+        const usable = imgs.slice(0, remainingSlots);
+        renderedFromPdfs.push(...usable);
+        remainingSlots -= usable.length;
+      }
 
       const next = [...directImages, ...renderedFromPdfs];
       setFiles((prev) => [...prev, ...next].slice(0, 20));
@@ -120,7 +129,7 @@ export default function GenerarPanelPage() {
     } finally {
       setConverting(false);
     }
-  }, []);
+  }, [files.length]);
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
