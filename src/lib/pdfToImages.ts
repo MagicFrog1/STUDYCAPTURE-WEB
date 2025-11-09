@@ -2,18 +2,10 @@ export async function pdfFileToImages(file: File, maxPages = 5, scale = 1.5): Pr
 	// Sólo en cliente
 	if (typeof window === "undefined") return [];
 
-	const [{ getDocument }] = await Promise.all([import("pdfjs-dist")]);
+	const { getDocument } = await import("pdfjs-dist");
 
 	const data = await file.arrayBuffer();
-	// Desactivar worker para evitar configuración adicional en Next
-	const loadingTask = getDocument({
-		data,
-		disableWorker: true,
-		disableFontFace: true,
-		useSystemFonts: true,
-		isEvalSupported: true,
-		disableRange: true,
-	});
+	const loadingTask = getDocument({ data });
 
 	const pdf = await loadingTask.promise;
 	const pageCount = Math.min(pdf.numPages, maxPages);
