@@ -54,10 +54,7 @@ export default function AuthInviteModal() {
         className={`relative w-full max-w-2xl rounded-3xl shadow-[0_20px_60px_rgba(124,58,237,0.25)] border border-purple-200/70 overflow-hidden transition-all duration-200
         ${visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-3 scale-95"}`}
       >
-        <div className="absolute -top-24 -right-20 w-80 h-80 bg-pink-300/30 blur-3xl rounded-full pointer-events-none" />
-        <div className="absolute -bottom-24 -left-20 w-80 h-80 bg-indigo-300/30 blur-3xl rounded-full pointer-events-none" />
-
-        <div className="relative bg-gradient-to-br from-white via-purple-50 to-pink-50">
+        <div className="relative bg-white">
           <div className="px-6 sm:px-8 pt-6 sm:pt-8">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
@@ -65,14 +62,18 @@ export default function AuthInviteModal() {
                   <img src="/LOGO%20WEB.png" alt="StudyCaptures" className="w-7 h-7 object-contain" />
                 </div>
                 <div>
-                  <h3 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-purple-700 via-pink-700 to-indigo-700 bg-clip-text text-transparent leading-tight">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-gray-100 text-gray-800 text-xs font-semibold px-3 py-1">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                    +10.000 estudiantes ya confían
+                  </div>
+                  <h3 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 leading-tight">
                     Únete a +10.000 estudiantes
                   </h3>
-                  <p className="mt-1 inline-flex items-center gap-2 text-[15px] sm:text-base font-semibold text-gray-800">
-                    <span className="inline-block h-2 w-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
+                  <p className="mt-1 inline-flex items-center gap-2 text-[15px] sm:text-base text-gray-600">
+                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-purple-500/80" />
                     Estás a un paso de mejorar tus probabilidades de aprobar.
                   </p>
-                  <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-3 py-1.5 shadow-sm">
+                  <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-purple-600 text-white text-xs font-bold px-3 py-1.5 shadow-sm">
                     <span>✨ 7 días de Premium gratis</span>
                     <span className="opacity-90">· Sin tarjeta</span>
                   </div>
