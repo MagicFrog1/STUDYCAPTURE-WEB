@@ -33,13 +33,24 @@ export default function TrialBanner() {
   if (!show || daysLeft === null) return null;
 
   return (
-    <div className="mx-2 sticky top-[68px] z-30">
-      <div className="bg-gradient-to-r from-amber-100 via-yellow-100 to-amber-50 border border-amber-200 text-amber-900 rounded-xl px-4 py-2 shadow-sm flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-6 h-6 rounded-lg bg-amber-400 text-white flex items-center justify-center text-xs font-bold">⚡</div>
-          <p className="text-sm font-semibold">Prueba Premium activa · Te quedan {daysLeft} día{daysLeft === 1 ? "" : "s"} gratis</p>
+    <div className="fixed top-0 left-0 right-0 z-50">
+      <div className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-sm sm:text-base font-semibold tracking-wide">
+              Prueba Premium activa · Te quedan {daysLeft} día{daysLeft === 1 ? "" : "s"} gratis
+            </p>
+            <a
+              href="/#precios"
+              className="shrink-0 inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold transition-colors"
+            >
+              Hazte Premium
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+          </div>
         </div>
-        <a href="/#precios" className="text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-white rounded-lg px-3 py-1 transition-colors">Mejorar ahora</a>
       </div>
     </div>
   );
