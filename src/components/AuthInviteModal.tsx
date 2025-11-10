@@ -61,14 +61,17 @@ export default function AuthInviteModal() {
           <div className="px-6 sm:px-8 pt-6 sm:pt-8">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <div className="size-10 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white">
-                  🎓
+                <div className="size-12 rounded-2xl bg-white ring-1 ring-purple-200 shadow-md flex items-center justify-center">
+                  <img src="/logo.svg" alt="StudyCaptures" className="w-7 h-7" />
                 </div>
                 <div>
-                  <h3 className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-purple-700 via-pink-700 to-indigo-700 bg-clip-text text-transparent leading-tight">
+                  <h3 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-purple-700 via-pink-700 to-indigo-700 bg-clip-text text-transparent leading-tight">
                     Únete a +10.000 estudiantes
                   </h3>
-                  <p className="text-sm text-gray-600">Estás a un paso de mejorar tus probabilidades de aprobar.</p>
+                  <p className="mt-1 inline-flex items-center gap-2 text-[15px] sm:text-base font-semibold text-gray-800">
+                    <span className="inline-block h-2 w-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
+                    Estás a un paso de mejorar tus probabilidades de aprobar.
+                  </p>
                 </div>
               </div>
               <button
