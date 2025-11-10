@@ -8,26 +8,44 @@ export default function TrialBanner() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    (async () => {
+    const computeTrial = async () => {
       const { data } = await supabase.auth.getSession();
       const session = data.session;
       if (!session) {
         setShow(false);
+        setDaysLeft(null);
         return;
       }
-      // Obtener usuario y calcular trial restante
       const { data: u } = await supabase.auth.getUser();
       const user = u.user;
       // @ts-ignore - campos posibles de Supabase
       const confirmedAt: string | null = user?.email_confirmed_at ?? user?.confirmed_at ?? user?.created_at ?? null;
-      if (!confirmedAt) return;
+      if (!confirmedAt) {
+        setShow(false);
+        setDaysLeft(null);
+        return;
+      }
       const trialUntil = new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000;
       const msLeft = trialUntil - Date.now();
-      if (msLeft <= 0) return;
+      if (msLeft <= 0) {
+        setShow(false);
+        setDaysLeft(null);
+        return;
+      }
       const d = Math.ceil(msLeft / (24 * 60 * 60 * 1000));
       setDaysLeft(d);
       setShow(true);
-    })();
+    };
+
+    // Calcular al montar
+    computeTrial();
+    // Recalcular cuando cambie el estado auth (login/logout/refresh)
+    const { data: sub } = supabase.auth.onAuthStateChange(() => {
+      computeTrial();
+    });
+    return () => {
+      sub.subscription?.unsubscribe();
+    };
   }, []);
 
   if (!show || daysLeft === null) return null;
