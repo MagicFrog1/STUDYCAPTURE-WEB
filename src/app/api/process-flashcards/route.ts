@@ -42,7 +42,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       global: { headers: { Authorization: `Bearer ${accessToken}` } },
     });
     const { data: userData } = await authenticatedSupabase.auth.getUser();
-    const userId = userData?.user?.id;
+    const authedUser = userData?.user ?? null;
+    const userId = authedUser?.id;
     if (!userId) {
       return NextResponse.json({ error: "login_required" }, { status: 401 });
     }
@@ -55,7 +56,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       .maybeSingle();
     
     if (!profile?.is_premium) {
-      return NextResponse.json({ error: "subscription_required" }, { status: 402 });
+      const confirmedAt =
+        // @ts-ignore
+        (authedUser?.email_confirmed_at as string | null) ??
+        // @ts-ignore
+        (authedUser?.confirmed_at as string | null) ??
+        (authedUser?.created_at as string | null) ??
+        null;
+      const trialUntil =
+        confirmedAt ? new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000 : null;
+      const now = Date.now();
+      const inTrial = trialUntil !== null && now < trialUntil;
+      if (!inTrial) {
+        return NextResponse.json({ error: "subscription_required" }, { status: 402 });
+      }
     }
 
     const formData = await req.formData();
