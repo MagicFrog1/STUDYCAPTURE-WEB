@@ -6,7 +6,7 @@ export default function PrivacyPolicy() {
           <div className="relative px-6 py-8 text-white bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center">
-                <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
+                <img src="/LOGO%20WEB.png" alt="StudyCaptures" className="w-5 h-5 object-contain" />
               </div>
               <h1 className="text-3xl font-bold tracking-tight">Política de Privacidad</h1>
             </div>

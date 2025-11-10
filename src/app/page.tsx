@@ -131,11 +131,11 @@ export default function Home() {
                   Eleva tus estudios al siguiente nivel
                 </span>
                 <br />
-                <span className="text-gray-900">con 4 herramientas: Apuntes, Flashcards, Tipo Test y Mapas</span>
+                <span className="text-gray-900">con 4 herramientas: Apuntes, Flashcards, Tipo Test y Preguntas largas</span>
               </h1>
 
               <p className="mx-auto text-base sm:text-lg md:text-xl text-gray-700 mb-7 sm:mb-10 max-w-3xl leading-relaxed">
-                Pasa de fotos a resultados: crea apuntes claros, flashcards para memorizar, tests con explicación y mapas mentales en PDF.
+                Pasa de fotos a resultados: crea apuntes claros, flashcards para memorizar, tests con explicación y preguntas largas con corrección automática.
                 Personaliza nivel, complejidad y estilo para estudiar mejor y subir tus notas.
               </p>
 
@@ -238,9 +238,9 @@ export default function Home() {
                       </svg>
                     </span>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Mapas mentales PDF</h3>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Preguntas largas</h3>
                       <p className="text-gray-700 leading-relaxed">
-                        Genera mapas jerárquicos claros y descárgalos en PDF. Ajusta simpleza, definiciones y complejidad para tu nivel.
+                        Responde preguntas largas basadas en tus apuntes y recibe corrección automática con porcentaje de acierto y solución modelo.
                       </p>
                     </div>
                   </div>
@@ -292,16 +292,16 @@ export default function Home() {
               <p className="text-gray-700 mt-1">Practica preguntas reales y aprende de los fallos con explicación.</p>
               <Link href="/generar/test" className="inline-block mt-3 text-sm font-semibold text-amber-700 hover:underline">Ir a test →</Link>
             </div>
-            {/* Mapas mentales */}
-            <div className="bg-white rounded-2xl p-6 border border-teal-100 shadow-sm hover:shadow-lg transition-all">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 text-white flex items-center justify-center mb-4">
+            {/* Preguntas largas */}
+            <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-sm hover:shadow-lg transition-all">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-500 to-teal-500 text-white flex items-center justify-center mb-4">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
                   <path d="M12 3v18M4 8h10M10.5 8l1.5 1.5L10.5 11M4 16h10M10.5 16l1.5 1.5L10.5 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <h3 className="font-bold text-lg text-gray-900">Mapas mentales</h3>
-              <p className="text-gray-700 mt-1">Organiza ideas en nodos y descárgalos en PDF listos para estudio.</p>
-              <Link href="/generar/mapas" className="inline-block mt-3 text-sm font-semibold text-teal-700 hover:underline">Ir a mapas →</Link>
+              <h3 className="font-bold text-lg text-gray-900">Preguntas largas</h3>
+              <p className="text-gray-700 mt-1">Responde preguntas largas y recibe corrección automática con porcentaje de acierto.</p>
+              <Link href="/generar/mapas" className="inline-block mt-3 text-sm font-semibold text-emerald-700 hover:underline">Ir a Preguntas largas →</Link>
             </div>
           </div>
         </div>
@@ -332,7 +332,7 @@ export default function Home() {
                   <p className="text-gray-600 mt-1 mb-5">Ideal para trabajos y épocas de exámenes</p>
                   <div className="text-4xl font-extrabold text-purple-600">4,99€ <span className="text-base font-normal text-gray-500">/ mes</span></div>
                   <ul className="space-y-3 mt-6 mb-7">
-                    <li className="flex items-start gap-3"><Check /> Desbloquea las 4 herramientas: Apuntes, Flashcards, Tipo Test y Mapas mentales</li>
+                    <li className="flex items-start gap-3"><Check /> Desbloquea las 4 herramientas: Apuntes, Flashcards, Tipo Test y Preguntas largas</li>
                     <li className="flex items-start gap-3"><Check /> Procesamiento alto sin esperas</li>
                     <li className="flex items-start gap-3"><Check /> Plantillas y estilos personalizables</li>
                     <li className="flex items-start gap-3"><Check /> Exportación a HTML limpia</li>
@@ -358,7 +358,7 @@ export default function Home() {
                   <p className="text-purple-100 mt-1 mb-5">Para todo el curso con máximo ahorro</p>
                   <div className="text-4xl font-extrabold">39,99€ <span className="text-base font-normal text-purple-100">/ año</span></div>
                   <ul className="space-y-3 mt-6 mb-7">
-                    <li className="flex items-start gap-3"><Check contrast /> Desbloquea las 4 herramientas: Apuntes, Flashcards, Tipo Test y Mapas mentales</li>
+                    <li className="flex items-start gap-3"><Check contrast /> Desbloquea las 4 herramientas: Apuntes, Flashcards, Tipo Test y Preguntas largas</li>
                     <li className="flex items-start gap-3"><Check contrast /> Todo del plan mensual</li>
                     <li className="flex items-start gap-3"><Check contrast /> Historial y organización de proyectos</li>
                     <li className="flex items-start gap-3"><Check contrast /> Prioridad en nuevas funciones</li>

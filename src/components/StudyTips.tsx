@@ -32,7 +32,7 @@ export default function StudyTips() {
     },
     {
       icon: "branches",
-      title: "Mapas: de lo general a lo específico",
+      title: "Foto a Apuntes: de foto a PDF en un clic",
       description:
         "Empieza por ideas principales y baja de nivel. Ajusta simpleza/definiciones según si buscas visión global o detalle.",
       accent: "teal",
@@ -78,7 +78,7 @@ export default function StudyTips() {
             </span>
           </h2>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Descubre cómo exprimir las 4 herramientas (Apuntes, Flashcards, Tipo Test y Mapas) para mejorar tus resultados
+            Descubre cómo exprimir las 4 herramientas (Apuntes, Flashcards, Tipo Test y Foto a Apuntes) para mejorar tus resultados
           </p>
         </div>
 

@@ -138,7 +138,7 @@ export default function ProfilePage() {
             <div className="relative px-8 py-10 text-white">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center">
-                  <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
+                  <img src="/LOGO%20WEB.png" alt="StudyCaptures" className="w-5 h-5 object-contain" />
                 </div>
                 <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Mi cuenta</h1>
               </div>

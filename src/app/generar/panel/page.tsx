@@ -271,16 +271,26 @@ export default function GenerarPanelPage() {
           <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 xl:gap-10">
             {/* Upload Section */}
             <div ref={uploadRef} className="space-y-6 scroll-mt-28">
-              {/* File Upload */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-purple-200 transition-transform duration-300 hover:-translate-y-0.5 card-smooth reveal">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <path d="M3 8a2 2 0 0 1 2-2h2l1.2-1.8A2 2 0 0 1 10.8 3h2.4a2 2 0 0 1 1.6.8L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z" stroke="#7c3aed" strokeWidth="1.8" strokeLinejoin="round"/>
-                    <circle cx="12" cy="13" r="3.5" stroke="#7c3aed" strokeWidth="1.8"/>
-                  </svg>
-                  Sube tus imágenes o PDFs
-                </h2>
-                
+              <div className="relative overflow-hidden rounded-3xl p-6 sm:p-8 shadow-xl border border-purple-200 bg-gradient-to-br from-purple-600 via-pink-600 to-purple-500 text-white">
+                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,_#ffffff20,_transparent_45%)]" aria-hidden />
+                <div className="flex items-start justify-between gap-4 mb-6">
+                  <div>
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs font-semibold tracking-wide uppercase">
+                      Paso 1
+                    </span>
+                    <h2 className="mt-3 text-2xl sm:text-3xl font-extrabold">Sube tu material</h2>
+                    <p className="mt-2 text-sm sm:text-base text-white/80 max-w-xl">
+                      Aceptamos imágenes o PDFs. Convertimos automáticamente las páginas para extraer todo el contenido relevante.
+                    </p>
+                  </div>
+                  <div className="hidden sm:flex items-center justify-center w-16 h-16 rounded-2xl bg-white/15 shadow-inner">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-white">
+                      <path d="M3 8a2 2 0 0 1 2-2h2l1.2-1.8A2 2 0 0 1 10.8 3h2.4a2 2 0 0 1 1.6.8L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+                      <circle cx="12" cy="13" r="3.5" stroke="currentColor" strokeWidth="1.8"/>
+                    </svg>
+                  </div>
+                </div>
+
                 <div
                   onDragOver={(e) => {
                     e.preventDefault();
@@ -288,32 +298,31 @@ export default function GenerarPanelPage() {
                   }}
                   onDragLeave={() => setDragOver(false)}
                   onDrop={handleDrop}
-                  className={
-                    "rounded-xl border-2 border-dashed text-center p-8 transition-all duration-300 " +
-                    (dragOver 
-                      ? "border-purple-400 bg-purple-50 scale-105" 
-                      : "border-purple-200 hover:border-purple-300 hover:bg-purple-50/50")
-                  }
+                  className={`relative rounded-2xl border-2 border-dashed text-center p-8 transition-all duration-300 bg-white/10 backdrop-blur-sm ${dragOver ? "border-white/60 bg-white/15 scale-[1.02]" : "border-white/30 hover:border-white/50"}`}
                 >
-                  <div className="flex flex-col items-center gap-4">
-                    <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
-                        <path d="M7 3h6l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="#fff" strokeWidth="1.8"/>
-                        <path d="M13 3v5h5" stroke="#fff" strokeWidth="1.8"/>
+                  <div className="absolute inset-0 pointer-events-none rounded-2xl bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.18),_transparent_65%)]" />
+                  <div className="relative flex flex-col items-center gap-4">
+                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <path d="M7 3h6l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="#ffffff" strokeWidth="1.8"/>
+                        <path d="M13 3v5h5" stroke="#ffffff" strokeWidth="1.8"/>
                       </svg>
                     </div>
                     <div>
-                      <p className="text-lg font-medium text-gray-700 mb-2">
-                        Arrastra y suelta tus imágenes o PDFs aquí
+                      <p className="text-lg font-semibold text-white mb-2">
+                        Arrastra y suelta aquí tus imágenes o PDFs
                       </p>
-                      <p className="text-gray-500 mb-4">
-                        o haz clic para explorar archivos (máx. 20). Los PDFs escaneados se convierten a imágenes automáticamente.
+                      <p className="text-white/80 mb-4 text-sm sm:text-base">
+                        o haz clic para explorar archivos (máx. 20). Convertimos automáticamente los PDFs para extraer cada página.
                       </p>
-                      <button 
+                      <button
                         onClick={handleUploadClick}
-                        className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transition-all transform hover:scale-105 tap-grow"
+                        className="inline-flex items-center gap-2 bg-white text-purple-600 font-semibold px-6 py-2.5 rounded-full shadow-md hover:shadow-xl transition-all transform hover:translate-y-[-1px]"
                       >
                         Seleccionar archivos
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                          <path d="M6 12h12M12 18V6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                        </svg>
                       </button>
                     </div>
                     <input
@@ -327,30 +336,12 @@ export default function GenerarPanelPage() {
                   </div>
                 </div>
 
-                <div className="mt-4">
-                  <label className="flex items-start gap-3 p-4 rounded-xl border border-purple-200 hover:border-purple-300 transition-all cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={values.fullTopic}
-                      onChange={(e) => setValues((v) => ({ ...v, fullTopic: e.target.checked }))}
-                      className="mt-1 h-4 w-4 text-purple-600 rounded border-purple-300 focus:ring-purple-400"
-                    />
-                    <div>
-                      <div className="font-semibold text-gray-800">Desarrollar apuntes completos del tema</div>
-                      <p className="text-sm text-gray-600">Genera un desarrollo completo del tema detectado en las imágenes: puntos clave, definiciones, propiedades, ejemplos, aplicaciones, errores comunes, ejercicios sugeridos y resumen final.</p>
-                    </div>
-                  </label>
-                </div>
-
-                {/* File Preview */}
                 {files.length > 0 && (
-                  <div className="mt-6">
+                  <div className="mt-6 bg-white/10 rounded-2xl p-5 backdrop-blur-sm">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-gray-800">
-                        Archivos seleccionados ({files.length}/20)
-                      </h3>
+                      <h3 className="text-lg font-semibold">Archivos seleccionados ({files.length}/20)</h3>
                       {fileWarning && (
-                        <span className={`text-xs font-medium px-3 py-1 rounded-full ${files.length > 20 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}`}>
+                        <span className={`text-xs font-medium px-3 py-1 rounded-full ${files.length > 20 ? 'bg-red-100/90 text-red-700' : 'bg-amber-100/90 text-amber-700'}`}>
                           {fileWarning}
                         </span>
                       )}
@@ -359,26 +350,26 @@ export default function GenerarPanelPage() {
                       {files.map((f, i) => {
                         const isPdf = f.type === "application/pdf";
                         return (
-                          <div key={i} className="group relative rounded-xl overflow-hidden border border-purple-200 hover:shadow-lg transition-all card-smooth">
+                          <div key={i} className="group relative rounded-xl overflow-hidden border border-white/30 bg-white/10 hover:bg-white/20 transition-all">
                             {isPdf ? (
-                              <div className="h-28 sm:h-32 w-full bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center">
-                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="text-red-600">
+                              <div className="h-28 sm:h-32 w-full flex items-center justify-center text-purple-100">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
                                   <path d="M7 3h6l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="2"/>
                                   <path d="M13 3v5h5" stroke="currentColor" strokeWidth="2"/>
                                   <text x="50%" y="60%" fontSize="6" fill="currentColor" textAnchor="middle">PDF</text>
                                 </svg>
                               </div>
                             ) : (
-                              <img src={URL.createObjectURL(f)} alt={f.name} className="h-28 sm:h-32 w-full object-cover" />
+                              <img src={URL.createObjectURL(f)} alt={f.name} className="h-28 sm:h-32 w-full object-cover opacity-90" />
                             )}
                             <button
                               onClick={() => removeFile(i)}
-                              className="absolute top-2 right-2 bg-red-500 text-white w-8 h-8 rounded-full text-sm font-medium transition-all transform hover:scale-110 active:scale-95 flex items-center justify-center shadow-lg z-10"
+                              className="absolute top-2 right-2 bg-white text-purple-600 w-8 h-8 rounded-full text-sm font-semibold transition-all transform hover:scale-110 active:scale-95 flex items-center justify-center shadow-lg"
                               aria-label={`Eliminar ${f.name}`}
                             >
                               ✕
                             </button>
-                            <div className="absolute bottom-2 left-2 bg-white/95 px-2 py-1 rounded text-xs font-medium text-gray-700 max-w-[calc(100%-1rem)] truncate">
+                            <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-xs font-medium text-white max-w-[calc(100%-1rem)] truncate">
                               {f.name.length > 15 ? f.name.substring(0, 15) + "..." : f.name}
                             </div>
                           </div>
@@ -390,155 +381,144 @@ export default function GenerarPanelPage() {
               </div>
 
               {/* Contexto (opcional) */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-purple-200 transition-transform duration-300 hover:-translate-y-0.5 card-smooth reveal">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <path d="M4 7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H9l-4 3v-3a3 3 0 0 1-1-2V7Z" stroke="#7c3aed" strokeWidth="1.8"/>
-                  </svg>
-                  Contexto Educativo (opcional pero recomendado)
-                </h2>
-              <div className="relative overflow-hidden rounded-2xl p-5 sm:p-6 mb-4 border border-purple-200 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
-                <div className="pointer-events-none absolute -top-16 -left-16 w-40 h-40 rounded-full bg-purple-200/30 blur-2xl" />
-                <div className="pointer-events-none absolute -bottom-16 -right-12 w-44 h-44 rounded-full bg-pink-200/30 blur-2xl" />
-                <div className="relative">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-base sm:text-lg font-extrabold bg-gradient-to-r from-purple-700 via-pink-700 to-indigo-700 bg-clip-text text-transparent flex items-center gap-2">
-                      ✨ Consejos para mejores resultados
-                    </h3>
-                    <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-white/70 text-purple-700 ring-1 ring-purple-200">
-                      Recomendado
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-700 mb-4">
-                    La IA puede enriquecer tus apuntes si le das contexto. Añade detalles sobre asignatura, nivel y objetivos para conseguir:
-                  </p>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    <div className="flex items-start gap-3 rounded-xl bg-white/70 backdrop-blur p-3 ring-1 ring-purple-200">
-                      <div className="shrink-0 w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center">📘</div>
-                      <p className="text-sm text-gray-800"><strong>Explicaciones más completas</strong> de conceptos incompletos</p>
+              <div className="relative rounded-3xl border border-purple-200 bg-white shadow-md overflow-hidden reveal">
+                <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-purple-500 to-pink-500" aria-hidden />
+                <div className="px-6 sm:px-8 py-6">
+                  <div className="flex items-start justify-between gap-4 mb-6">
+                    <div>
+                      <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-semibold uppercase tracking-wide">
+                        Paso 2
+                      </span>
+                      <h2 className="mt-3 text-2xl font-bold text-gray-900">Contexto educativo</h2>
+                      <p className="mt-1 text-sm sm:text-base text-gray-600 max-w-2xl">
+                        Cuéntanos qué necesitas: asignatura, nivel, objetivos, estilo del profesor, evaluaciones… cuanto más contexto, más afinadas serán las notas generadas.
+                      </p>
                     </div>
-                    <div className="flex items-start gap-3 rounded-xl bg-white/70 backdrop-blur p-3 ring-1 ring-pink-200">
-                      <div className="shrink-0 w-8 h-8 rounded-lg bg-pink-100 text-pink-700 flex items-center justify-center">🧩</div>
-                      <p className="text-sm text-gray-800"><strong>Ejemplos adicionales</strong> relevantes para tu nivel</p>
-                    </div>
-                    <div className="flex items-start gap-3 rounded-xl bg-white/70 backdrop-blur p-3 ring-1 ring-indigo-200">
-                      <div className="shrink-0 w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center">🔗</div>
-                      <p className="text-sm text-gray-800"><strong>Conexiones entre temas</strong> que faciliten el aprendizaje</p>
-                    </div>
-                    <div className="flex items-start gap-3 rounded-xl bg-white/70 backdrop-blur p-3 ring-1 ring-amber-200">
-                      <div className="shrink-0 w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center">🕰️</div>
-                      <p className="text-sm text-gray-800"><strong>Contexto histórico</strong> y aplicaciones prácticas</p>
-                    </div>
-                    <div className="flex items-start gap-3 rounded-xl bg-white/70 backdrop-blur p-3 ring-1 ring-emerald-200 sm:col-span-2">
-                      <div className="shrink-0 w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">✅</div>
-                      <p className="text-sm text-gray-800"><strong>Ejercicios sugeridos</strong> para practicar y afianzar</p>
+                    <div className="hidden sm:block w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M4 7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H9l-4 3v-3a3 3 0 0 1-1-2V7Z" stroke="currentColor" strokeWidth="1.8"/>
+                        <path d="M12 7v4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                        <circle cx="12" cy="15" r="1" fill="currentColor" />
+                      </svg>
                     </div>
                   </div>
+
+                  <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                    <div className="rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50 to-pink-50 p-4">
+                      <h3 className="text-sm font-semibold text-purple-700 mb-2">Sugiere:</h3>
+                      <ul className="space-y-1 text-sm text-purple-700/80">
+                        <li>• Temario específico o unidad</li>
+                        <li>• Objetivo (repaso, examen, trabajo)</li>
+                        <li>• Estilo deseado (teórico, práctico, resúmenes)</li>
+                      </ul>
+                    </div>
+                    <div className="rounded-2xl border border-purple-100 bg-white p-4">
+                      <h3 className="text-sm font-semibold text-gray-800 mb-2">También ayuda:</h3>
+                      <ul className="space-y-1 text-sm text-gray-600">
+                        <li>• Ejemplos que debería incluir</li>
+                        <li>• Errores comunes a evitar</li>
+                        <li>• Tipo de evaluación o rúbrica</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <textarea
+                    value={context}
+                    onChange={(e) => setContext(e.target.value)}
+                    rows={5}
+                    placeholder="Ejemplo: Asignatura Álgebra I (Universidad). Repasar matrices y determinantes para examen final. Profesor exige demostraciones y problemas aplicados."
+                    className="w-full rounded-2xl border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all resize-y"
+                  />
                 </div>
-              </div>
-                <p className="text-sm text-gray-600 mb-3">Describe la asignatura, nivel académico, objetivos de aprendizaje y cualquier preferencia específica:</p>
-                <textarea
-                  value={context}
-                  onChange={(e) => setContext(e.target.value)}
-                  rows={5}
-                  placeholder="Ejemplo completo:
-📚 Asignatura: Cálculo I (Universidad)
-🎯 Nivel: Primer año de ingeniería
-📝 Tema: Derivadas e integrales
-📖 Notación: El profesor usa f'(x) y ∫a^b
-🎯 Objetivo: Preparar examen final
-💡 Enfoque: Priorizar reglas de derivación, ejemplos prácticos y aplicaciones en física
-📋 Tipo de examen: Problemas de aplicación y demostraciones teóricas"
-                  className="w-full rounded-lg border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all resize-y"
-                />
               </div>
 
               {/* Settings */}
-              <div ref={settingsRef} className="bg-white rounded-2xl p-6 shadow-lg border border-purple-200 scroll-mt-28 transition-transform duration-300 hover:-translate-y-0.5 card-smooth reveal">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="#7c3aed" strokeWidth="1.8"/>
-                    <path d="m19.4 15.5-.9 1.6-1.8-.2-.9 1.6 1.3 1.3-1.6.9.2 1.8-1.6.9-1.3-1.3-1.6.9-1.6-.9.2-1.8-1.6-.9L5.3 19l-1.6-.9.2-1.8-1.6-.9.9-1.6 1.8.2.9-1.6-1.3-1.3 1.6-.9-.2-1.8 1.6-.9 1.3 1.3 1.6-.9 1.6.9-.2 1.8 1.6.9 1.3-1.3 1.6.9-.2 1.8 1.6.9Z" stroke="#7c3aed" strokeWidth="1.2"/>
-                  </svg>
-                  Personaliza tus apuntes
-                </h2>
-                
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="block text-sm font-semibold text-gray-700">Tamaño de los apuntes</label>
-                    <select
-                      value={values.size}
-                      onChange={(e) => setValues((v) => ({ ...v, size: e.target.value as FormValues["size"] }))}
-                      className="w-full rounded-lg border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all"
-                    >
-                      <option value="mini">Mini - Conceptos esenciales + ejemplos clave</option>
-                      <option value="media">Media - Desarrollo completo + múltiples ejemplos</option>
-                      <option value="larga">Larga - Análisis profundo + contexto + ejercicios</option>
-                    </select>
+              <div ref={settingsRef} className="rounded-3xl border border-purple-200 bg-white shadow-lg overflow-hidden reveal">
+                <div className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-6 sm:px-8 py-6">
+                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-xs font-semibold uppercase">
+                    Paso 3
+                  </span>
+                  <h2 className="mt-3 text-2xl font-bold">Personaliza tus apuntes</h2>
+                  <p className="mt-1 text-sm sm:text-base text-white/80 max-w-2xl">Elige la extensión, complejidad y estilo visual. Ajustamos la redacción al nivel académico que especifiques.</p>
+                </div>
+
+                <div className="px-6 sm:px-8 py-6 space-y-6">
+                  <div className="grid lg:grid-cols-3 gap-5">
+                    <div className="rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50 to-pink-50 p-4">
+                      <h3 className="text-sm font-semibold text-purple-700 mb-2">Extensión del contenido</h3>
+                      <select
+                        value={values.size}
+                        onChange={(e) => setValues((v) => ({ ...v, size: e.target.value as FormValues["size"] }))}
+                        className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all text-sm"
+                      >
+                        <option value="mini">Mini · Conceptos clave + ejemplo</option>
+                        <option value="media">Media · Desarrollo completo + ejemplos</option>
+                        <option value="larga">Larga · Análisis profundo + aplicaciones</option>
+                      </select>
+                    </div>
+
+                    <div className="rounded-2xl border border-purple-100 bg-white p-4">
+                      <h3 className="text-sm font-semibold text-purple-700 mb-2">Complejidad</h3>
+                      <select
+                        value={values.complexity}
+                        onChange={(e) => setValues((v) => ({ ...v, complexity: e.target.value as FormValues["complexity"] }))}
+                        className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all text-sm"
+                      >
+                        <option value="baja">Baja · Lenguaje accesible y ejemplos sencillos</option>
+                        <option value="media">Media · Terminología adecuada y explicaciones detalladas</option>
+                        <option value="alta">Alta · Rigor técnico y demostraciones</option>
+                      </select>
+                    </div>
+
+                    <div className="rounded-2xl border border-purple-100 bg-white p-4">
+                      <h3 className="text-sm font-semibold text-purple-700 mb-2">Estilo visual</h3>
+                      <select
+                        value={values.colorStyle}
+                        onChange={(e) => setValues((v) => ({ ...v, colorStyle: e.target.value as FormValues["colorStyle"] }))}
+                        className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all text-sm"
+                      >
+                        <option value="neutro">Neutro · Presentación limpia y académica</option>
+                        <option value="pastel">Pastel · Enfoque amigable y motivador</option>
+                        <option value="vivo">Vivo · Impacto visual y dinamismo</option>
+                      </select>
+                    </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="block text-sm font-semibold text-gray-700">Nivel de complejidad</label>
-                    <select
-                      value={values.complexity}
-                      onChange={(e) => setValues((v) => ({ ...v, complexity: e.target.value as FormValues["complexity"] }))}
-                      className="w-full rounded-lg border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all"
-                    >
-                      <option value="baja">Baja - Lenguaje accesible + analogías simples</option>
-                      <option value="media">Media - Terminología apropiada + explicaciones detalladas</option>
-                      <option value="alta">Alta - Análisis técnico profundo + demostraciones</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="block text-sm font-semibold text-gray-700">Estilo de presentación</label>
-                    <select
-                      value={values.colorStyle}
-                      onChange={(e) => setValues((v) => ({ ...v, colorStyle: e.target.value as FormValues["colorStyle"] }))}
-                      className="w-full rounded-lg border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all"
-                    >
-                      <option value="neutro">Neutro - Presentación académica formal</option>
-                      <option value="pastel">Pastel - Enfoque amigable y motivador</option>
-                      <option value="vivo">Vivo - Presentación dinámica y estimulante</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="block text-sm font-semibold text-gray-700">Nivel de enriquecimiento</label>
+                  <div className="rounded-2xl border border-purple-100 bg-white p-4">
+                    <h3 className="text-sm font-semibold text-purple-700 mb-2">Nivel de enriquecimiento</h3>
                     <select
                       value={values.creativity}
                       onChange={(e) => setValues((v) => ({ ...v, creativity: e.target.value as FormValues["creativity"] }))}
-                      className="w-full rounded-lg border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all"
+                      className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all text-sm"
                     >
-                      <option value="preciso">Preciso - Fiel al contenido visual</option>
-                      <option value="equilibrado">Equilibrado - Balance entre fidelidad y enriquecimiento</option>
-                      <option value="creativo">Creativo - Máximo enriquecimiento educativo</option>
+                      <option value="preciso">Preciso · Fiel al contenido original</option>
+                      <option value="equilibrado">Equilibrado · Balance entre fidelidad y aporte</option>
+                      <option value="creativo">Creativo · Enriquecimiento máximo con ejemplos, tips y conexiones</option>
                     </select>
                   </div>
-                </div>
 
-                <button
-                  onClick={handleSubmit}
-                  disabled={!canSubmit}
-                  aria-disabled={!canSubmit}
-                  className={`mt-6 w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl transition-all transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center gap-3 tap-grow`}
-                >
-                  {loading ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      Procesando...
-                    </>
-                  ) : (
-                    <>Generar Apuntes</>
+                  <button
+                    onClick={handleSubmit}
+                    disabled={!canSubmit}
+                    aria-disabled={!canSubmit}
+                    className={`w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl transition-all transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center gap-3 tap-grow`}
+                  >
+                    {loading ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Generando apuntes...
+                      </>
+                    ) : (
+                      <>Generar apuntes personalizados</>
+                    )}
+                  </button>
+
+                  {error && (
+                    <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+                      <p className="text-red-600 font-medium">Error: {error}</p>
+                    </div>
                   )}
-                </button>
-                
-                {error && (
-                  <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
-                    <p className="text-red-600 font-medium">Error: {error}</p>
-                  </div>
-                )}
-
+                </div>
               </div>
             </div>
 
@@ -630,7 +610,7 @@ export default function GenerarPanelPage() {
               <button onClick={() => setShowPaywall(false)} className="text-gray-500 hover:text-gray-700">✕</button>
             </div>
             <p className="text-gray-700 mb-2">Para generar apuntes necesitas una suscripción activa.</p>
-            <p className="text-gray-700 mb-4">Con la suscripción desbloqueas las 4 herramientas: Apuntes, Flashcards, Tipo Test y Mapas mentales. Convierte fotos en resultados listos para estudiar: apuntes claros, tarjetas para memorizar, tests con explicación y mapas en PDF; personaliza nivel, complejidad y estilo.</p>
+            <p className="text-gray-700 mb-4">Con la suscripción desbloqueas las 4 herramientas: Apuntes, Flashcards, Tipo Test y Preguntas largas. Convierte fotos en resultados listos para estudiar: apuntes claros, tarjetas para memorizar, tests con explicación y preguntas largas con corrección automática; personaliza nivel, complejidad y estilo.</p>
             <div className="space-y-2">
               <Link href="/#precios" className="w-full inline-flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg tap-grow">
                 Ir al panel de suscripción

@@ -161,22 +161,23 @@ export default function GenerarPage() {
             </Link>
 
             <Link href="/generar/mapas" className="block group">
-              <div className="bg-white rounded-2xl p-6 sm:p-7 shadow-lg border border-purple-200 hover:shadow-xl transition-all card-smooth text-center hover:-translate-y-0.5 h-full">
-                <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-r from-teal-500 to-cyan-500 flex items-center justify-center shadow-md">
+              <div className="bg-white rounded-2xl p-6 sm:p-7 shadow-lg border border-emerald-200 hover:shadow-xl transition-all card-smooth text-center hover:-translate-y-0.5 h-full">
+                <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-500 to-teal-500 flex items-center justify-center shadow-md">
                   <svg width="30" height="30" viewBox="0 0 24 24" fill="none" className="text-white">
-                    <path d="M12 3v18M3 8h10M11 8l2 2-2 2M3 16h10M11 16l2 2-2 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+                    <path d="M11.5 16.5h1v1h-1z" fill="currentColor" />
+                    <path d="M12 14.5v-.4c0-.9.6-1.4 1.2-1.8.6-.4 1.3-.9 1.3-1.9 0-1.5-1.2-2.5-2.8-2.5-1.5 0-2.6.9-2.9 2.2l-.1.5h1.7l.1-.2c.2-.6.6-1 1.3-1 .7 0 1.1.4 1.1 1 0 .5-.3.8-.8 1.1-.9.5-1.9 1.2-1.9 2.7v.3h1.8z" fill="currentColor" />
                   </svg>
                 </div>
                 <h2 className="mt-4 text-xl sm:text-2xl font-bold text-gray-900">
-                  Mapas mentales
+                  Preguntas largas
                 </h2>
                 <p className="mt-2 text-gray-600 max-w-2xl mx-auto text-sm sm:text-base">
-                  Genera mapas mentales desde tus apuntes (imágenes), con opciones de simplicidad,
-                  definiciones y complejidad. Descárgalos en PDF.
+                  Responde preguntas de desarrollo basadas en tus apuntes y recibe corrección automática con porcentaje de acierto y solución modelo.
                 </p>
                 <div className="mt-4">
-                  <span className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r from-teal-600 to-cyan-600 group-hover:from-teal-500 group-hover:to-cyan-500 transition-all tap-grow text-sm">
-                    Ir al generador de mapas
+                  <span className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r from-emerald-600 via-emerald-600 to-teal-600 group-hover:from-emerald-500 group-hover:to-teal-500 transition-all tap-grow text-sm">
+                    Ir a preguntas largas
                   </span>
                 </div>
               </div>

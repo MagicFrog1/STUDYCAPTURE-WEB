@@ -111,8 +111,8 @@ export default function AuthInviteModal() {
               />
               <FeatureCard
                 icon="🗺️"
-                title="Mapas mentales en segundos"
-                subtitle="Esquemas limpios y jerárquicos"
+                title="Foto a Apuntes en 1 clic"
+                subtitle="Exporta tus fotos a apuntes PDF"
                 color="from-emerald-100 to-emerald-50 ring-emerald-200"
               />
             </div>

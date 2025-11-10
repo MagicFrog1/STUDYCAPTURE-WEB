@@ -13,14 +13,15 @@ export const dynamic = "force-dynamic";
 
 const schema = z.object({
   options: z.object({
-    simplicity: z.enum(["simple", "medio", "alto"]),
-    definitions: z.enum(["breve", "media", "detallada"]),
-    complexity: z.enum(["baja", "media", "alta"]),
-    level: z.enum(["secundaria", "bachillerato", "universidad", "oposiciones"]),
-  })
+    mode: z.enum(["generate", "evaluate"]).default("generate"),
+    count: z.number().min(1).max(20).default(5),
+    difficulty: z.enum(["baja", "media", "alta"]).default("media"),
+    level: z.enum(["secundaria", "bachillerato", "universidad", "oposiciones"]).default("universidad"),
+    questionType: z.enum(["definiciones", "normales", "mixto"]).default("normales"),
+  }).passthrough()
 });
 
-type MindmapNode = { title: string; note?: string; children?: MindmapNode[] };
+type QAQuestion = { id: string; question: string; referenceAnswer: string };
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
@@ -117,73 +118,148 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ error: "openai_key_missing" }, { status: 500 });
     }
 
-    let topic = "Mapa mental";
-    let nodes: MindmapNode[] = [];
+    const joinedPdfText = pdfTexts.join("\n\n---\n\n").slice(0, 16000);
 
-    if (openai) {
-      const instruction = `Eres StudyCaptures. Genera un mapa mental EN JSON a partir de las imágenes de apuntes.
+    if (options.mode === "generate") {
+      if (!openai) {
+        const demo: QAQuestion[] = Array.from({ length: Math.min(3, options.count) }).map((_, i) => ({
+          id: `q${i + 1}`,
+          question: `Pregunta de desarrollo #${i + 1}: Explica el concepto principal visto en la imagen.`,
+          referenceAnswer: "Respuesta modelo: definición clara, propiedades clave y ejemplo breve."
+        }));
+        return NextResponse.json({ questions: demo });
+      }
+
+      let instruction = `Eres StudyCaptures. A partir de las IMÁGENES adjuntas (y el TEXTO de PDFs si existe), genera preguntas LARGAS de desarrollo en español.
 
 REQUISITOS:
 - Devuelve SOLO JSON válido sin markdown.
 - Estructura:
-{
-  "topic": "Tema principal",
-  "nodes": [ { "title": "", "note": "", "children": [ ... ] } ]
-}
-- Nivel académico: ${options.level}.
-- Nivel de simplicidad: ${options.simplicity} (más simple → menos nodos/ramas).
-- Grado de definiciones: ${options.definitions} (breve/media/detallada en "note").
-- Grado de complejidad: ${options.complexity} (profundidad y relaciones).
-- Mantén títulos y notas concisos y pedagógicos, en español.
+{ "questions": [ { "id": "q1", "question": "...", "referenceAnswer": "..." } ] }
+- Genera ${options.count} preguntas largas, nivel ${options.level}, dificultad ${options.difficulty}.
+- Tipo de preguntas: ${options.questionType}. Si es "definiciones", pide definiciones precisas con matices y ejemplos breves; si es "normales", preguntas de desarrollo; si es "mixto", combina ambos estilos.
+- Cada "question" debe invitar a desarrollar: definición, ideas clave, relaciones, aplicaciones, errores comunes o ejemplos.
+- En "referenceAnswer" escribe una respuesta modelo sólida, concisa (6-12 frases) y basada ESTRICTAMENTE en el contenido proporcionado (imágenes/PDFs).
+- Si la evidencia es escasa, formula preguntas más generales pero siempre ancladas al material.
+${userContext ? `\nCONTEXTO USUARIO:\n${userContext}\n` : ""}`;
 
-CONTEXTO USUARIO (si existe):
-${userContext || "(sin contexto)"}
-`;
-
-      let finalInstruction = instruction;
-      
-      // Add PDF texts if any
-      if (pdfTexts.length > 0) {
-        const joined = pdfTexts.join("\n\n---\n\n");
-        const truncated = joined.slice(0, 12000);
-        finalInstruction += `\n\nTEXTO EXTRAÍDO DE PDFs (usa estrictamente este contenido como base del mapa):\n${truncated}`;
+      if (joinedPdfText) {
+        instruction += `\n\nTEXTO EXTRAÍDO DE PDFs (prioritario como fuente):\n${joinedPdfText}`;
       }
-      
+
       const content = [
-        { type: "text" as const, text: finalInstruction },
+        { type: "text" as const, text: instruction },
         ...images.map((img) => ({ type: "image_url" as const, image_url: { url: `data:${img.mime};base64,${img.b64}` } })),
       ];
 
       const resp = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages: [{ role: "user", content }],
-        temperature: options.complexity === "baja" ? 0.3 : options.complexity === "media" ? 0.5 : 0.7,
-        max_tokens: 3000,
+        temperature: options.difficulty === "baja" ? 0.3 : options.difficulty === "media" ? 0.5 : 0.7,
+        max_tokens: 4500,
       });
       let raw = resp.choices[0]?.message?.content ?? "";
       raw = raw.replace(/^```json\n?/i, "").replace(/```$/g, "").trim();
       try {
-        const parsed = JSON.parse(raw) as { topic?: string; nodes?: MindmapNode[] };
-        topic = parsed.topic || topic;
-        nodes = Array.isArray(parsed.nodes) ? parsed.nodes : [];
+        const parsed = JSON.parse(raw) as { questions?: QAQuestion[] };
+        const questions = Array.isArray(parsed.questions) ? parsed.questions : [];
+        return NextResponse.json({ questions });
       } catch {
-        // Fallback mínimo si el JSON falla
-        topic = "Mapa mental (demo)";
-        nodes = [
-          { title: "Concepto A", note: "Definición breve", children: [ { title: "A1" }, { title: "A2" } ] },
-          { title: "Concepto B", children: [ { title: "B1" }, { title: "B2" } ] }
-        ];
+        const demo: QAQuestion[] = Array.from({ length: Math.min(3, options.count) }).map((_, i) => ({
+          id: `q${i + 1}`,
+          question: `Pregunta de desarrollo #${i + 1}: Explica el concepto principal visto en la imagen.`,
+          referenceAnswer: "Respuesta modelo: definición clara, propiedades clave y ejemplo breve."
+        }));
+        return NextResponse.json({ questions: demo });
       }
-    } else {
-      // Sin API key: demo
-      topic = "Mapa mental (demo)";
-      nodes = [
-        { title: "Tema 1", note: "Resumen", children: [ { title: "Idea 1" }, { title: "Idea 2" } ] },
-        { title: "Tema 2", children: [ { title: "Relación 1" }, { title: "Relación 2" } ] }
-      ];
     }
 
-    return NextResponse.json({ topic, nodes });
+    if (options.mode === "evaluate") {
+      const rawAnswers = form.get("answers");
+      const rawQuestions = form.get("questions");
+      const answers = rawAnswers ? (JSON.parse(String(rawAnswers)) as Record<string, string>) : {};
+      const questions = rawQuestions ? (JSON.parse(String(rawQuestions)) as QAQuestion[]) : [];
+      if (!questions || Object.keys(answers).length === 0) {
+        return NextResponse.json({ error: "answers_or_questions_missing" }, { status: 400 });
+      }
+
+      if (!openai) {
+        const results = questions.map((q) => ({
+          id: q.id,
+          score: 60,
+          feedback: "Respuesta razonable. Podrías añadir ejemplos y matizar definiciones.",
+          referenceAnswer: q.referenceAnswer,
+          userAnswer: answers[q.id] ?? ""
+        }));
+        const overall = results.reduce((a, r) => a + r.score, 0) / results.length;
+        return NextResponse.json({ results, overall });
+      }
+
+      let evalInstruction = `Eres StudyCaptures. Evalúa respuestas LARGAS de estudiante comparándolas con RESPUESTAS MODELO y el contenido de IMÁGENES/PDF (si existe).
+
+DEVUELVE SOLO JSON:
+{
+  "results": [
+    { "id": "q1", "score": 0-100, "feedback": "texto breve de mejora" }
+  ],
+  "overall": 0-100
+}
+
+CRITERIOS:
+- Valora precisión conceptual, cobertura de ideas clave, claridad, ejemplos y ausencia de errores.
+- Basa la corrección en el material aportado; evita inventar.
+- "score" es porcentaje 0-100.
+${userContext ? `\nCONTEXTO USUARIO:\n${userContext}\n` : ""}`;
+
+      if (joinedPdfText) {
+        evalInstruction += `\n\nTEXTO EXTRAÍDO DE PDFs (prioritario como evidencia):\n${joinedPdfText}`;
+      }
+
+      const payload = {
+        questions,
+        answers
+      };
+
+      const content = [
+        { type: "text" as const, text: evalInstruction },
+        { type: "text" as const, text: JSON.stringify(payload).slice(0, 14000) },
+        ...images.map((img) => ({ type: "image_url" as const, image_url: { url: `data:${img.mime};base64,${img.b64}` } })),
+      ];
+
+      const resp = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content }],
+        temperature: 0.2,
+        max_tokens: 4000,
+      });
+      let raw = resp.choices[0]?.message?.content ?? "";
+      raw = raw.replace(/^```json\n?/i, "").replace(/```$/g, "").trim();
+      try {
+        const parsed = JSON.parse(raw) as { results?: Array<{ id: string; score: number; feedback: string }>; overall?: number };
+        const results = (parsed.results ?? []).map((r) => {
+          const q = questions.find((x) => x.id === r.id);
+          return {
+            ...r,
+            referenceAnswer: q?.referenceAnswer ?? "",
+            userAnswer: answers[r.id] ?? ""
+          };
+        });
+        const overall = typeof parsed.overall === "number" ? parsed.overall : (results.reduce((a, r) => a + (r.score || 0), 0) / Math.max(1, results.length));
+        return NextResponse.json({ results, overall });
+      } catch {
+        const results = questions.map((q) => ({
+          id: q.id,
+          score: 60,
+          feedback: "Respuesta razonable. Añade definiciones y ejemplos del material.",
+          referenceAnswer: q.referenceAnswer,
+          userAnswer: answers[q.id] ?? ""
+        }));
+        const overall = results.reduce((a, r) => a + r.score, 0) / results.length;
+        return NextResponse.json({ results, overall });
+      }
+    }
+
+    return NextResponse.json({ error: "mode_not_supported" }, { status: 400 });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Error interno";
     return new NextResponse(message, { status: 500 });

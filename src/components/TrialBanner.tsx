@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { isPremium } from "@/lib/premium";
 
 export default function TrialBanner() {
   const [daysLeft, setDaysLeft] = useState<number | null>(null);
@@ -12,6 +13,19 @@ export default function TrialBanner() {
       const { data } = await supabase.auth.getSession();
       const session = data.session;
       if (!session) {
+        setShow(false);
+        setDaysLeft(null);
+        return;
+      }
+      // Ocultar banner para usuarios premium
+      const userId = session.user?.id;
+      if (!userId) {
+        setShow(false);
+        setDaysLeft(null);
+        return;
+      }
+      const premium = await isPremium(userId);
+      if (premium) {
         setShow(false);
         setDaysLeft(null);
         return;

@@ -77,7 +77,7 @@ export default function LoginPage() {
       <header className="max-w-6xl mx-auto flex items-center justify-between mb-6 sm:mb-8">
         <Link href="/" className="flex items-center gap-3 text-gray-700 hover:text-purple-700 transition-colors tap-grow">
           <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-            <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
+            <img src="/LOGO%20WEB.png" alt="StudyCaptures" className="w-5 h-5 object-contain" />
           </div>
           <span className="hidden sm:inline font-semibold">StudyCaptures</span>
           <span className="opacity-70">← Volver a inicio</span>

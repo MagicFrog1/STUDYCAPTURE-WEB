@@ -13,6 +13,7 @@ const nextConfig = {
   async rewrites() {
     return [
       { source: '/api/process', destination: '/api/process-notes' },
+      { source: '/generar/foto-a-apuntes', destination: '/generar/mapas' },
     ];
   },
   eslint: {
