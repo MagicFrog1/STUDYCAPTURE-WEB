@@ -233,9 +233,7 @@ export default function Home() {
                   <div className="absolute -top-6 -right-6 w-16 h-16 bg-gradient-to-tr from-teal-200 to-cyan-200 rounded-full blur-2xl opacity-60" />
                   <div className="flex items-start gap-4">
                     <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-teal-600 to-cyan-600 text-white ring-1 ring-teal-300/40 shadow-sm flex-shrink-0">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-                        <path d="M12 3v18M4 8h10M10.5 8l1.5 1.5L10.5 11M4 16h10M10.5 16l1.5 1.5L10.5 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
+                      <IconQuestion />
                     </span>
                     <div>
                       <h3 className="text-xl font-semibold text-gray-900 mb-1">Preguntas largas</h3>
@@ -295,9 +293,7 @@ export default function Home() {
             {/* Preguntas largas */}
             <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-sm hover:shadow-lg transition-all">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-500 to-teal-500 text-white flex items-center justify-center mb-4">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path d="M12 3v18M4 8h10M10.5 8l1.5 1.5L10.5 11M4 16h10M10.5 16l1.5 1.5L10.5 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+                <IconQuestion />
               </div>
               <h3 className="font-bold text-lg text-gray-900">Preguntas largas</h3>
               <p className="text-gray-700 mt-1">Responde preguntas largas y recibe corrección automática con porcentaje de acierto.</p>
@@ -456,6 +452,19 @@ function IconBolt() {
   return (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
       <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function IconQuestion() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+      <path d="M11.3 16.2h1.4v1.4h-1.4z" fill="currentColor" />
+      <path
+        d="M12 14.4v-.35c0-.9.58-1.4 1.22-1.82.63-.43 1.3-.93 1.3-1.93 0-1.53-1.19-2.5-2.8-2.5-1.49 0-2.56.9-2.83 2.2l-.09.47h1.68l.07-.19c.2-.6.63-1 1.32-1 .68 0 1.1.4 1.1 1.02 0 .47-.26.77-.82 1.07-.95.52-1.88 1.17-1.88 2.7v.33H12Z"
+        fill="currentColor"
+      />
     </svg>
   );
 }

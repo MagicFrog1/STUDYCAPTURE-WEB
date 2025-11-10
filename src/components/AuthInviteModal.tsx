@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, type ReactNode } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 
@@ -110,10 +110,10 @@ export default function AuthInviteModal() {
                 color="from-indigo-100 to-indigo-50 ring-indigo-200"
               />
               <FeatureCard
-                icon="🗺️"
-                title="Foto a Apuntes en 1 clic"
-                subtitle="Exporta tus fotos a apuntes PDF"
-                color="from-emerald-100 to-emerald-50 ring-emerald-200"
+                icon={<IconLongQuestion />}
+                title="Preguntas largas con porcentaje de acierto"
+                subtitle="Genera desarrollo, responde y recibe corrección automática"
+                color="from-emerald-100 to-teal-50 ring-emerald-200"
               />
             </div>
           </div>
@@ -151,7 +151,7 @@ function FeatureCard({
   subtitle,
   color,
 }: {
-  icon: string;
+  icon: ReactNode;
   title: string;
   subtitle: string;
   color: string;
@@ -167,7 +167,7 @@ function FeatureCard({
           </div>
           <div className="flex items-start gap-3">
             <div className="shrink-0 w-11 h-11 rounded-xl bg-white shadow-md flex items-center justify-center text-lg ring-1 ring-white/60">
-              <span className="drop-shadow-sm">{icon}</span>
+              <span className="drop-shadow-sm flex items-center justify-center">{icon}</span>
             </div>
             <div className="min-w-0">
               <div className="text-[15px] sm:text-base font-bold text-gray-900 leading-snug">
@@ -181,6 +181,22 @@ function FeatureCard({
         </div>
       </div>
     </div>
+  );
+}
+
+function IconLongQuestion() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M11.5 16.5h1v1h-1z"
+        fill="currentColor"
+      />
+      <path
+        d="M12 14.5v-.4c0-.9.6-1.4 1.2-1.8.6-.4 1.3-.9 1.3-1.9 0-1.5-1.2-2.5-2.8-2.5-1.5 0-2.6.9-2.9 2.2l-.1.5h1.7l.1-.2c.2-.6.6-1 1.3-1 .7 0 1.1.4 1.1 1 0 .5-.3.8-.8 1.1-.9.5-1.9 1.2-1.9 2.7v.3h1.8z"
+        fill="currentColor"
+      />
+    </svg>
   );
 }
 

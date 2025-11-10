@@ -2,7 +2,7 @@
 
 export default function StudyTips() {
   type Tip = {
-    icon: "squareStar" | "sparkleChat" | "document" | "branches";
+    icon: "squareStar" | "sparkleChat" | "document" | "longQuestions";
     title: string;
     description: string;
     accent: "violet" | "blue" | "emerald" | "teal";
@@ -31,10 +31,10 @@ export default function StudyTips() {
       accent: "emerald",
     },
     {
-      icon: "branches",
-      title: "Foto a Apuntes: de foto a PDF en un clic",
+      icon: "longQuestions",
+      title: "Preguntas largas con porcentaje de acierto",
       description:
-        "Empieza por ideas principales y baja de nivel. Ajusta simpleza/definiciones según si buscas visión global o detalle.",
+        "Genera preguntas extensas, responde con tus palabras y revisa la corrección automática para identificar mejoras clave.",
       accent: "teal",
     },
   ];
@@ -78,7 +78,7 @@ export default function StudyTips() {
             </span>
           </h2>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Descubre cómo exprimir las 4 herramientas (Apuntes, Flashcards, Tipo Test y Foto a Apuntes) para mejorar tus resultados
+            Descubre cómo exprimir las 4 herramientas (Apuntes, Flashcards, Tipo Test y Preguntas largas) para mejorar tus resultados
           </p>
         </div>
 
@@ -100,7 +100,7 @@ export default function StudyTips() {
                       {tip.icon === "squareStar" && <IconSquareStar />}
                       {tip.icon === "sparkleChat" && <IconSparkleChat />}
                       {tip.icon === "document" && <IconDocument />}
-                      {tip.icon === "branches" && <IconBranches />}
+                      {tip.icon === "longQuestions" && <IconLongQuestions />}
                     </span>
                   </div>
 
@@ -146,10 +146,15 @@ function IconDocument() {
   );
 }
 
-function IconBranches() {
+function IconLongQuestions() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M12 3v18M5 8h8M11 8l1.5 1.5L11 11M5 16h8M11 16l1.5 1.5L11 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="2" />
+      <path d="M11.3 15.5h1.4v1.4h-1.4z" fill="currentColor" />
+      <path
+        d="M12 13.7v-.3c0-.8.5-1.3 1.1-1.7.6-.4 1.2-.9 1.2-1.8 0-1.4-1.1-2.3-2.6-2.3-1.4 0-2.4.8-2.6 2l-.1.5h1.5l.1-.2c.2-.6.6-.9 1.2-.9.7 0 1 .4 1 .9 0 .5-.3.7-.7 1-1 .6-1.8 1.1-1.8 2.5v.3H12Z"
+        fill="currentColor"
+      />
     </svg>
   );
 }
