@@ -45,7 +45,7 @@ export default function GenerarPanelPage() {
   const resultRef = useRef<HTMLDivElement | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<"" | "monthly" | "yearly">("");
-  const [isTrial, setIsTrial] = useState(false);
+  const [trialActive, setTrialActive] = useState(false);
 
   // Smooth scroll behavior for internal nav
   useEffect(() => {
@@ -96,16 +96,14 @@ export default function GenerarPanelPage() {
         if (profile?.is_premium) {
           setRemaining(-1); // Premium active - unlimited access
         }
-        // Calcular periodo de prueba de 7 días si no es premium
-        if (!profile?.is_premium) {
-          const { data: u } = await supabase.auth.getUser();
-          const user = u.user;
-          // @ts-ignore - posibles campos en supabase
-          const confirmedAt: string | null = (user?.email_confirmed_at ?? user?.confirmed_at ?? user?.created_at ?? null) as string | null;
-          if (confirmedAt) {
-            const trialUntil = new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000;
-            setIsTrial(Date.now() < trialUntil);
-          }
+        // Calcular prueba gratuita (7 días desde confirmación/creación)
+        const { data: u } = await supabase.auth.getUser();
+        const user = u.user;
+        // @ts-ignore
+        const confirmedAt: string | null = user?.email_confirmed_at ?? user?.confirmed_at ?? user?.created_at ?? null;
+        if (confirmedAt) {
+          const trialUntil = new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000;
+          setTrialActive(Date.now() < trialUntil);
         }
       }
     })();
@@ -193,8 +191,8 @@ export default function GenerarPanelPage() {
       router.push("/login");
       return;
     }
-    // Si no hay suscripción activa, mostrar paywall amable y salir
-    if (!isPremium && !isTrial) {
+    // Si no hay suscripción activa ni prueba gratuita, bloquear
+    if (!isPremium && !trialActive) {
       setShowPaywall(true);
       return;
     }
@@ -233,7 +231,7 @@ export default function GenerarPanelPage() {
     } finally {
       setLoading(false);
     }
-  }, [files, values, context, isLoggedIn, router, isPremium]);
+  }, [files, values, context, isLoggedIn, router, isPremium, trialActive]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">

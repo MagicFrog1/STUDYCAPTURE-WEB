@@ -44,7 +44,7 @@ export default function QuizPage() {
   const resultRef = useRef<HTMLDivElement | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<"" | "monthly" | "yearly">("");
-  const [isTrial, setIsTrial] = useState(false);
+  const [trialActive, setTrialActive] = useState(false);
 
   useEffect(() => {
     const run = async () => {
@@ -63,16 +63,13 @@ export default function QuizPage() {
           .eq('user_id', data.session.user.id)
           .maybeSingle();
         if (profile?.is_premium) setIsPremium(true);
-        // Calcular trial de 7 días si no es premium
-        if (!profile?.is_premium) {
-          const { data: u } = await supabase.auth.getUser();
-          const user = u.user;
-          // @ts-ignore
-          const confirmedAt: string | null = (user?.email_confirmed_at ?? user?.confirmed_at ?? user?.created_at ?? null) as string | null;
-          if (confirmedAt) {
-            const trialUntil = new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000;
-            setIsTrial(Date.now() < trialUntil);
-          }
+        const { data: u } = await supabase.auth.getUser();
+        const user = u.user;
+        // @ts-ignore
+        const confirmedAt: string | null = user?.email_confirmed_at ?? user?.confirmed_at ?? user?.created_at ?? null;
+        if (confirmedAt) {
+          const trialUntil = new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000;
+          setTrialActive(Date.now() < trialUntil);
         }
       }
     };
@@ -131,8 +128,8 @@ export default function QuizPage() {
     setChecked(false);
     setScore(null);
     try {
-      // Bloqueo amable si no hay suscripción
-      if (!isPremium && !isTrial) {
+      // Bloqueo si no hay suscripción ni trial
+      if (!isPremium && !trialActive) {
         setShowPaywall(true);
         throw new Error("Suscripción requerida");
       }
@@ -164,7 +161,7 @@ export default function QuizPage() {
     } finally {
       setLoading(false);
     }
-  }, [files, values, context, isPremium]);
+  }, [files, values, context, isPremium, trialActive]);
 
   async function handleSubscribe(plan: "monthly" | "yearly") {
     try {
