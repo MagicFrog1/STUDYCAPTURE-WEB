@@ -72,6 +72,10 @@ export default function AuthInviteModal() {
                     <span className="inline-block h-2 w-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
                     Estás a un paso de mejorar tus probabilidades de aprobar.
                   </p>
+                  <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-3 py-1.5 shadow-sm">
+                    <span>✨ 7 días de Premium gratis</span>
+                    <span className="opacity-90">· Sin tarjeta</span>
+                  </div>
                 </div>
               </div>
               <button
