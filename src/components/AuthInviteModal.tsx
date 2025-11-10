@@ -82,25 +82,29 @@ export default function AuthInviteModal() {
           </div>
 
           <div className="px-6 sm:px-8 mt-5">
-            <div className="grid sm:grid-cols-2 gap-3">
+            <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
               <FeatureCard
                 icon="✅"
                 title="Apuntes claros y pedagógicos"
+                subtitle="Estructura, ejemplos y conexiones"
                 color="from-purple-100 to-purple-50 ring-purple-200"
               />
               <FeatureCard
                 icon="🧠"
                 title="Flashcards listas para memorizar"
+                subtitle="Pregunta-respuesta concisas y efectivas"
                 color="from-pink-100 to-pink-50 ring-pink-200"
               />
               <FeatureCard
                 icon="📝"
                 title="Tests tipo examen con explicación"
+                subtitle="Feedback inmediato y razón de la respuesta"
                 color="from-indigo-100 to-indigo-50 ring-indigo-200"
               />
               <FeatureCard
                 icon="🗺️"
                 title="Mapas mentales en segundos"
+                subtitle="Esquemas limpios y jerárquicos"
                 color="from-emerald-100 to-emerald-50 ring-emerald-200"
               />
             </div>
@@ -125,6 +129,7 @@ export default function AuthInviteModal() {
               <span>★ ★ ★ ★ ★</span>
               <span>Valorado por estudiantes como tú</span>
             </div>
+            <p className="mt-2 text-center text-[11px] text-gray-500">Sin tarjeta para registrarte • Cancela cuando quieras</p>
           </div>
         </div>
       </div>
@@ -135,22 +140,36 @@ export default function AuthInviteModal() {
 function FeatureCard({
   icon,
   title,
+  subtitle,
   color,
 }: {
   icon: string;
   title: string;
+  subtitle: string;
   color: string;
 }) {
   return (
-    <div
-      className={`group relative rounded-2xl bg-gradient-to-br ${color} ring-1 p-3 sm:p-4 transition-all hover:-translate-y-0.5 hover:shadow-lg`}
-    >
-      <div className="flex items-center gap-3">
-        <div className="shrink-0 w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-lg">
-          {icon}
-        </div>
-        <div className="text-sm sm:text-base font-semibold text-gray-800">
-          {title}
+    <div className="relative">
+      <div className="rounded-2xl p-[2px] bg-[conic-gradient(at_0%_0%,#ddd,rgba(124,58,237,0.3),rgba(236,72,153,0.3),#ddd)] opacity-90">
+        <div
+          className={`group relative rounded-[14px] bg-gradient-to-br ${color} ring-1 p-3 sm:p-4 transition-all hover:-translate-y-0.5 hover:shadow-xl`}
+        >
+          <div className="absolute inset-0 pointer-events-none rounded-[14px] overflow-hidden">
+            <div className="absolute -inset-x-10 -top-10 h-12 bg-gradient-to-r from-white/40 via-white/5 to-transparent rotate-6 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="shrink-0 w-11 h-11 rounded-xl bg-white shadow-md flex items-center justify-center text-lg ring-1 ring-white/60">
+              <span className="drop-shadow-sm">{icon}</span>
+            </div>
+            <div className="min-w-0">
+              <div className="text-[15px] sm:text-base font-bold text-gray-900 leading-snug">
+                {title}
+              </div>
+              <div className="text-xs sm:text-[13px] text-gray-700 mt-1">
+                {subtitle}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
