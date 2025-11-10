@@ -26,7 +26,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 transition-transform hover:translate-y-[-1px]">
             <div className="w-10 h-10 flex items-center justify-center">
-              <img src="/logo.png" alt="StudyCaptures" className="w-full h-full object-contain" />
+              <img src="/LOGO%20WEB.png" alt="StudyCaptures" className="w-full h-full object-contain" />
             </div>
             <span className="hidden sm:inline text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">StudyCaptures</span>
           </Link>

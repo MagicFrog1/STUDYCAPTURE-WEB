@@ -175,7 +175,7 @@ Los templates incluyen el correo de contacto **studycapturesai@gmail.com** en el
 
 ### El logo no aparece:
 1. Asegúrate de que `{{ .SiteURL }}` esté configurada correctamente
-2. El archivo `logo.png` debe estar accesible públicamente en `/logo.png`
+2. El archivo `LOGO WEB.png` debe estar accesible públicamente en `/LOGO%20WEB.png`
 3. Verifica que tu dominio esté desplegado y funcionando
 
 ### El botón no funciona:

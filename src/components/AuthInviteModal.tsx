@@ -62,7 +62,7 @@ export default function AuthInviteModal() {
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <div className="size-12 rounded-2xl bg-white ring-1 ring-purple-200 shadow-md flex items-center justify-center">
-                  <img src="/logo.svg" alt="StudyCaptures" className="w-7 h-7" />
+                  <img src="/LOGO%20WEB.png" alt="StudyCaptures" className="w-7 h-7 object-contain" />
                 </div>
                 <div>
                   <h3 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-purple-700 via-pink-700 to-indigo-700 bg-clip-text text-transparent leading-tight">

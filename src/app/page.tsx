@@ -70,7 +70,7 @@ export default function Home() {
       <header className="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-purple-200/70 sticky top-2 z-30 pt-[env(safe-area-inset-top)] transition-all mx-2 rounded-xl">
         <div className="flex items-center gap-2 sm:gap-3">
             <div className="size-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-              <img src="/logo.svg" alt="StudyCaptures" className="w-6 h-6" />
+              <img src="/LOGO%20WEB.png" alt="StudyCaptures" className="w-6 h-6 object-contain" />
           </div>
             <span className="hidden sm:inline font-bold text-xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             StudyCaptures
@@ -397,7 +397,7 @@ export default function Home() {
             <div className="pointer-events-none absolute -bottom-20 -right-10 w-48 h-48 rounded-full bg-pink-200/30 blur-3xl" />
             <div className="relative flex items-center justify-center gap-3 mb-5">
               <div className="size-9 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center shadow-sm">
-                <img src="/logo.svg" alt="StudyCaptures" className="w-5 h-5" />
+                <img src="/LOGO%20WEB.png" alt="StudyCaptures" className="w-5 h-5 object-contain" />
               </div>
               <span className="font-extrabold text-lg bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-transparent">StudyCaptures</span>
             </div>

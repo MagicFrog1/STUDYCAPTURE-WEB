@@ -20,9 +20,9 @@ export const metadata: Metadata = {
   description:
     "Sube fotos de tus apuntes y recibe apuntes perfectos con estilo, colores y el nivel de detalle que elijas.",
   icons: {
-    icon: '/logo.png',
-    apple: '/logo.png',
-    shortcut: '/logo.png',
+    icon: '/LOGO%20WEB.png',
+    apple: '/LOGO%20WEB.png',
+    shortcut: '/LOGO%20WEB.png',
   },
   openGraph: {
     title: "StudyCaptures — Genera apuntes desde imágenes",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     url: "https://studycaptureai.com",
     siteName: "StudyCaptures",
     images: [
-      { url: "/logo.png", width: 1200, height: 630, alt: "StudyCaptures" },
+      { url: "/LOGO%20WEB.png", width: 1200, height: 630, alt: "StudyCaptures" },
     ],
     locale: "es_ES",
     type: "website",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     title: "StudyCaptures — Genera apuntes desde imágenes",
     description:
       "Sube fotos de tus apuntes y recibe apuntes perfectos con estilo, colores y el nivel de detalle que elijas.",
-    images: ["/logo.png"],
+    images: ["/LOGO%20WEB.png"],
   },
 };
 
@@ -69,7 +69,7 @@ export default function RootLayout({
               '@type': 'Organization',
               name: 'StudyCaptures',
               url: 'https://studycaptureai.com',
-              logo: 'https://studycaptureai.com/logo.png',
+              logo: 'https://studycaptureai.com/LOGO%20WEB.png',
             }),
           }}
         />
