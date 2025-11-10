@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AppInfoDropdown from "@/components/AppInfoDropdown";
+import { pdfFileToImages } from "@/lib/pdfToImages";
 
 type FlashcardsOptions = {
   count: 10 | 20 | 30;
@@ -24,6 +25,7 @@ export default function FlashcardsPage() {
   const [context, setContext] = useState("");
   const [values, setValues] = useState<FlashcardsOptions>({ count: 10, difficulty: "media", level: "universidad", focus: "conceptos" });
   const [loading, setLoading] = useState(false);
+  const [converting, setConverting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [results, setResults] = useState<Flashcard[] | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -91,12 +93,24 @@ export default function FlashcardsPage() {
     })();
   }, [router]);
 
-  const onFiles = useCallback((list: FileList | null) => {
+  const onFiles = useCallback(async (list: FileList | null) => {
     if (!list) return;
-    const accepted = Array.from(list).filter((f) => 
-      f.type.startsWith("image/") || f.type === "application/pdf"
-    );
-    setFiles((prev) => [...prev, ...accepted].slice(0, 20));
+    const incoming = Array.from(list).filter((f) => f.type.startsWith("image/") || f.type === "application/pdf");
+    if (incoming.length === 0) return;
+    setConverting(true);
+    try {
+      const directImages = incoming.filter((f) => f.type.startsWith("image/"));
+      const pdfs = incoming.filter((f) => f.type === "application/pdf");
+      const renderedArrays = await Promise.all(pdfs.map((pdf) => pdfFileToImages(pdf, Number.MAX_SAFE_INTEGER, 1.5)));
+      const rendered = renderedArrays.flat();
+      const next = [...directImages, ...rendered, ...pdfs];
+      setFiles((prev) => [...prev, ...next]);
+    } catch (e) {
+      console.error("Error convirtiendo PDF a imágenes", e);
+      setError("No se pudo procesar uno de los PDFs. Intenta con otro archivo o sube imágenes.");
+    } finally {
+      setConverting(false);
+    }
   }, []);
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -115,8 +129,8 @@ export default function FlashcardsPage() {
   }, []);
 
   const canSubmit = useMemo(() => {
-    return files.length > 0 && files.length <= 20 && !loading;
-  }, [files.length, loading]);
+    return files.length > 0 && files.length <= 20 && !loading && !converting;
+  }, [files.length, loading, converting]);
   
   const fileWarning = useMemo(() => {
     if (files.length === 0) return null;
