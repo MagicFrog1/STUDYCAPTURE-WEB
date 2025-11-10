@@ -35,6 +35,7 @@ export default function FlashcardsPage() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<"" | "monthly" | "yearly">("");
   const [flipped, setFlipped] = useState<Set<string>>(new Set());
+  const [isTrial, setIsTrial] = useState(false);
 
   const toggleFlip = useCallback((id: string) => {
     setFlipped((prev) => {
@@ -89,6 +90,17 @@ export default function FlashcardsPage() {
           .eq('user_id', data.session.user.id)
           .maybeSingle();
         if (profile?.is_premium) setIsPremium(true);
+        // Calcular trial de 7 días si no es premium
+        if (!profile?.is_premium) {
+          const { data: u } = await supabase.auth.getUser();
+          const user = u.user;
+          // @ts-ignore
+          const confirmedAt: string | null = (user?.email_confirmed_at ?? user?.confirmed_at ?? user?.created_at ?? null) as string | null;
+          if (confirmedAt) {
+            const trialUntil = new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000;
+            setIsTrial(Date.now() < trialUntil);
+          }
+        }
       }
     })();
   }, [router]);
@@ -170,7 +182,7 @@ export default function FlashcardsPage() {
       return;
     }
     // Bloqueo amable si no hay suscripción
-    if (!isPremium) {
+    if (!isPremium && !isTrial) {
       setShowPaywall(true);
       return;
     }

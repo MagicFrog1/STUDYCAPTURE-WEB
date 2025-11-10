@@ -45,6 +45,7 @@ export default function GenerarPanelPage() {
   const resultRef = useRef<HTMLDivElement | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<"" | "monthly" | "yearly">("");
+  const [isTrial, setIsTrial] = useState(false);
 
   // Smooth scroll behavior for internal nav
   useEffect(() => {
@@ -94,6 +95,17 @@ export default function GenerarPanelPage() {
           .maybeSingle();
         if (profile?.is_premium) {
           setRemaining(-1); // Premium active - unlimited access
+        }
+        // Calcular periodo de prueba de 7 días si no es premium
+        if (!profile?.is_premium) {
+          const { data: u } = await supabase.auth.getUser();
+          const user = u.user;
+          // @ts-ignore - posibles campos en supabase
+          const confirmedAt: string | null = (user?.email_confirmed_at ?? user?.confirmed_at ?? user?.created_at ?? null) as string | null;
+          if (confirmedAt) {
+            const trialUntil = new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000;
+            setIsTrial(Date.now() < trialUntil);
+          }
         }
       }
     })();
@@ -182,7 +194,7 @@ export default function GenerarPanelPage() {
       return;
     }
     // Si no hay suscripción activa, mostrar paywall amable y salir
-    if (!isPremium) {
+    if (!isPremium && !isTrial) {
       setShowPaywall(true);
       return;
     }
