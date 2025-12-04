@@ -20,15 +20,17 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-gray-200/70 sticky top-2 z-40 pt-[env(safe-area-inset-top)] transition-all mx-2 rounded-xl">
+    <header className="sticky top-2 z-40 pt-[env(safe-area-inset-top)] mx-2 rounded-2xl border border-slate-800/70 bg-slate-900/70 supports-[backdrop-filter]:bg-slate-900/60 backdrop-blur-xl shadow-[0_18px_45px_rgba(15,23,42,0.9)] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-3 sm:py-4">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 transition-transform hover:translate-y-[-1px]">
-            <div className="w-10 h-10 flex items-center justify-center">
-              <img src="/LOGO%20WEB.png" alt="StudyCaptures" className="w-full h-full object-contain" />
+          <Link href="/" className="flex items-center space-x-2 transition-transform hover:-translate-y-0.5">
+            <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-900/80 ring-1 ring-slate-700/80 shadow-[0_16px_35px_rgba(15,23,42,0.9)]">
+              <img src="/LOGO%20WEB.png" alt="StudyCaptures" className="w-8 h-8 object-contain" />
             </div>
-            <span className="hidden sm:inline text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">StudyCaptures</span>
+            <span className="hidden sm:inline text-xl font-semibold tracking-tight bg-gradient-to-r from-indigo-300 via-sky-300 to-fuchsia-300 bg-clip-text text-transparent drop-shadow-[0_0_18px_rgba(56,189,248,0.35)]">
+              StudyCaptures
+            </span>
           </Link>
 
           {/* Navigation (desktop) */}
@@ -37,15 +39,17 @@ export default function Header() {
             {pathname !== "/profile" && (
               <Link
                 href={isLoggedIn ? "/profile" : "/login"}
-                className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-all hover:translate-y-[-1px]"
+                className="inline-flex items-center gap-2 text-slate-300 hover:text-sky-300 transition-all hover:-translate-y-0.5"
               >
-                <span className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full flex items-center justify-center text-xs">👤</span>
+                <span className="w-8 h-8 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 text-sky-300 rounded-xl flex items-center justify-center text-xs ring-1 ring-slate-600/70 shadow-[0_10px_28px_rgba(15,23,42,0.9)]">
+                  👤
+                </span>
                 <span>Mi cuenta</span>
               </Link>
             )}
             <Link
               href="/generar"
-              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full font-medium shadow-sm hover:shadow-md transition-all"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-slate-50 bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(90deg,#1d4ed8,#4f46e5,#a855f7)] shadow-[0_18px_45px_rgba(15,23,42,0.9)] ring-1 ring-indigo-400/60 hover:brightness-110 hover:shadow-[0_22px_60px_rgba(15,23,42,1)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
             >
               Generar Apuntes
             </Link>
@@ -55,14 +59,16 @@ export default function Header() {
           <div className="flex items-center gap-2">
             <Link
               href={isLoggedIn ? "/profile" : "/login"}
-              className="hidden md:inline-flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 transition-colors"
+              className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/60 text-slate-200 hover:text-sky-300 border border-slate-700/70 hover:border-sky-500/50 shadow-[0_14px_35px_rgba(15,23,42,0.9)] transition-colors"
             >
-              <span className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">👤</span>
+              <span className="w-8 h-8 bg-gradient-to-br from-sky-500 to-indigo-500 text-slate-950 rounded-full flex items-center justify-center text-sm font-semibold">
+                👤
+              </span>
               <span className="text-sm">Mi cuenta</span>
             </Link>
             {/* Hamburger (mobile) */}
             <button
-              className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-gray-200 text-gray-700 tap-grow"
+              className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl border border-slate-700/80 bg-slate-900/70 text-slate-100 shadow-[0_14px_35px_rgba(15,23,42,0.9)] tap-grow"
               aria-label="Abrir menú"
               onClick={() => setIsMenuOpen((v) => !v)}
             >
@@ -76,16 +82,22 @@ export default function Header() {
 
       {/* Mobile dropdown */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm transition-all">
+        <div className="md:hidden bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/80 shadow-[0_18px_45px_rgba(15,23,42,1)] transition-all">
           <div className="px-4 py-4 flex flex-col gap-3">
             <AppInfoDropdown />
             {pathname !== "/profile" && (
-              <Link href={isLoggedIn ? "/profile" : "/login"} className="text-gray-700 transition-colors hover:text-purple-600" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>
+              <Link
+                href={isLoggedIn ? "/profile" : "/login"}
+                className="text-slate-200 transition-colors hover:text-sky-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Mi cuenta
+              </Link>
             )}
             <div className="pt-1">
               <Link
                 href="/generar"
-                className="block bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full font-medium text-center tap-grow shadow-sm"
+                className="block bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(90deg,#1d4ed8,#4f46e5,#a855f7)] text-white px-4 py-2 rounded-full font-medium text-center tap-grow shadow-[0_18px_45px_rgba(15,23,42,1)]"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Generar Apuntes

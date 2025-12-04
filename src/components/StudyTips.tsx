@@ -41,43 +41,43 @@ export default function StudyTips() {
 
   const accentToClasses: Record<Tip["accent"], { ring: string; text: string; overlay: string }> = {
     violet: {
-      ring: "ring-violet-200 bg-white text-violet-600",
-      text: "text-violet-600",
-      overlay: "from-violet-50",
+      ring: "ring-violet-400/70 bg-slate-950 text-violet-200",
+      text: "text-violet-200",
+      overlay: "from-violet-500/15",
     },
     blue: {
-      ring: "ring-blue-200 bg-white text-blue-600",
-      text: "text-blue-600",
-      overlay: "from-blue-50",
+      ring: "ring-sky-400/70 bg-slate-950 text-sky-200",
+      text: "text-sky-200",
+      overlay: "from-sky-500/15",
     },
     emerald: {
-      ring: "ring-emerald-200 bg-white text-emerald-600",
-      text: "text-emerald-600",
-      overlay: "from-emerald-50",
+      ring: "ring-emerald-400/70 bg-slate-950 text-emerald-200",
+      text: "text-emerald-200",
+      overlay: "from-emerald-500/15",
     },
     teal: {
-      ring: "ring-teal-200 bg-white text-teal-600",
-      text: "text-teal-600",
-      overlay: "from-teal-50",
+      ring: "ring-teal-400/70 bg-slate-950 text-teal-200",
+      text: "text-teal-200",
+      overlay: "from-teal-500/15",
     },
   };
 
   return (
     <div className="relative">
-      {/* Fondo sutil mejorado */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50"></div>
-      <div className="pointer-events-none absolute -top-10 -left-10 w-72 h-72 bg-purple-200/40 blur-3xl rounded-full"></div>
-      <div className="pointer-events-none absolute -bottom-10 -right-10 w-72 h-72 bg-blue-200/40 blur-3xl rounded-full"></div>
+      {/* Fondo sutil mejorado coherente con tema oscuro */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"></div>
+      <div className="pointer-events-none absolute -top-10 -left-10 w-72 h-72 bg-sky-500/25 blur-3xl rounded-full"></div>
+      <div className="pointer-events-none absolute -bottom-10 -right-10 w-72 h-72 bg-fuchsia-500/25 blur-3xl rounded-full"></div>
 
       <div className="relative max-w-6xl mx-auto">
         {/* Encabezado */}
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold mb-5 tracking-tight">
-            <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+            <span className="bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_60%),radial-gradient(circle_at_100%_0,#a855f7,transparent_60%),linear-gradient(90deg,#e5e7eb,#e0f2fe,#c7d2fe)] bg-clip-text text-transparent">
               Consejos para mejores resultados
             </span>
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
             Descubre cómo exprimir las 4 herramientas (Apuntes, Flashcards, Tipo Test y Preguntas largas) para mejorar tus resultados
           </p>
         </div>
@@ -92,8 +92,8 @@ export default function StudyTips() {
                 <div className={`absolute inset-0 rounded-3xl bg-gradient-to-b ${c.overlay} to-transparent`}></div>
 
                 {/* Borde degradado suave */}
-                <div className="rounded-3xl p-[1px] bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100">
-                  <div className="relative bg-white rounded-3xl p-8 border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-purple-200/70">
+                <div className="rounded-3xl p-[1px] bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(135deg,#0f172a,#1f2937)]">
+                  <div className="relative bg-slate-950/90 rounded-3xl p-8 border border-slate-800 shadow-[0_18px_45px_rgba(15,23,42,1)] hover:shadow-[0_24px_65px_rgba(15,23,42,1)] transition-all duration-300 hover:-translate-y-1">
                   {/* Icono dentro de contenedor cuadrado redondeado */}
                   <div className="mb-6">
                     <span className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl ring-1 ${c.ring}`}>
@@ -104,8 +104,8 @@ export default function StudyTips() {
                     </span>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{tip.title}</h3>
-                  <p className="text-gray-700 leading-relaxed">{tip.description}</p>
+                  <h3 className="text-2xl font-bold text-slate-50 mb-3">{tip.title}</h3>
+                  <p className="text-slate-300 leading-relaxed">{tip.description}</p>
                   </div>
                 </div>
               </div>

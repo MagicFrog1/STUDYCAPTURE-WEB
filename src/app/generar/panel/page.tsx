@@ -234,21 +234,26 @@ export default function GenerarPanelPage() {
   }, [files, values, context, isLoggedIn, router, isPremium, trialActive]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen overflow-x-hidden">
       {/* Header */}
-      <header className="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between bg-white/80 supports-[backdrop-filter]:bg-white/70 backdrop-blur border-b border-purple-200/70 sticky top-2 z-30 pt-[env(safe-area-inset-top)] transition-all mx-2 rounded-xl">
+      <header className="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between bg-slate-950/80 supports-[backdrop-filter]:bg-slate-950/60 backdrop-blur-xl border border-slate-800/80 sticky top-2 z-30 pt-[env(safe-area-inset-top)] transition-all mx-2 rounded-2xl shadow-[0_18px_45px_rgba(15,23,42,0.9)]">
         <Link href="/" className="flex items-center gap-2 sm:gap-3">
-          <div className="size-7 sm:size-8 md:size-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+          <div className="size-7 sm:size-8 md:size-10 rounded-xl bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(135deg,#1d4ed8,#4f46e5,#a855f7)] flex items-center justify-center flex-shrink-0 ring-1 ring-indigo-300/70 shadow-[0_16px_40px_rgba(15,23,42,1)]">
             <img src="/LOGO%20WEB.png" alt="StudyCaptures" className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 object-contain" />
           </div>
-          <span className="hidden sm:inline font-bold text-base sm:text-lg md:text-xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <span className="hidden sm:inline font-bold text-base sm:text-lg md:text-xl bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(90deg,#e5e7eb,#e0f2fe,#a5b4fc)] bg-clip-text text-transparent">
             StudyCaptures
           </span>
         </Link>
         <nav className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm">
           <AppInfoDropdown />
-          <Link href={isLoggedIn ? "/profile" : "/login"} className="flex items-center gap-2 px-1.5 py-1 sm:px-3 sm:py-1.5 rounded-md border border-transparent sm:border-purple-200 text-gray-700 hover:text-purple-700 hover:border-purple-300 transition-all tap-grow">
-            <span className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full flex items-center justify-center text-xs">👤</span>
+          <Link
+            href={isLoggedIn ? "/profile" : "/login"}
+            className="flex items-center gap-2 px-1.5 py-1 sm:px-3 sm:py-1.5 rounded-xl border border-slate-700/80 text-slate-100 hover:text-sky-300 hover:border-sky-400/60 bg-slate-950/70 transition-all tap-grow shadow-[0_14px_35px_rgba(15,23,42,1)]"
+          >
+            <span className="w-7 h-7 sm:w-8 sm:h-8 bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(135deg,#1d4ed8,#4f46e5,#a855f7)] text-slate-950 rounded-full flex items-center justify-center text-xs">
+              👤
+            </span>
             <span className="hidden sm:inline">Mi cuenta</span>
           </Link>
         </nav>
@@ -259,11 +264,11 @@ export default function GenerarPanelPage() {
           {/* Page Header */}
           <div className="text-center mb-8 sm:mb-12 reveal">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
-              <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+              <span className="bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(90deg,#e5e7eb,#e0f2fe,#a5b4fc)] bg-clip-text text-transparent drop-shadow-[0_0_26px_rgba(56,189,248,0.8)]">
                 Genera tus apuntes
               </span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg md:text-xl text-slate-200/90 max-w-2xl mx-auto px-4">
               Sube imágenes de tus apuntes y obtén apuntes completos y educativos. La IA usa su conocimiento interno para enriquecer el contenido con explicaciones detalladas, ejemplos adicionales y conexiones entre conceptos. Para mejores resultados, sube fotos de un único tema y proporciona contexto educativo.
             </p>
           </div>
@@ -271,20 +276,20 @@ export default function GenerarPanelPage() {
           <div className="grid lg:grid-cols-[1fr_1.1fr] gap-8 xl:gap-10">
             {/* Upload Section */}
             <div ref={uploadRef} className="space-y-6 scroll-mt-28">
-              <div className="relative overflow-hidden rounded-3xl p-6 sm:p-8 shadow-xl border border-purple-200 bg-gradient-to-br from-purple-600 via-pink-600 to-purple-500 text-white">
+              <div className="relative overflow-hidden rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-800 bg-gradient-to-br from-indigo-950 via-slate-950 to-slate-950 text-slate-50">
                 <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,_#ffffff20,_transparent_45%)]" aria-hidden />
                 <div className="flex items-start justify-between gap-4 mb-6">
                   <div>
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs font-semibold tracking-wide uppercase">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 text-xs font-semibold tracking-wide uppercase text-sky-300 ring-1 ring-sky-400/60">
                       Paso 1
                     </span>
-                    <h2 className="mt-3 text-2xl sm:text-3xl font-extrabold">Sube tu material</h2>
-                    <p className="mt-2 text-sm sm:text-base text-white/80 max-w-xl">
+                    <h2 className="mt-3 text-2xl sm:text-3xl font-extrabold text-slate-50">Sube tu material</h2>
+                    <p className="mt-2 text-sm sm:text-base text-slate-300 max-w-xl">
                       Aceptamos imágenes o PDFs. Convertimos automáticamente las páginas para extraer todo el contenido relevante.
                     </p>
                   </div>
-                  <div className="hidden sm:flex items-center justify-center w-16 h-16 rounded-2xl bg-white/15 shadow-inner">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-white">
+                    <div className="hidden sm:flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-900/80 shadow-inner ring-1 ring-slate-700/80">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-sky-300">
                       <path d="M3 8a2 2 0 0 1 2-2h2l1.2-1.8A2 2 0 0 1 10.8 3h2.4a2 2 0 0 1 1.6.8L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
                       <circle cx="12" cy="13" r="3.5" stroke="currentColor" strokeWidth="1.8"/>
                     </svg>
@@ -298,26 +303,26 @@ export default function GenerarPanelPage() {
                   }}
                   onDragLeave={() => setDragOver(false)}
                   onDrop={handleDrop}
-                  className={`relative rounded-2xl border-2 border-dashed text-center p-8 transition-all duration-300 bg-white/10 backdrop-blur-sm ${dragOver ? "border-white/60 bg-white/15 scale-[1.02]" : "border-white/30 hover:border-white/50"}`}
+                  className={`relative rounded-2xl border-2 border-dashed text-center p-8 transition-all duration-300 bg-slate-900/60 backdrop-blur-sm ${dragOver ? "border-sky-400/80 bg-slate-900/80 scale-[1.02]" : "border-slate-700/80 hover:border-sky-400/70"}`}
                 >
                   <div className="absolute inset-0 pointer-events-none rounded-2xl bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.18),_transparent_65%)]" />
                   <div className="relative flex flex-col items-center gap-4">
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                    <div className="w-16 h-16 bg-slate-900/80 rounded-full flex items-center justify-center ring-1 ring-slate-700/80">
                       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
-                        <path d="M7 3h6l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="#ffffff" strokeWidth="1.8"/>
-                        <path d="M13 3v5h5" stroke="#ffffff" strokeWidth="1.8"/>
+                        <path d="M7 3h6l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="#e5e7eb" strokeWidth="1.8"/>
+                        <path d="M13 3v5h5" stroke="#e5e7eb" strokeWidth="1.8"/>
                       </svg>
                     </div>
                     <div>
-                      <p className="text-lg font-semibold text-white mb-2">
+                      <p className="text-lg font-semibold text-slate-50 mb-2">
                         Arrastra y suelta aquí tus imágenes o PDFs
                       </p>
-                      <p className="text-white/80 mb-4 text-sm sm:text-base">
+                      <p className="text-slate-300 mb-4 text-sm sm:text-base">
                         o haz clic para explorar archivos (máx. 20). Convertimos automáticamente los PDFs para extraer cada página.
                       </p>
                       <button
                         onClick={handleUploadClick}
-                        className="inline-flex items-center gap-2 bg-white text-purple-600 font-semibold px-6 py-2.5 rounded-full shadow-md hover:shadow-xl transition-all transform hover:translate-y-[-1px]"
+                        className="inline-flex items-center gap-2 bg-slate-50 text-slate-950 font-semibold px-6 py-2.5 rounded-full shadow-[0_16px_40px_rgba(15,23,42,1)] hover:shadow-[0_20px_55px_rgba(15,23,42,1)] transition-all transform hover:-translate-y-0.5"
                       >
                         Seleccionar archivos
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -337,11 +342,11 @@ export default function GenerarPanelPage() {
                 </div>
 
                 {files.length > 0 && (
-                  <div className="mt-6 bg-white/10 rounded-2xl p-5 backdrop-blur-sm">
+                  <div className="mt-6 bg-slate-950/70 rounded-2xl p-5 backdrop-blur-sm border border-slate-700/80">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold">Archivos seleccionados ({files.length}/20)</h3>
+                      <h3 className="text-lg font-semibold text-slate-50">Archivos seleccionados ({files.length}/20)</h3>
                       {fileWarning && (
-                        <span className={`text-xs font-medium px-3 py-1 rounded-full ${files.length > 20 ? 'bg-red-100/90 text-red-700' : 'bg-amber-100/90 text-amber-700'}`}>
+                        <span className={`text-xs font-medium px-3 py-1 rounded-full ${files.length > 20 ? 'bg-rose-500/15 text-rose-200 ring-1 ring-rose-400/70' : 'bg-amber-500/15 text-amber-200 ring-1 ring-amber-400/70'}`}>
                           {fileWarning}
                         </span>
                       )}
@@ -350,9 +355,9 @@ export default function GenerarPanelPage() {
                       {files.map((f, i) => {
                         const isPdf = f.type === "application/pdf";
                         return (
-                          <div key={i} className="group relative rounded-xl overflow-hidden border border-white/30 bg-white/10 hover:bg-white/20 transition-all">
+                          <div key={i} className="group relative rounded-xl overflow-hidden border border-slate-700/80 bg-slate-900/80 hover:bg-slate-800 transition-all">
                             {isPdf ? (
-                              <div className="h-28 sm:h-32 w-full flex items-center justify-center text-purple-100">
+                              <div className="h-28 sm:h-32 w-full flex items-center justify-center text-sky-300">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
                                   <path d="M7 3h6l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="2"/>
                                   <path d="M13 3v5h5" stroke="currentColor" strokeWidth="2"/>
@@ -364,12 +369,12 @@ export default function GenerarPanelPage() {
                             )}
                             <button
                               onClick={() => removeFile(i)}
-                              className="absolute top-2 right-2 bg-white text-purple-600 w-8 h-8 rounded-full text-sm font-semibold transition-all transform hover:scale-110 active:scale-95 flex items-center justify-center shadow-lg"
+                              className="absolute top-2 right-2 bg-slate-50 text-slate-900 w-8 h-8 rounded-full text-sm font-semibold transition-all transform hover:scale-110 active:scale-95 flex items-center justify-center shadow-lg"
                               aria-label={`Eliminar ${f.name}`}
                             >
                               ✕
                             </button>
-                            <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-xs font-medium text-white max-w-[calc(100%-1rem)] truncate">
+                            <div className="absolute bottom-2 left-2 bg-slate-950/80 px-2 py-1 rounded text-xs font-medium text-slate-100 max-w-[calc(100%-1rem)] truncate">
                               {f.name.length > 15 ? f.name.substring(0, 15) + "..." : f.name}
                             </div>
                           </div>
@@ -381,20 +386,20 @@ export default function GenerarPanelPage() {
               </div>
 
               {/* Contexto (opcional) */}
-              <div className="relative rounded-3xl border border-purple-200 bg-white shadow-md overflow-hidden reveal">
-                <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-purple-500 to-pink-500" aria-hidden />
+              <div className="relative rounded-3xl border border-slate-800 bg-slate-950/80 shadow-[0_18px_45px_rgba(15,23,42,1)] overflow-hidden reveal">
+                <div className="absolute left-0 top-0 bottom-0 w-2 bg-[linear-gradient(to_bottom,#22d3ee,#a855f7,#22c55e)]" aria-hidden />
                 <div className="px-6 sm:px-8 py-6">
                   <div className="flex items-start justify-between gap-4 mb-6">
                     <div>
-                      <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-semibold uppercase tracking-wide">
+                      <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 text-sky-300 text-xs font-semibold uppercase tracking-wide ring-1 ring-sky-400/60">
                         Paso 2
                       </span>
-                      <h2 className="mt-3 text-2xl font-bold text-gray-900">Contexto educativo</h2>
-                      <p className="mt-1 text-sm sm:text-base text-gray-600 max-w-2xl">
+                      <h2 className="mt-3 text-2xl font-bold text-slate-50">Contexto educativo</h2>
+                      <p className="mt-1 text-sm sm:text-base text-slate-300 max-w-2xl">
                         Cuéntanos qué necesitas: asignatura, nivel, objetivos, estilo del profesor, evaluaciones… cuanto más contexto, más afinadas serán las notas generadas.
                       </p>
                     </div>
-                    <div className="hidden sm:block w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center">
+                    <div className="hidden sm:block w-12 h-12 rounded-xl bg-slate-900/80 text-sky-300 flex items-center justify-center ring-1 ring-slate-700/80">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                         <path d="M4 7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H9l-4 3v-3a3 3 0 0 1-1-2V7Z" stroke="currentColor" strokeWidth="1.8"/>
                         <path d="M12 7v4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
@@ -404,17 +409,17 @@ export default function GenerarPanelPage() {
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-4 mb-6">
-                    <div className="rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50 to-pink-50 p-4">
-                      <h3 className="text-sm font-semibold text-purple-700 mb-2">Sugiere:</h3>
-                      <ul className="space-y-1 text-sm text-purple-700/80">
+                    <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+                      <h3 className="text-sm font-semibold text-sky-300 mb-2">Sugiere:</h3>
+                      <ul className="space-y-1 text-sm text-slate-200/90">
                         <li>• Temario específico o unidad</li>
                         <li>• Objetivo (repaso, examen, trabajo)</li>
                         <li>• Estilo deseado (teórico, práctico, resúmenes)</li>
                       </ul>
                     </div>
-                    <div className="rounded-2xl border border-purple-100 bg-white p-4">
-                      <h3 className="text-sm font-semibold text-gray-800 mb-2">También ayuda:</h3>
-                      <ul className="space-y-1 text-sm text-gray-600">
+                    <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+                      <h3 className="text-sm font-semibold text-sky-300 mb-2">También ayuda:</h3>
+                      <ul className="space-y-1 text-sm text-slate-200/90">
                         <li>• Ejemplos que debería incluir</li>
                         <li>• Errores comunes a evitar</li>
                         <li>• Tipo de evaluación o rúbrica</li>
@@ -427,29 +432,31 @@ export default function GenerarPanelPage() {
                     onChange={(e) => setContext(e.target.value)}
                     rows={5}
                     placeholder="Ejemplo: Asignatura Álgebra I (Universidad). Repasar matrices y determinantes para examen final. Profesor exige demostraciones y problemas aplicados."
-                    className="w-full rounded-2xl border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all resize-y"
+                    className="w-full rounded-2xl border border-slate-700 bg-slate-900/80 text-slate-100 placeholder:text-slate-500 px-4 py-3 focus:border-sky-400 focus:ring-2 focus:ring-sky-500/30 transition-all resize-y"
                   />
                 </div>
               </div>
 
               {/* Settings */}
-              <div ref={settingsRef} className="rounded-3xl border border-purple-200 bg-white shadow-lg overflow-hidden reveal">
-                <div className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-6 sm:px-8 py-6">
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-xs font-semibold uppercase">
+              <div ref={settingsRef} className="rounded-3xl border border-slate-800 bg-slate-950/80 shadow-[0_18px_45px_rgba(15,23,42,1)] overflow-hidden reveal">
+                <div className="bg-gradient-to-r from-indigo-950 via-slate-950 to-slate-950 text-slate-50 px-6 sm:px-8 py-6">
+                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 text-xs font-semibold uppercase text-sky-300 ring-1 ring-sky-400/60">
                     Paso 3
                   </span>
                   <h2 className="mt-3 text-2xl font-bold">Personaliza tus apuntes</h2>
-                  <p className="mt-1 text-sm sm:text-base text-white/80 max-w-2xl">Elige la extensión, complejidad y estilo visual. Ajustamos la redacción al nivel académico que especifiques.</p>
+                  <p className="mt-1 text-sm sm:text-base text-slate-300 max-w-2xl">
+                    Elige la extensión, complejidad y estilo visual. Ajustamos la redacción al nivel académico que especifiques.
+                  </p>
                 </div>
 
                 <div className="px-6 sm:px-8 py-6 space-y-6">
                   <div className="grid lg:grid-cols-3 gap-5">
-                    <div className="rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50 to-pink-50 p-4">
-                      <h3 className="text-sm font-semibold text-purple-700 mb-2">Extensión del contenido</h3>
+                    <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+                      <h3 className="text-sm font-semibold text-sky-300 mb-2">Extensión del contenido</h3>
                       <select
                         value={values.size}
                         onChange={(e) => setValues((v) => ({ ...v, size: e.target.value as FormValues["size"] }))}
-                        className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all text-sm"
+                        className="w-full rounded-xl border border-slate-700 bg-slate-950 text-slate-100 px-4 py-3 focus:border-sky-400 focus:ring-2 focus:ring-sky-500/30 transition-all text-sm"
                       >
                         <option value="mini">Mini · Conceptos clave + ejemplo</option>
                         <option value="media">Media · Desarrollo completo + ejemplos</option>
@@ -457,12 +464,12 @@ export default function GenerarPanelPage() {
                       </select>
                     </div>
 
-                    <div className="rounded-2xl border border-purple-100 bg-white p-4">
-                      <h3 className="text-sm font-semibold text-purple-700 mb-2">Complejidad</h3>
+                    <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+                      <h3 className="text-sm font-semibold text-sky-300 mb-2">Complejidad</h3>
                       <select
                         value={values.complexity}
                         onChange={(e) => setValues((v) => ({ ...v, complexity: e.target.value as FormValues["complexity"] }))}
-                        className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all text-sm"
+                        className="w-full rounded-xl border border-slate-700 bg-slate-950 text-slate-100 px-4 py-3 focus:border-sky-400 focus:ring-2 focus:ring-sky-500/30 transition-all text-sm"
                       >
                         <option value="baja">Baja · Lenguaje accesible y ejemplos sencillos</option>
                         <option value="media">Media · Terminología adecuada y explicaciones detalladas</option>
@@ -470,12 +477,12 @@ export default function GenerarPanelPage() {
                       </select>
                     </div>
 
-                    <div className="rounded-2xl border border-purple-100 bg-white p-4">
-                      <h3 className="text-sm font-semibold text-purple-700 mb-2">Estilo visual</h3>
+                    <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+                      <h3 className="text-sm font-semibold text-sky-300 mb-2">Estilo visual</h3>
                       <select
                         value={values.colorStyle}
                         onChange={(e) => setValues((v) => ({ ...v, colorStyle: e.target.value as FormValues["colorStyle"] }))}
-                        className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all text-sm"
+                        className="w-full rounded-xl border border-slate-700 bg-slate-950 text-slate-100 px-4 py-3 focus:border-sky-400 focus:ring-2 focus:ring-sky-500/30 transition-all text-sm"
                       >
                         <option value="neutro">Neutro · Presentación limpia y académica</option>
                         <option value="pastel">Pastel · Enfoque amigable y motivador</option>
@@ -484,12 +491,12 @@ export default function GenerarPanelPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl border border-purple-100 bg-white p-4">
-                    <h3 className="text-sm font-semibold text-purple-700 mb-2">Nivel de enriquecimiento</h3>
+                  <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+                    <h3 className="text-sm font-semibold text-sky-300 mb-2">Nivel de enriquecimiento</h3>
                     <select
                       value={values.creativity}
                       onChange={(e) => setValues((v) => ({ ...v, creativity: e.target.value as FormValues["creativity"] }))}
-                      className="w-full rounded-xl border border-purple-200 bg-white px-4 py-3 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all text-sm"
+                      className="w-full rounded-xl border border-slate-700 bg-slate-950 text-slate-100 px-4 py-3 focus:border-sky-400 focus:ring-2 focus:ring-sky-500/30 transition-all text-sm"
                     >
                       <option value="preciso">Preciso · Fiel al contenido original</option>
                       <option value="equilibrado">Equilibrado · Balance entre fidelidad y aporte</option>
@@ -501,7 +508,7 @@ export default function GenerarPanelPage() {
                     onClick={handleSubmit}
                     disabled={!canSubmit}
                     aria-disabled={!canSubmit}
-                    className={`w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl transition-all transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center gap-3 tap-grow`}
+                    className="w-full bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(90deg,#1d4ed8,#4f46e5,#a855f7)] text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-[0_24px_70px_rgba(15,23,42,1)] transition-all flex items-center justify-center gap-3 tap-grow"
                   >
                     {loading ? (
                       <>
@@ -514,8 +521,8 @@ export default function GenerarPanelPage() {
                   </button>
 
                   {error && (
-                    <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
-                      <p className="text-red-600 font-medium">Error: {error}</p>
+                    <div className="mt-4 p-4 bg-rose-500/10 border border-rose-400/70 rounded-xl">
+                      <p className="text-rose-100 font-medium">Error: {error}</p>
                     </div>
                   )}
                 </div>
@@ -524,18 +531,18 @@ export default function GenerarPanelPage() {
 
             {/* Results Section */}
             <div className="lg:sticky lg:top-6 lg:h-fit">
-              <div ref={resultRef} className="bg-white rounded-2xl p-8 shadow-lg border border-purple-200 scroll-mt-28 max-w-none card-smooth reveal">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Resultado</h2>
+              <div ref={resultRef} className="bg-slate-950/90 rounded-2xl p-8 shadow-[0_18px_45px_rgba(15,23,42,1)] border border-slate-800 scroll-mt-28 max-w-none card-smooth reveal">
+                <h2 className="text-2xl font-bold text-slate-50 mb-6">Resultado</h2>
                 
                 {!results && (
                   <div className="text-center py-12">
-                    <div className="w-20 h-20 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
-                        <rect x="5" y="3" width="14" height="18" rx="2" stroke="#7c3aed" strokeWidth="1.8"/>
-                        <path d="M8 7h8M8 11h8M8 15h5" stroke="#7c3aed" strokeWidth="1.8" strokeLinecap="round"/>
+                    <div className="w-20 h-20 bg-slate-900/80 rounded-full flex items-center justify-center mx-auto mb-4 ring-1 ring-slate-700/80">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden className="text-sky-300">
+                        <rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/>
+                        <path d="M8 7h8M8 11h8M8 15h5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
                       </svg>
                     </div>
-                    <p className="text-gray-500 text-lg">
+                    <p className="text-slate-400 text-lg">
                       Aquí verás apuntes educativos completos, enriquecidos con explicaciones detalladas, ejemplos adicionales y conexiones entre conceptos, todo estructurado según tus preferencias.
                     </p>
                   </div>
@@ -544,26 +551,28 @@ export default function GenerarPanelPage() {
                 {results && (
                   <div className="space-y-6">
                     {results.map((r) => (
-                      <article key={r.id} className={`rounded-2xl border-2 shadow-lg p-8 bg-white ${themeClass} transition-all duration-300 hover:shadow-xl hover:-translate-y-1`}>
+                      <article key={r.id} className={`rounded-2xl border-2 shadow-lg p-8 bg-slate-950 ${themeClass} transition-all duration-300 hover:shadow-[0_22px_60px_rgba(15,23,42,1)] hover:-translate-y-1`}>
                         <div className="flex items-center gap-3 mb-6">
-                          <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-white">
+                          <div className="w-8 h-8 bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(135deg,#1d4ed8,#4f46e5,#a855f7)] rounded-full flex items-center justify-center">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-slate-950">
                               <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                           </div>
-                          <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{r.title}</h3>
+                          <h3 className="text-2xl font-bold bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(90deg,#e5e7eb,#e0f2fe,#a5b4fc)] bg-clip-text text-transparent">
+                            {r.title}
+                          </h3>
                         </div>
                         <div className="max-w-none leading-relaxed text-[15.5px] generated-html" dangerouslySetInnerHTML={{ __html: r.content }} />
                       </article>
                     ))}
 
-                    <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-purple-200">
+                    <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-800">
                       <button
                         onClick={() => {
                           const text = results.map((r) => r.title + "\n\n" + r.content.replace(/<[^>]+>/g, "")).join("\n\n---\n\n");
                           navigator.clipboard.writeText(text);
                         }}
-                        className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-4 rounded-xl font-semibold hover:shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2 tap-grow"
+                        className="flex-1 bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#4f46e5,transparent_55%),linear-gradient(135deg,#0ea5e9,#6366f1,#22c55e)] text-slate-950 py-4 rounded-xl font-semibold hover:shadow-[0_22px_60px_rgba(15,23,42,1)] transition-all flex items-center justify-center gap-2 tap-grow"
                       >
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-white">
                           <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
@@ -585,7 +594,7 @@ export default function GenerarPanelPage() {
                           a.click();
                           URL.revokeObjectURL(url);
                         }}
-                        className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 rounded-xl font-semibold hover:shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2 tap-grow"
+                        className="flex-1 bg-[radial-gradient(circle_at_0_0,#22c55e,transparent_55%),radial-gradient(circle_at_100%_0,#06b6d4,transparent_55%),linear-gradient(135deg,#22c55e,#06b6d4,#6366f1)] text-slate-950 py-4 rounded-xl font-semibold hover:shadow-[0_22px_60px_rgba(15,23,42,1)] transition-all flex items-center justify-center gap-2 tap-grow"
                       >
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-white">
                           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" strokeWidth="2"/>
@@ -603,27 +612,46 @@ export default function GenerarPanelPage() {
         </div>
       </main>
       {showPaywall && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-purple-200 card-smooth reveal is-visible">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="w-full max-w-md bg-slate-950 rounded-2xl p-6 shadow-[0_24px_70px_rgba(15,23,42,1)] border border-slate-800 card-smooth reveal is-visible">
             <div className="flex items-start justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-900">Suscripción necesaria</h3>
-              <button onClick={() => setShowPaywall(false)} className="text-gray-500 hover:text-gray-700">✕</button>
+              <h3 className="text-xl font-bold text-slate-50">Suscripción necesaria</h3>
+              <button onClick={() => setShowPaywall(false)} className="text-slate-400 hover:text-slate-200">
+                ✕
+              </button>
             </div>
-            <p className="text-gray-700 mb-2">Para generar apuntes necesitas una suscripción activa.</p>
-            <p className="text-gray-700 mb-4">Con la suscripción desbloqueas las 4 herramientas: Apuntes, Flashcards, Tipo Test y Preguntas largas. Convierte fotos en resultados listos para estudiar: apuntes claros, tarjetas para memorizar, tests con explicación y preguntas largas con corrección automática; personaliza nivel, complejidad y estilo.</p>
+            <p className="text-slate-200 mb-2">
+              Para generar apuntes necesitas una suscripción activa.
+            </p>
+            <p className="text-slate-300 mb-4 text-sm">
+              Con la suscripción desbloqueas las 4 herramientas: Apuntes, Flashcards, Tipo Test y Preguntas largas. Convierte fotos en resultados listos para estudiar: apuntes claros, tarjetas para memorizar, tests con explicación y preguntas largas con corrección automática; personaliza nivel, complejidad y estilo.
+            </p>
             <div className="space-y-2">
-              <Link href="/#precios" className="w-full inline-flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg tap-grow">
+              <Link
+                href="/#precios"
+                className="w-full inline-flex items-center justify-center bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(90deg,#1d4ed8,#4f46e5,#a855f7)] text-white py-3 rounded-xl font-semibold hover:shadow-[0_22px_60px_rgba(15,23,42,1)] tap-grow"
+              >
                 Ir al panel de suscripción
               </Link>
-              <button onClick={() => handleSubscribe("monthly")} disabled={loadingPlan === "monthly"} className="w-full bg-white text-purple-600 ring-1 ring-purple-200 py-3 rounded-xl font-semibold hover:shadow-md disabled:opacity-60 tap-grow">
+              <button
+                onClick={() => handleSubscribe("monthly")}
+                disabled={loadingPlan === "monthly"}
+                className="w-full bg-slate-900 text-slate-100 ring-1 ring-slate-700 py-3 rounded-xl font-semibold hover:bg-slate-800 disabled:opacity-60 tap-grow"
+              >
                 {loadingPlan === "monthly" ? "Redirigiendo..." : "Suscribirme mensual (4,99€ / mes)"}
               </button>
-              <button onClick={() => handleSubscribe("yearly")} disabled={loadingPlan === "yearly"} className="w-full bg-white text-purple-600 ring-1 ring-purple-200 py-3 rounded-xl font-semibold hover:shadow-md disabled:opacity-60 tap-grow">
+              <button
+                onClick={() => handleSubscribe("yearly")}
+                disabled={loadingPlan === "yearly"}
+                className="w-full bg-slate-900 text-slate-100 ring-1 ring-slate-700 py-3 rounded-xl font-semibold hover:bg-slate-800 disabled:opacity-60 tap-grow"
+              >
                 {loadingPlan === "yearly" ? "Redirigiendo..." : "Suscribirme anual (39,99€ / año)"}
               </button>
             </div>
             <div className="mt-4 text-center text-sm">
-              <Link href="/#precios" className="text-gray-600 hover:underline">Ver detalle de planes</Link>
+              <Link href="/#precios" className="text-slate-400 hover:text-slate-200 hover:underline">
+                Ver detalle de planes
+              </Link>
             </div>
           </div>
         </div>
