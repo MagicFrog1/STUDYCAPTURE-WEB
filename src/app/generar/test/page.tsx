@@ -44,7 +44,6 @@ export default function QuizPage() {
   const resultRef = useRef<HTMLDivElement | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<"" | "monthly" | "yearly">("");
-  const [trialActive, setTrialActive] = useState(false);
 
   useEffect(() => {
     const run = async () => {
@@ -63,14 +62,6 @@ export default function QuizPage() {
           .eq('user_id', data.session.user.id)
           .maybeSingle();
         if (profile?.is_premium) setIsPremium(true);
-        const { data: u } = await supabase.auth.getUser();
-        const user = u.user;
-        // @ts-ignore
-        const confirmedAt: string | null = user?.email_confirmed_at ?? user?.confirmed_at ?? user?.created_at ?? null;
-        if (confirmedAt) {
-          const trialUntil = new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000;
-          setTrialActive(Date.now() < trialUntil);
-        }
       }
     };
     run();
@@ -128,8 +119,8 @@ export default function QuizPage() {
     setChecked(false);
     setScore(null);
     try {
-      // Bloqueo si no hay suscripción ni trial
-      if (!isPremium && !trialActive) {
+      // Bloqueo si no hay suscripción activa
+      if (!isPremium) {
         setShowPaywall(true);
         throw new Error("Suscripción requerida");
       }
@@ -161,7 +152,7 @@ export default function QuizPage() {
     } finally {
       setLoading(false);
     }
-  }, [files, values, context, isPremium, trialActive]);
+  }, [files, values, context, isPremium]);
 
   async function handleSubscribe(plan: "monthly" | "yearly") {
     try {

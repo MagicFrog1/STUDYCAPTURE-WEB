@@ -38,7 +38,6 @@ export default function MindmapsPage() {
   const resultRef = useRef<HTMLDivElement | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<"" | "monthly" | "yearly">("");
-  const [trialActive, setTrialActive] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -57,14 +56,6 @@ export default function MindmapsPage() {
           .eq('user_id', data.session.user.id)
           .maybeSingle();
         if (profile?.is_premium) setIsPremium(true);
-        const { data: u } = await supabase.auth.getUser();
-        const user = u.user;
-        // @ts-ignore
-        const confirmedAt: string | null = user?.email_confirmed_at ?? user?.confirmed_at ?? user?.created_at ?? null;
-        if (confirmedAt) {
-          const trialUntil = new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000;
-          setTrialActive(Date.now() < trialUntil);
-        }
       }
     })();
   }, [router]);
@@ -114,7 +105,7 @@ export default function MindmapsPage() {
     setResults(null);
     setOverall(null);
     try {
-      if (!isPremium && !trialActive) {
+      if (!isPremium) {
         setShowPaywall(true);
         throw new Error("Suscripción requerida");
       }
@@ -146,7 +137,7 @@ export default function MindmapsPage() {
     } finally {
       setLoading(false);
     }
-  }, [files, values, context, isPremium, trialActive]);
+  }, [files, values, context, isPremium]);
 
   const handleEvaluate = useCallback(async () => {
     if (!questions) return;

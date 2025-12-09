@@ -45,28 +45,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ error: "login_required" }, { status: 401 });
     }
     
-    // Verificar estado premium desde profiles
+    // Verificar estado premium desde profiles (acceso SOLO para suscriptores)
     const { data: profile } = await authenticatedSupabase
       .from('profiles')
       .select('is_premium')
       .eq('user_id', userId)
       .maybeSingle();
-    
+
     if (!profile?.is_premium) {
-      const confirmedAt =
-        // @ts-ignore
-        (authedUser?.email_confirmed_at as string | null) ??
-        // @ts-ignore
-        (authedUser?.confirmed_at as string | null) ??
-        (authedUser?.created_at as string | null) ??
-        null;
-      const trialUntil =
-        confirmedAt ? new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000 : null;
-      const now = Date.now();
-      const inTrial = trialUntil !== null && now < trialUntil;
-      if (!inTrial) {
-        return NextResponse.json({ error: "subscription_required" }, { status: 402 });
-      }
+      return NextResponse.json({ error: "subscription_required" }, { status: 402 });
     }
 
     const form = await req.formData();

@@ -45,7 +45,6 @@ export default function GenerarPanelPage() {
   const resultRef = useRef<HTMLDivElement | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<"" | "monthly" | "yearly">("");
-  const [trialActive, setTrialActive] = useState(false);
 
   // Smooth scroll behavior for internal nav
   useEffect(() => {
@@ -95,15 +94,6 @@ export default function GenerarPanelPage() {
           .maybeSingle();
         if (profile?.is_premium) {
           setRemaining(-1); // Premium active - unlimited access
-        }
-        // Calcular prueba gratuita (7 días desde confirmación/creación)
-        const { data: u } = await supabase.auth.getUser();
-        const user = u.user;
-        // @ts-ignore
-        const confirmedAt: string | null = user?.email_confirmed_at ?? user?.confirmed_at ?? user?.created_at ?? null;
-        if (confirmedAt) {
-          const trialUntil = new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000;
-          setTrialActive(Date.now() < trialUntil);
         }
       }
     })();
@@ -191,8 +181,8 @@ export default function GenerarPanelPage() {
       router.push("/login");
       return;
     }
-    // Si no hay suscripción activa ni prueba gratuita, bloquear
-    if (!isPremium && !trialActive) {
+    // Si no hay suscripción activa, bloquear siempre
+    if (!isPremium) {
       setShowPaywall(true);
       return;
     }
@@ -231,7 +221,7 @@ export default function GenerarPanelPage() {
     } finally {
       setLoading(false);
     }
-  }, [files, values, context, isLoggedIn, router, isPremium, trialActive]);
+  }, [files, values, context, isLoggedIn, router, isPremium]);
 
   return (
     <div className="min-h-screen overflow-x-hidden">

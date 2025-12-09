@@ -108,20 +108,25 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
-        <div className="text-gray-600">Cargando…</div>
+      <main className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-300">
+        <div>Cargando…</div>
       </main>
     );
   }
 
   if (noSession) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+      <main className="min-h-screen flex items-center justify-center bg-slate-950">
         <div className="text-center">
-          <p className="text-gray-900 font-medium">Necesitas iniciar sesión</p>
-          <p className="text-gray-600 mt-1">Redirigiendo a la página de acceso…</p>
+          <p className="text-slate-100 font-medium">Necesitas iniciar sesión</p>
+          <p className="text-slate-400 mt-1">Redirigiendo a la página de acceso…</p>
           <div className="mt-3">
-            <button onClick={() => router.replace("/login")} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Ir a iniciar sesión ahora</button>
+            <button
+              onClick={() => router.replace("/login")}
+              className="px-4 py-2 bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(90deg,#1d4ed8,#4f46e5,#a855f7)] text-white rounded-lg font-medium hover:brightness-110 transition-all shadow-[0_12px_30px_rgba(15,23,42,1)]"
+            >
+              Ir a iniciar sesión ahora
+            </button>
           </div>
         </div>
       </main>
@@ -129,26 +134,32 @@ export default function ProfilePage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+    <main className="min-h-screen bg-slate-950 text-slate-200">
       {/* Hero de cuenta */}
-      <section className="px-6 pt-10 reveal">
+      <section className="px-4 sm:px-6 pt-10 reveal">
         <div className="max-w-5xl mx-auto">
-          <div className="relative overflow-hidden rounded-3xl">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600" />
-            <div className="relative px-8 py-10 text-white">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center">
+          <div className="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-950/90 shadow-[0_18px_45px_rgba(15,23,42,1)]">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_0_0,rgba(56,189,248,0.28),transparent_55%),radial-gradient(circle_at_100%_0,rgba(168,85,247,0.3),transparent_55%)] opacity-90" />
+            <div className="relative px-6 sm:px-8 py-8 sm:py-10">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-xl bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(135deg,#1d4ed8,#4f46e5,#a855f7)] flex items-center justify-center ring-1 ring-indigo-300/70 shadow-[0_10px_26px_rgba(15,23,42,1)]">
                   <img src="/LOGO%20WEB.png" alt="StudyCaptures" className="w-5 h-5 object-contain" />
                 </div>
-                <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Mi cuenta</h1>
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-50">Mi cuenta</h1>
               </div>
-              <p className="text-white/80">Gestiona tu suscripción, privacidad y sesión</p>
-              <div className="mt-6 inline-flex items-center gap-3 bg-white/10 backdrop-blur px-4 py-2 rounded-full ring-1 ring-white/30">
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/20 font-semibold">
+              <p className="text-slate-200/90">Gestiona tu suscripción, privacidad y sesión</p>
+              <div className="mt-6 inline-flex items-center gap-3 bg-slate-900/80 backdrop-blur px-4 py-2 rounded-full ring-1 ring-slate-700/80">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-800 font-semibold text-slate-100">
                   {email?.charAt(0).toUpperCase()}
                 </span>
-                <span className="text-sm">{email}</span>
-                <span className={`text-xs px-2 py-1 rounded-full ring-1 ${profile?.is_premium ? "bg-green-500/20 ring-green-400/50 text-green-50" : "bg-white/10 ring-white/30 text-white"}`}>
+                <span className="text-sm text-slate-100 break-all">{email}</span>
+                <span
+                  className={`text-xs px-2 py-1 rounded-full ring-1 ${
+                    profile?.is_premium
+                      ? "bg-emerald-500/15 ring-emerald-400/70 text-emerald-200"
+                      : "bg-slate-900/80 ring-slate-700/80 text-slate-200"
+                  }`}
+                >
                   {profile?.is_premium ? "Premium activo" : "Suscripción requerida"}
                 </span>
               </div>
@@ -158,22 +169,22 @@ export default function ProfilePage() {
       </section>
 
       {/* Contenido principal */}
-      <section className="px-6 py-10">
+      <section className="px-4 sm:px-6 py-10">
         <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
           {/* Estado */}
-          <section className="bg-white rounded-2xl border border-purple-200 shadow-sm p-5 card-smooth reveal">
+          <section className="bg-slate-950/95 rounded-2xl border border-slate-800 shadow-[0_16px_40px_rgba(15,23,42,1)] p-5 card-smooth reveal">
             <div className="flex items-center gap-3 mb-3">
               <IconStatus />
-              <h2 className="font-semibold text-gray-900">Estado</h2>
+              <h2 className="font-semibold text-slate-50">Estado</h2>
             </div>
             <div className="space-y-3 text-sm">
               <div>
-                <p className="text-gray-500">Email</p>
-                <p className="font-medium text-gray-900">{email}</p>
+                <p className="text-slate-400">Email</p>
+                <p className="font-medium text-slate-100 break-all">{email}</p>
               </div>
               <div>
-                <p className="text-gray-500">Plan</p>
-                <p className={`font-medium ${profile?.is_premium ? "text-green-600" : "text-gray-900"}`}>
+                <p className="text-slate-400">Plan</p>
+                <p className={`font-medium ${profile?.is_premium ? "text-emerald-300" : "text-slate-100"}`}>
                   {profile?.is_premium ? "Premium (sin límites)" : "Suscripción requerida"}
                 </p>
               </div>
@@ -181,59 +192,75 @@ export default function ProfilePage() {
           </section>
 
           {/* Acciones de suscripción */}
-          <section className="bg-white rounded-2xl border border-purple-200 shadow-sm p-5 md:col-span-2 card-smooth reveal">
+          <section className="bg-slate-950/95 rounded-2xl border border-slate-800 shadow-[0_16px_40px_rgba(15,23,42,1)] p-5 md:col-span-2 card-smooth reveal">
             <div className="flex items-center justify-between gap-3 mb-4">
               <div className="flex items-center gap-3">
                 <IconCard />
-                <h2 className="font-semibold text-gray-900">Suscripción</h2>
+                <h2 className="font-semibold text-slate-50">Suscripción</h2>
               </div>
               {!profile?.is_premium && (
-                <Link href="/" className="text-sm text-purple-700 hover:text-purple-800 font-medium tap-grow">Ver planes</Link>
+                <Link href="/#precios" className="text-sm text-sky-300 hover:text-sky-200 font-medium tap-grow">
+                  Ver planes
+                </Link>
               )}
             </div>
 
             {profile?.is_premium ? (
               <div className="space-y-3">
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-slate-300">
                   Gestiona tu suscripción, actualiza métodos de pago o cancela desde el portal de Stripe.
                 </p>
-                <button 
-                  onClick={manageSubscription} 
-                  disabled={actionLoading === "change"} 
-                  className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 tap-grow font-medium"
+                <button
+                  onClick={manageSubscription}
+                  disabled={actionLoading === "change"}
+                  className="w-full px-4 py-3 rounded-xl bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(90deg,#1d4ed8,#4f46e5,#a855f7)] text-white hover:brightness-110 disabled:opacity-50 tap-grow font-medium shadow-[0_18px_45px_rgba(15,23,42,1)]"
                 >
                   {actionLoading === "change" ? "Abriendo..." : "Gestionar suscripción"}
                 </button>
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-purple-300 p-4 bg-purple-50 text-purple-800">
+              <div className="rounded-xl border border-dashed border-sky-500/60 p-4 bg-slate-900/80 text-slate-200 text-sm">
                 Esta herramienta es de pago. Suscríbete desde la portada o desde Generar para utilizar StudyCaptures.
               </div>
             )}
           </section>
 
           {/* Privacidad y soporte */}
-          <section className="bg-white rounded-2xl border border-purple-200 shadow-sm p-5 card-smooth reveal">
+          <section className="bg-slate-950/95 rounded-2xl border border-slate-800 shadow-[0_16px_40px_rgba(15,23,42,1)] p-5 card-smooth reveal">
             <div className="flex items-center gap-3 mb-3">
               <IconShield />
-              <h2 className="font-semibold text-gray-900">Privacidad</h2>
+              <h2 className="font-semibold text-slate-50">Privacidad</h2>
             </div>
             <div className="space-y-3 text-sm">
-              <Link href="/privacy" className="inline-flex items-center gap-2 text-purple-700 hover:text-purple-800 tap-grow">
+              <Link
+                href="/privacy"
+                className="inline-flex items-center gap-2 text-sky-300 hover:text-sky-200 tap-grow"
+              >
                 Ver política de privacidad
                 <IconArrow />
               </Link>
-              <p className="text-gray-700">Soporte: <a className="text-purple-700 hover:text-purple-800" href="mailto:studycapturesai@gmail.com">studycapturesai@gmail.com</a></p>
+              <p className="text-slate-300">
+                Soporte:{" "}
+                <a className="text-sky-300 hover:text-sky-200" href="mailto:studycapturesai@gmail.com">
+                  studycapturesai@gmail.com
+                </a>
+              </p>
             </div>
           </section>
 
           {/* Sesión */}
-          <section className="bg-white rounded-2xl border border-purple-200 shadow-sm p-5 card-smooth reveal">
+          <section className="bg-slate-950/95 rounded-2xl border border-slate-800 shadow-[0_16px_40px_rgba(15,23,42,1)] p-5 card-smooth reveal">
             <div className="flex items-center gap-3 mb-3">
               <IconLogout />
-              <h2 className="font-semibold text-gray-900">Sesión</h2>
+              <h2 className="font-semibold text-slate-50">Sesión</h2>
             </div>
-            <button onClick={logout} disabled={actionLoading === "logout"} className="w-full px-4 py-3 rounded-xl bg-gray-900 text-white hover:bg-black disabled:opacity-50 tap-grow">Cerrar sesión</button>
+            <button
+              onClick={logout}
+              disabled={actionLoading === "logout"}
+              className="w-full px-4 py-3 rounded-xl bg-slate-900 text-slate-100 hover:bg-slate-800 disabled:opacity-50 tap-grow"
+            >
+              Cerrar sesión
+            </button>
           </section>
         </div>
       </section>

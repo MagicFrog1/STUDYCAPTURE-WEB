@@ -187,18 +187,18 @@ export default function Home() {
 
             <div className="grid lg:grid-cols-4 gap-5">
               {/* Card 1 */}
-              <div className="group relative overflow-visible rounded-2xl p-0.5 bg-gradient-to-br from-purple-200 via-pink-200 to-indigo-200 shadow-sm hover:shadow-xl transition-all reveal">
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-gradient-to-br from-purple-400/25 via-pink-400/25 to-indigo-400/25 transition-opacity" />
-                <div className="pointer-events-none absolute inset-x-2 -bottom-4 h-8 rounded-2xl bg-gradient-to-r from-fuchsia-200 via-pink-200 to-indigo-200 opacity-70 blur-sm shadow-md" aria-hidden />
-                <div className="relative bg-white rounded-[1rem] p-5 sm:p-6 md:p-7 border border-purple-100 overflow-hidden">
-                  <div className="absolute -top-6 -right-6 w-16 h-16 bg-gradient-to-tr from-purple-200 to-pink-200 rounded-full blur-2xl opacity-60" />
+              <div className="group relative overflow-visible rounded-2xl p-[1px] bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(135deg,#0f172a,#111827)] shadow-[0_18px_45px_rgba(15,23,42,1)] hover:shadow-[0_22px_60px_rgba(15,23,42,1)] transition-all reveal">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-[radial-gradient(circle_at_0_0,rgba(56,189,248,0.4),transparent_55%),radial-gradient(circle_at_100%_0,rgba(168,85,247,0.45),transparent_55%)] transition-opacity" />
+                <div className="pointer-events-none absolute inset-x-6 -bottom-6 h-10 rounded-3xl bg-sky-500/20 opacity-60 blur-2xl" aria-hidden />
+                <div className="relative bg-slate-950/95 rounded-[1rem] p-5 sm:p-6 md:p-7 border border-slate-800 overflow-hidden">
+                  <div className="absolute -top-10 -right-10 w-24 h-24 bg-[radial-gradient(circle_at_0_0,rgba(56,189,248,0.35),transparent_60%)] rounded-full blur-2xl opacity-80" />
                   <div className="flex items-start gap-4">
                     <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 text-white ring-1 ring-purple-300/40 shadow-sm flex-shrink-0">
                       <IconCamera />
                     </span>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Apuntes enriquecidos</h3>
-                      <p className="text-gray-700 leading-relaxed">
+                      <h3 className="text-xl font-semibold text-slate-50 mb-1">Apuntes enriquecidos</h3>
+                      <p className="text-slate-300 leading-relaxed">
                         Transforma tus fotos en resúmenes didácticos con explicaciones claras, ejemplos y conexiones entre ideas. Perfectos para repasar en poco tiempo antes de un examen.
                       </p>
                     </div>
@@ -207,18 +207,18 @@ export default function Home() {
               </div>
 
               {/* Card 2 */}
-              <div className="group relative overflow-visible rounded-2xl p-0.5 bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200 shadow-sm hover:shadow-xl transition-all reveal">
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-gradient-to-br from-indigo-400/25 via-purple-400/25 to-pink-400/25 transition-opacity" />
-                <div className="pointer-events-none absolute inset-x-2 -bottom-4 h-8 rounded-2xl bg-gradient-to-r from-fuchsia-200 via-pink-200 to-indigo-200 opacity-70 blur-sm shadow-md" aria-hidden />
-                <div className="relative bg-white rounded-[1rem] p-5 sm:p-6 md:p-7 border border-purple-100 overflow-hidden">
-                  <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-gradient-to-tr from-indigo-200 to-purple-200 rounded-full blur-2xl opacity-60" />
+              <div className="group relative overflow-visible rounded-2xl p-[1px] bg-[radial-gradient(circle_at_0_0,#4f46e5,transparent_55%),radial-gradient(circle_at_100%_0,#22d3ee,transparent_55%),linear-gradient(135deg,#0f172a,#020617)] shadow-[0_18px_45px_rgba(15,23,42,1)] hover:shadow-[0_22px_60px_rgba(15,23,42,1)] transition-all reveal">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-[radial-gradient(circle_at_0_0,rgba(59,130,246,0.4),transparent_55%),radial-gradient(circle_at_100%_0,rgba(129,140,248,0.45),transparent_55%)] transition-opacity" />
+                <div className="pointer-events-none absolute inset-x-6 -bottom-6 h-10 rounded-3xl bg-indigo-500/25 opacity-60 blur-2xl" aria-hidden />
+                <div className="relative bg-slate-950/95 rounded-[1rem] p-5 sm:p-6 md:p-7 border border-slate-800 overflow-hidden">
+                  <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-[radial-gradient(circle_at_100%_0,rgba(129,140,248,0.35),transparent_60%)] rounded-full blur-2xl opacity-80" />
                   <div className="flex items-start gap-4">
                     <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white ring-1 ring-indigo-300/40 shadow-sm flex-shrink-0">
                       <IconPalette />
                     </span>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Flashcards automáticas</h3>
-                      <p className="text-gray-700 leading-relaxed">
+                      <h3 className="text-xl font-semibold text-slate-50 mb-1">Flashcards automáticas</h3>
+                      <p className="text-slate-300 leading-relaxed">
                         Genera al instante tarjetas pregunta/respuesta listas para memorizar de forma activa, con feedback inmediato para fijar mejor cada concepto.
                       </p>
                     </div>
@@ -227,18 +227,18 @@ export default function Home() {
               </div>
 
               {/* Card 3 */}
-              <div className="group relative overflow-visible rounded-2xl p-0.5 bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200 shadow-sm hover:shadow-xl transition-all reveal">
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-gradient-to-br from-pink-400/25 via-purple-400/25 to-indigo-400/25 transition-opacity" />
-                <div className="pointer-events-none absolute inset-x-2 -bottom-4 h-8 rounded-2xl bg-gradient-to-r from-fuchsia-200 via-pink-200 to-indigo-200 opacity-70 blur-sm shadow-md" aria-hidden />
-                <div className="relative bg-white rounded-[1rem] p-5 sm:p-6 md:p-7 border border-purple-100 overflow-hidden">
-                  <div className="absolute -top-5 -left-5 w-14 h-14 bg-gradient-to-tr from-pink-200 to-purple-200 rounded-full blur-2xl opacity-60" />
+              <div className="group relative overflow-visible rounded-2xl p-[1px] bg-[radial-gradient(circle_at_0_0,#ec4899,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(135deg,#0f172a,#020617)] shadow-[0_18px_45px_rgba(15,23,42,1)] hover:shadow-[0_22px_60px_rgba(15,23,42,1)] transition-all reveal">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-[radial-gradient(circle_at_0_0,rgba(236,72,153,0.45),transparent_55%),radial-gradient(circle_at_100%_0,rgba(168,85,247,0.45),transparent_55%)] transition-opacity" />
+                <div className="pointer-events-none absolute inset-x-6 -bottom-6 h-10 rounded-3xl bg-pink-500/25 opacity-60 blur-2xl" aria-hidden />
+                <div className="relative bg-slate-950/95 rounded-[1rem] p-5 sm:p-6 md:p-7 border border-slate-800 overflow-hidden">
+                  <div className="absolute -top-8 -left-8 w-24 h-24 bg-[radial-gradient(circle_at_0_0,rgba(236,72,153,0.4),transparent_60%)] rounded-full blur-2xl opacity-80" />
                   <div className="flex items-start gap-4">
                     <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-fuchsia-600 to-purple-600 text-white ring-1 ring-fuchsia-300/40 shadow-sm flex-shrink-0">
                       <IconBolt />
                     </span>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Tipo Test con explicación</h3>
-                      <p className="text-gray-700 leading-relaxed">
+                      <h3 className="text-xl font-semibold text-slate-50 mb-1">Tipo Test con explicación</h3>
+                      <p className="text-slate-300 leading-relaxed">
                         Crea tests de opción múltiple a partir de tus apuntes y corrige al momento o al final, con explicación de aciertos y errores para entender el “por qué”.
                       </p>
                     </div>
@@ -247,18 +247,18 @@ export default function Home() {
               </div>
 
               {/* Card 4 */}
-              <div className="group relative overflow-visible rounded-2xl p-0.5 bg-gradient-to-br from-teal-200 via-cyan-200 to-blue-200 shadow-sm hover:shadow-xl transition-all reveal">
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-gradient-to-br from-teal-400/25 via-cyan-400/25 to-blue-400/25 transition-opacity" />
-                <div className="pointer-events-none absolute inset-x-2 -bottom-4 h-8 rounded-2xl bg-gradient-to-r from-teal-200 via-cyan-200 to-blue-200 opacity-70 blur-sm shadow-md" aria-hidden />
-                <div className="relative bg-white rounded-[1rem] p-5 sm:p-6 md:p-7 border border-teal-100 overflow-hidden">
-                  <div className="absolute -top-6 -right-6 w-16 h-16 bg-gradient-to-tr from-teal-200 to-cyan-200 rounded-full blur-2xl opacity-60" />
+              <div className="group relative overflow-visible rounded-2xl p-[1px] bg-[radial-gradient(circle_at_0_0,#22c55e,transparent_55%),radial-gradient(circle_at_100%_0,#06b6d4,transparent_55%),linear-gradient(135deg,#0f172a,#020617)] shadow-[0_18px_45px_rgba(15,23,42,1)] hover:shadow-[0_22px_60px_rgba(15,23,42,1)] transition-all reveal">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-2xl bg-[radial-gradient(circle_at_0_0,rgba(34,197,94,0.4),transparent_55%),radial-gradient(circle_at_100%_0,rgba(6,182,212,0.4),transparent_55%)] transition-opacity" />
+                <div className="pointer-events-none absolute inset-x-6 -bottom-6 h-10 rounded-3xl bg-emerald-500/25 opacity-60 blur-2xl" aria-hidden />
+                <div className="relative bg-slate-950/95 rounded-[1rem] p-5 sm:p-6 md:p-7 border border-slate-800 overflow-hidden">
+                  <div className="absolute -top-8 -right-8 w-24 h-24 bg-[radial-gradient(circle_at_100%_0,rgba(6,182,212,0.4),transparent_60%)] rounded-full blur-2xl opacity-80" />
                   <div className="flex items-start gap-4">
                     <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-teal-600 to-cyan-600 text-white ring-1 ring-teal-300/40 shadow-sm flex-shrink-0">
                       <IconQuestion />
                     </span>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-1">Preguntas largas</h3>
-                      <p className="text-gray-700 leading-relaxed">
+                      <h3 className="text-xl font-semibold text-slate-50 mb-1">Preguntas largas</h3>
+                      <p className="text-slate-300 leading-relaxed">
                         Responde preguntas abiertas basadas en tus apuntes y recibe corrección automática con porcentaje de acierto, puntos fuertes, aspectos a mejorar y una solución modelo para comparar.
                       </p>
                     </div>
@@ -279,46 +279,74 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 reveal">
             {/* Apuntes */}
-            <div className="bg-white rounded-2xl p-6 border border-purple-100 shadow-sm hover:shadow-lg transition-all">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white flex items-center justify-center mb-4">
+            <div className="bg-slate-950/95 rounded-2xl p-6 border border-slate-800 shadow-[0_16px_40px_rgba(15,23,42,1)] hover:shadow-[0_22px_60px_rgba(15,23,42,1)] transition-all">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white flex items-center justify-center mb-4 ring-1 ring-purple-300/70">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
                   <path d="M7 3h6l4 4v12a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z" stroke="currentColor" strokeWidth="2"/>
                 </svg>
               </div>
-              <h3 className="font-bold text-lg text-gray-900">Apuntes enriquecidos</h3>
-              <p className="text-gray-700 mt-1">Resúmenes claros con explicaciones, ejemplos y pasos clave por tema para entender el contenido de un vistazo.</p>
-              <Link href="/generar/panel" className="inline-block mt-3 text-sm font-semibold text-purple-700 hover:underline">Ir a apuntes →</Link>
+              <h3 className="font-bold text-lg text-slate-50">Apuntes enriquecidos</h3>
+              <p className="text-slate-300 mt-1">
+                Resúmenes claros con explicaciones, ejemplos y pasos clave por tema para entender el contenido de un vistazo.
+              </p>
+              <Link
+                href="/generar/panel"
+                className="inline-block mt-3 text-sm font-semibold text-purple-300 hover:text-purple-200 hover:underline"
+              >
+                Ir a apuntes →
+              </Link>
             </div>
             {/* Flashcards */}
-            <div className="bg-white rounded-2xl p-6 border border-blue-100 shadow-sm hover:shadow-lg transition-all">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white flex items-center justify-center mb-4">
+            <div className="bg-slate-950/95 rounded-2xl p-6 border border-slate-800 shadow-[0_16px_40px_rgba(15,23,42,1)] hover:shadow-[0_22px_60px_rgba(15,23,42,1)] transition-all">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white flex items-center justify-center mb-4 ring-1 ring-sky-300/70">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
                   <rect x="4" y="6" width="16" height="10" rx="2" stroke="currentColor" strokeWidth="2"/>
                 </svg>
               </div>
-              <h3 className="font-bold text-lg text-gray-900">Flashcards automáticas</h3>
-              <p className="text-gray-700 mt-1">Tarjetas Q/A para memorizar más rápido con práctica activa y repetición espaciada.</p>
-              <Link href="/generar/flashcards" className="inline-block mt-3 text-sm font-semibold text-blue-700 hover:underline">Ir a flashcards →</Link>
+              <h3 className="font-bold text-lg text-slate-50">Flashcards automáticas</h3>
+              <p className="text-slate-300 mt-1">
+                Tarjetas Q/A para memorizar más rápido con práctica activa y repetición espaciada.
+              </p>
+              <Link
+                href="/generar/flashcards"
+                className="inline-block mt-3 text-sm font-semibold text-sky-300 hover:text-sky-200 hover:underline"
+              >
+                Ir a flashcards →
+              </Link>
             </div>
             {/* Tipo Test */}
-            <div className="bg-white rounded-2xl p-6 border border-amber-100 shadow-sm hover:shadow-lg transition-all">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-amber-500 to-red-500 text-white flex items-center justify-center mb-4">
+            <div className="bg-slate-950/95 rounded-2xl p-6 border border-slate-800 shadow-[0_16px_40px_rgba(15,23,42,1)] hover:shadow-[0_22px_60px_rgba(15,23,42,1)] transition-all">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-amber-500 to-red-500 text-white flex items-center justify-center mb-4 ring-1 ring-amber-300/70">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
                   <path d="M6 8h12M6 12h12M6 16h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                 </svg>
               </div>
-              <h3 className="font-bold text-lg text-gray-900">Tipo Test con feedback</h3>
-              <p className="text-gray-700 mt-1">Practica preguntas reales y aprende de los fallos con explicación detallada de cada respuesta.</p>
-              <Link href="/generar/test" className="inline-block mt-3 text-sm font-semibold text-amber-700 hover:underline">Ir a test →</Link>
+              <h3 className="font-bold text-lg text-slate-50">Tipo Test con feedback</h3>
+              <p className="text-slate-300 mt-1">
+                Practica preguntas reales y aprende de los fallos con explicación detallada de cada respuesta.
+              </p>
+              <Link
+                href="/generar/test"
+                className="inline-block mt-3 text-sm font-semibold text-amber-300 hover:text-amber-200 hover:underline"
+              >
+                Ir a test →
+              </Link>
             </div>
             {/* Preguntas largas */}
-            <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-sm hover:shadow-lg transition-all">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-500 to-teal-500 text-white flex items-center justify-center mb-4">
+            <div className="bg-slate-950/95 rounded-2xl p-6 border border-slate-800 shadow-[0_16px_40px_rgba(15,23,42,1)] hover:shadow-[0_22px_60px_rgba(15,23,42,1)] transition-all">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-500 to-teal-500 text-white flex items-center justify-center mb-4 ring-1 ring-emerald-300/70">
                 <IconQuestion />
               </div>
-              <h3 className="font-bold text-lg text-gray-900">Preguntas largas</h3>
-              <p className="text-gray-700 mt-1">Responde preguntas largas y recibe corrección automática con porcentaje de acierto y respuesta modelo para aprender de verdad.</p>
-              <Link href="/generar/mapas" className="inline-block mt-3 text-sm font-semibold text-emerald-700 hover:underline">Ir a Preguntas largas →</Link>
+              <h3 className="font-bold text-lg text-slate-50">Preguntas largas</h3>
+              <p className="text-slate-300 mt-1">
+                Responde preguntas largas y recibe corrección automática con porcentaje de acierto y respuesta modelo para aprender de verdad.
+              </p>
+              <Link
+                href="/generar/mapas"
+                className="inline-block mt-3 text-sm font-semibold text-emerald-300 hover:text-emerald-200 hover:underline"
+              >
+                Ir a Preguntas largas →
+              </Link>
             </div>
           </div>
         </div>

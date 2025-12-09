@@ -5,77 +5,47 @@ import { supabase } from "@/lib/supabaseClient";
 import { isPremium } from "@/lib/premium";
 
 export default function TrialBanner() {
-  const [daysLeft, setDaysLeft] = useState<number | null>(null);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const computeTrial = async () => {
+    const run = async () => {
       const { data } = await supabase.auth.getSession();
       const session = data.session;
-      if (!session) {
+      if (!session?.user) {
         setShow(false);
-        setDaysLeft(null);
         return;
       }
-      // Ocultar banner para usuarios premium
-      const userId = session.user?.id;
-      if (!userId) {
-        setShow(false);
-        setDaysLeft(null);
-        return;
-      }
-      const premium = await isPremium(userId);
-      if (premium) {
-        setShow(false);
-        setDaysLeft(null);
-        return;
-      }
-      const { data: u } = await supabase.auth.getUser();
-      const user = u.user;
-      // @ts-ignore - campos posibles de Supabase
-      const confirmedAt: string | null = user?.email_confirmed_at ?? user?.confirmed_at ?? user?.created_at ?? null;
-      if (!confirmedAt) {
-        setShow(false);
-        setDaysLeft(null);
-        return;
-      }
-      const trialUntil = new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000;
-      const msLeft = trialUntil - Date.now();
-      if (msLeft <= 0) {
-        setShow(false);
-        setDaysLeft(null);
-        return;
-      }
-      const d = Math.ceil(msLeft / (24 * 60 * 60 * 1000));
-      setDaysLeft(d);
-      setShow(true);
+      const premium = await isPremium(session.user.id);
+      // Mostrar solo a usuarios logueados SIN suscripción activa
+      setShow(!premium);
     };
 
-    // Calcular al montar
-    computeTrial();
-    // Recalcular cuando cambie el estado auth (login/logout/refresh)
+    run();
     const { data: sub } = supabase.auth.onAuthStateChange(() => {
-      computeTrial();
+      run();
     });
     return () => {
       sub.subscription?.unsubscribe();
     };
   }, []);
 
-  if (!show || daysLeft === null) return null;
+  if (!show) return null;
 
   return (
     <>
       <div className="fixed top-0 left-0 right-0 z-50">
-        <div className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+        <div className="w-full bg-slate-950/95 supports-[backdrop-filter]:bg-slate-950/80 backdrop-blur-xl border-b border-sky-500/30 shadow-[0_8px_32px_rgba(15,23,42,0.8)]">
           <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5">
             <div className="flex items-center justify-between gap-3">
-              <p className="text-sm sm:text-base font-semibold tracking-wide">
-                Prueba Premium activa · Te quedan {daysLeft} día{daysLeft === 1 ? "" : "s"} gratis
-              </p>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)] animate-pulse" />
+                <p className="text-sm sm:text-base font-semibold tracking-wide text-slate-100">
+                  Accede a todas las herramientas con StudyCaptures Premium
+                </p>
+              </div>
               <a
                 href="/#precios"
-                className="shrink-0 inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold transition-colors"
+                className="shrink-0 inline-flex items-center gap-2 bg-[radial-gradient(circle_at_0_0,#22d3ee,transparent_55%),radial-gradient(circle_at_100%_0,#a855f7,transparent_55%),linear-gradient(90deg,#1d4ed8,#4f46e5,#a855f7)] text-white px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold transition-all hover:brightness-110 shadow-[0_4px_12px_rgba(56,189,248,0.4)]"
               >
                 Hazte Premium
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>

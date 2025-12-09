@@ -2,7 +2,16 @@ export async function pdfFileToImages(file: File, maxPages = 5, scale = 1.5): Pr
 	// Sólo en cliente
 	if (typeof window === "undefined") return [];
 
-	const { getDocument } = await import("pdfjs-dist");
+	// Cargamos pdfjs (ESM) y configuramos el worker para evitar el error
+	// "No GlobalWorkerOptions.workerSrc specified."
+	const pdfjs = (await import("pdfjs-dist")) as any;
+	const { getDocument, GlobalWorkerOptions, version } = pdfjs;
+
+	// Si no hay worker configurado, usamos el worker oficial servido desde un CDN
+	// Esto evita el error "No GlobalWorkerOptions.workerSrc specified."
+	if (!GlobalWorkerOptions.workerSrc) {
+		GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${version}/build/pdf.worker.min.mjs`;
+	}
 
 	const data = await file.arrayBuffer();
 	const loadingTask = getDocument({ data });
@@ -30,5 +39,4 @@ export async function pdfFileToImages(file: File, maxPages = 5, scale = 1.5): Pr
 
 	return imageFiles;
 }
-
 

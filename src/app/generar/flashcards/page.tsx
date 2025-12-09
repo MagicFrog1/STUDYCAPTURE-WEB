@@ -35,7 +35,6 @@ export default function FlashcardsPage() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<"" | "monthly" | "yearly">("");
   const [flipped, setFlipped] = useState<Set<string>>(new Set());
-  const [trialActive, setTrialActive] = useState(false);
 
   const toggleFlip = useCallback((id: string) => {
     setFlipped((prev) => {
@@ -90,14 +89,6 @@ export default function FlashcardsPage() {
           .eq('user_id', data.session.user.id)
           .maybeSingle();
         if (profile?.is_premium) setIsPremium(true);
-        const { data: u } = await supabase.auth.getUser();
-        const user = u.user;
-        // @ts-ignore
-        const confirmedAt: string | null = user?.email_confirmed_at ?? user?.confirmed_at ?? user?.created_at ?? null;
-        if (confirmedAt) {
-          const trialUntil = new Date(confirmedAt).getTime() + 7 * 24 * 60 * 60 * 1000;
-          setTrialActive(Date.now() < trialUntil);
-        }
       }
     })();
   }, [router]);
@@ -178,8 +169,8 @@ export default function FlashcardsPage() {
       router.push("/login");
       return;
     }
-    // Bloqueo si no hay suscripción ni trial
-    if (!isPremium && !trialActive) {
+    // Bloqueo si no hay suscripción activa
+    if (!isPremium) {
       setShowPaywall(true);
       return;
     }
@@ -217,7 +208,7 @@ export default function FlashcardsPage() {
     } finally {
       setLoading(false);
     }
-  }, [files, values, context, isLoggedIn, router, isPremium, trialActive]);
+  }, [files, values, context, isLoggedIn, router, isPremium]);
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-slate-950 text-slate-200">

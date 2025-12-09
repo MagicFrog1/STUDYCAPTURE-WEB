@@ -27,9 +27,10 @@ export async function GET(req: NextRequest) {
     
     if (sessionError || !session?.user) {
       console.log('No session found:', sessionError);
+      // Sin sesión: sin acceso gratuito cuando el producto es 100% de pago
       return NextResponse.json({ 
-        remaining: 2, 
-        max: 2, 
+        remaining: 0, 
+        max: 0, 
         isLoggedIn: false, 
         hasActiveSubscription: false 
       });
@@ -49,7 +50,8 @@ export async function GET(req: NextRequest) {
     }
     
     const isPremium = profile?.is_premium || false;
-    const remainingUses = isPremium ? -1 : 2;
+    // Sin trial: solo premium tiene acceso "ilimitado", resto 0
+    const remainingUses = isPremium ? -1 : 0;
     
     console.log('Quota check:', { userId, isPremium, remainingUses });
     
@@ -62,8 +64,8 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error("Error getting quota:", error);
     return NextResponse.json({ 
-      remaining: 2, 
-      max: 2, 
+      remaining: 0, 
+      max: 0, 
       isLoggedIn: false, 
       hasActiveSubscription: false 
     });
